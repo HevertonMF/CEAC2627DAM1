@@ -1,0 +1,17 @@
+CREATE USER 'heverton'@'localhost' IDENTIFIED BY 'EAEA9A297a*';
+GRANT USAGE ON *.* TO 'heverton'@'localhost';
+
+ALTER USER 'heverton'@'localhost' 
+REQUIRE NONE 
+WITH MAX_QUERIES_PER_HOUR 0 
+MAX_CONNECTIONS_PER_HOUR 0 
+MAX_UPDATES_PER_HOUR 0 
+MAX_USER_CONNECTIONS 0;
+
+GRANT ALL PRIVILEGES ON empresadan2627.* 
+TO 'heverton'@'localhost';
+
+GRANT ALL PRIVILEGES ON clase.* 
+TO 'heverton'@'localhost';
+
+FLUSH PRIVILEGES;

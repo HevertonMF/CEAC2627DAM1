@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<curriculum>
+  <datos_personales>
+    <nombre>Heverton</nombre>
+    <apellidos>Marques ferreira</apellidos>
+    <email>hevertonmf@gmail.com</email>
+    <telefono>662353018<telefono>
+  </datos_personales> 
+  <experiencia_laboral>
+    <experiencia>
+      <empresa>IVECO</empresa>
+      <cargo>Inspector de cualidad</cargo>
+      <inicio>2011-08</inicio>
+      <final>2015-11</final>
+    </experiencia>
+    <empresa>Petrolub</empresa>
+    <cargo>Administrativo</cargo>
+      <inicio>2016-10</inicio>
+      <final>2019-09</final>
+    <experiencia>
+    <empresa>Ambev</empresa>
+    <cargo>Verificador Logístico</cargo>
+      <inicio>2020-02</inicio>
+      <final>2022-05</final>
+    </experiencia>
+    <empresa>Bourbon</empresa>
+    <cargo>Administrador Logístico</cargo>
+      <inicio>2011-08</inicio>
+      <final>2015-11</final>
+    <experiencia>
+    <empresa>Bourbon</empresa>
+    <cargo>Inspector de cualidad</cargo>
+      <inicio>2022-08</inicio>
+      <final>2025-06</final>
+    </experiencia>
+  </experiencia_laboral>
+   <Educación>
+  <centro>UNIFEM<centro>
+  </formacion>Administración</formacion>
+   </Educación>
+  <Educación>
+  <centro>Escola Estadual Cel. Domingues Diniz Couto</centro>
+  <titulacion>Bachillerato</titulacion>
+ </Educación>
+  <Educación>
+</curriculum>

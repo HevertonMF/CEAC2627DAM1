@@ -1,0 +1,165 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <!-- Se transmite al navegador -->
+    <title>La web de Heverton Marques</title>
+    <meta charset="utf-8">
+    <style>
+      body{
+      	background:lightgray;
+        font-family:monospace;
+      }
+      header,main,footer{
+      	background:white;
+        width:800px;
+        margin:auto;
+        padding:50px;
+      }
+      h1{
+      	font-size:48px;
+      }
+      h1{
+      	margin:0px;padding:0px;
+        font-weight:normal;
+      }
+      p{
+      	text-align:justify;
+      }
+      a{
+      	color:white;
+        text-decoration:none;
+        background:indigo;
+        padding:10px;
+      }
+      img{
+        width:100%;
+      }
+      form{
+      	display:flex;
+        flex-direction:column;
+        gap:10px;
+      }
+      #blog{
+      	display:grid;
+        grid-template-columns:repeat(3,1fr);
+         gap:10px;
+      }
+      #contacto a{
+        background:none;
+        color:indigo;
+        padding:0;
+        text-decoration:underline;
+}
+     img { 
+        border: 0; }
+    </style>
+  </head>
+  <body>
+    <!-- Se enseña al usuario -->
+    <header>
+      <h1>Heverton Marques Ferreira Maciel</h1>
+      <h2>Administrador, alumno y programador</h2>
+      <nav>
+        <a href="#destacado">Reflexión</a>
+        <a href="#sobremi">Sobre mi</a>
+        <a href="#blog">Blog</a>
+        <a href="#contacto">Contacto</a>
+      </nav>
+    </header>
+    <main>
+      <section id="destacado">
+        <h3>Reflexión</h3>
+        <img src="heverton.png" alt="Foto de Heverton Marques">
+        <p>La informática ha pasado de ser una herramienta de oficina a convertirse en la base de casi todo lo que hacemos: trabajar, estudiar, comunicarnos y gestionar nuestra vida diaria. Hoy la inteligencia artificial (IA) da un paso más, porque ya no solo ejecuta instrucciones, sino que ayuda a escribir código, analizar datos y tomar decisiones.</p>
+        <p>Creo que la IA no sustituye a las personas que saben programar, sino que multiplica lo que pueden hacer. Por eso es más importante que nunca entender los fundamentos: saber cómo funciona un programa, revisar lo que genera una máquina y usar la tecnología con criterio y responsabilidad. Aprender informática hoy no es solo aprender un lenguaje, es aprender a pensar, a resolver problemas y a adaptarse a un cambio constante.</p>
+      </section>
+      <section id="sobremi">
+        <h3>Sobre mi</h3>
+        <p>Me dedico a la administración y a la tecnología. Soy brasileño, vivo en España y actualmente estudio en CEAC Valencia, donde me estoy formando como programador para unir mi experiencia en gestión con el desarrollo de software.</p>
+        <ul>
+          <li>Experiencia en administración y organización de procesos.</li>
+          <li>Formación en programación y desarrollo web (HTML, XML y más) en CEAC Valencia.</li>
+          <li>Idiomas: portugués (nativo) y español.</li>
+        </ul>
+        <table border=1>
+          <thead>
+          	<tr>
+              <th>Lunes</th>
+              <th>Martes</th>
+              <th>Miércoles</th>
+              <th>Jueves</th>
+              <th>Viernes</th>
+            </tr>
+          </thead>
+          <tbody>
+          	<tr>
+              <td>Programación</td>
+              <td>Programación</td>
+              <td>Programación</td>
+              <td>Programación</td>
+              <td>Sistemas informáticos</td>
+          	</tr>
+            <tr>
+              <td>Programación</td>
+              <td>Programación</td>
+              <td>Programación</td>
+              <td>Programación</td>
+              <td>Inglés</td>
+          	</tr>
+            <tr>
+              <td>Bases de datos</td>
+              <td>Bases de datos</td>
+              <td>Bases de datos</td>
+              <td>IPE</td>
+              <td>Lenguajes de marcas</td>
+          	</tr>
+          </tbody>
+        </table>
+      </section>
+      <section id="blog">
+        <h3>Blog</h3>
+        <article>
+          <h4>Python sigue en lo más alto del índice TIOBE</h4>
+          <p>En el índice TIOBE de septiembre de 2026 el top 10 no cambia: Python mantiene el primer puesto, aunque su popularidad baja del 18 %, y C++ amplía su ventaja sobre Java.</p>
+        </article>
+        <article>
+          <h4>Rust se consolida entre los diez lenguajes más populares</h4>
+          <p>Rust entró por primera vez en el top 10 de TIOBE en julio de 2026 y se ha mantenido en el puesto 10, subiendo su índice del 1,34 % al 1,45 % en agosto. Es uno de los lenguajes que más crece por su seguridad en la gestión de memoria.</p>
+        </article>
+        <article>
+          <h4>Julia, cerca de volver al top 20</h4>
+          <p>El lenguaje Julia alcanzó el puesto 21 en el índice de septiembre de 2026, gracias a su uso creciente en computación científica, modelado y procesamiento de datos, mientras MATLAB sigue perdiendo posiciones.</p>
+        </article>
+        <article>
+          <h4>KDE debate cómo usar la IA en el desarrollo de software libre</h4>
+          <p>La comunidad KDE está en el centro de la conversación por una propuesta para definir una política oficial sobre el uso de modelos de lenguaje (LLM) en sus proyectos. El debate muestra que la IA ya forma parte del día a día de los programadores.</p>
+        </article>
+        <article>
+          <h4>Microsoft presenta Project Zenith para desarrolladores</h4>
+          <p>Microsoft ha presentado Project Zenith, un entorno de Windows listo para programar, con herramientas preconfiguradas y soporte para IA local en el propio ordenador del desarrollador.</p>
+        </article>
+      </section>
+      <section id="contacto">
+        <h3>Contacto</h3>
+        <p>Si quieres contactar conmigo, puedes escribirme:</p>
+        <ul>
+          <li>Correo electrónico: <a href="mailto:hevertonmf@gmail.com">hevertonmf@gmail.com</a></li>
+          <li>LinkedIn: <a href="https://www.linkedin.com/in/heverton-marques-00a569196/">heverton-marques</a></li>
+          <li>Ubicación: Valencia, España</li>
+        </ul>
+        <form>
+          <label>Introduce tu nombre</label>
+          <input type="text" name="nombre">
+          <label>Introduce tu correo</label>
+          <input type="email" name="correo">
+          <label>Introduce tu mensaje</label>
+          <textarea name="mensaje"></textarea>
+          <input type="submit">
+        </form>
+      </section>
+    </main>
+    <footer>
+      <p>&copy; 2026 Heverton Marques Ferreira Maciel. Todos los derechos reservados.</p>
+    </footer>
+  </body>
+</html>

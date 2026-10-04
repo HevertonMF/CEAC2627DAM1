@@ -1,0 +1,9 @@
+class Paciente():
+  def __init__(self,nombre,apellidos,email):
+    self.nombre = nombre
+    self.apellidos = apellidos
+    self.email = email
+
+lista_de_pacientes = []
+lista_de_pacientes.append(Paciente("maria","jose","mairia@jose.com"))
+lista_de_pacientes.append(Paciente("marta","lima","marta@lima.com"))

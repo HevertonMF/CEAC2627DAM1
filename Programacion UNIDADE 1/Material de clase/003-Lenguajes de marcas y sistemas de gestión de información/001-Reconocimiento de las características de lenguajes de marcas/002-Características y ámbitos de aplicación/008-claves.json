@@ -1,0 +1,41 @@
+	{
+		"datos_personales":{
+	  	"nombre":"Heverton",
+	    "apellidos":"Marques Ferreira Maciel",
+	    "telefono":"662353018",
+	    "email":{
+		"profesional":"hevertonmf@gmail.com",
+	    	"personal":"hevertonhmf22@gmail.com"
+	    }
+	  },
+	  "formacion":"Administración",
+	  "experiencia_laboral":[
+	    {
+	    	"empresa":"IVECO",
+	      "posicion":"Inspector de Calidad",
+	      "inicio":"2011-11",
+	      "final":"2015-08"
+	    },
+	    {
+	    	"empresa":"Petrolub",
+	      "posicion":"Administrativo",
+	      "inicio":"2016-10",
+	      "final":"2019-09"
+	    }
+	    {
+	    	"empresa":"Anbev",
+	      "posicion":"Verificador Logístico",
+	      "inicio":"2020-02",
+	      "final":"2022-05"
+	    }
+	    {
+	    	"empresa":"Bourbom",
+	      "posicion":"Administrador Logístico",
+	      "inicio":"2022-08",
+	      "final":"2025-06"
+	    }
+	  ],
+	  "idiomas":"Portugués, Español",
+	  "conduccion":"Carné B",
+	  "hobbies":"Ciclismo"
+	}

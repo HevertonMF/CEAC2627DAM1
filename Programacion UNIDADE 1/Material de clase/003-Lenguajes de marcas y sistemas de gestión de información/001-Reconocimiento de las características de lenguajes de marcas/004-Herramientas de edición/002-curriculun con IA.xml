@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<curriculum>
+  <datos_personales>
+    <nombre>Heverton</nombre>
+    <apellidos>Marques Ferreira Maciel</apellidos>
+    <email>hevertonmf@gmail.com</email>
+    <telefono>662353018</telefono>
+  </datos_personales>
+  <experiencia_laboral>
+    <experiencia>
+      <empresa>IVECO</empresa>
+      <cargo>Empleado administrativo</cargo>
+      <inicio>2011-11</inicio>
+      <final>2015-01</final>
+    </experiencia>
+    <experiencia>
+      <empresa>IVECO</empresa>
+      <cargo>Inspector de control de calidad</cargo>
+      <inicio>2015-02</inicio>
+      <final>2015-08</final>
+    </experiencia>
+    <experiencia>
+      <empresa>Petrolub</empresa>
+      <cargo>Empleado administrativo</cargo>
+      <inicio>2016-10</inicio>
+      <final>2019-09</final>
+    </experiencia>
+    <experiencia>
+      <empresa>Ambev</empresa>
+      <cargo>Receptor de materia prima</cargo>
+      <inicio>2020-02</inicio>
+      <final>2022-06</final>
+    </experiencia>
+    <experiencia>
+      <empresa>Bourbon</empresa>
+      <cargo>Operario de logística de almacén</cargo>
+      <inicio>2022-08</inicio>
+      <final>2025-06</final>
+    </experiencia>
+  </experiencia_laboral>
+  <educacion>
+    <formacion>
+      <centro>Escola Estadual Cel. Domingues Diniz Couto</centro>
+      <titulacion>Bachillerato</titulacion>
+      <fecha>2009-12</fecha>
+    </formacion>
+    <formacion>
+      <centro>UNIFEM</centro>
+      <titulacion>Administración</titulacion>
+      <!-- Completar: <fecha>AAAA-MM</fecha> -->
+    </formacion>
+    <formacion>
+      <centro>Centro CEAC de Formación Profesional</centro>
+      <titulacion>Desarrollo de Aplicaciones Multiplataforma (DAM)</titulacion>
+      <fecha>2026-09 - Actual</fecha>
+    </formacion>
+  </educacion>
+</curriculum>

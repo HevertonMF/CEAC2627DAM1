@@ -1,0 +1,20 @@
+{
+	"datos_personales":{
+  	"nombre":"Heverton",
+    "apellidos":"Marques Ferreira Maciel",
+    "email":{
+        "profesional":"hevertonmf@gmail.com",
+    	"personal":"hevertonhmf22@gmail.com"
+    }
+  },
+  "formacion":"",
+  "experiencia_laboral":[
+  	"experiencia1",
+    "experiencia2",
+    "experiencia3",
+    "experiencia4"
+  ],
+  "idiomas":"",
+  "conduccion":"",
+  "hobbies":""
+}
