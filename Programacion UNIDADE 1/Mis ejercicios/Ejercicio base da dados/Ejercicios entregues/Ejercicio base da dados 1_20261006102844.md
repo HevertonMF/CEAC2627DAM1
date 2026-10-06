@@ -2,7 +2,7 @@
 
 ## Información de generación
 
-- **Fecha:** 3/10/2026, 18:51:26
+- **Fecha:** 6/10/2026, 12:27:45
 - **Proyecto documentado:** `Ejercicio base da dados 1`
 - **Generador:** jocarsa | documentacion
 - **Procesamiento:** local en navegador
@@ -41,15 +41,56 @@
     │   ├── 001-tipos de ficheros.md
     │   ├── 002-base de datos en carpetas con csv.md
     │   └── 003-como instalar mysql.md
-    └── 3-Resultado de aprendizaje
-        └── criterios bases de datos.md
+    ├── 3-Resultado de aprendizaje
+    │   └── criterios bases de datos.md
+    └── agenda_empresas.db [SQLite]
 ```
 
 ## Bases de datos SQLite
 
 Esta sección documenta únicamente el esquema. No se vuelcan registros ni datos de usuario.
 
-No se han encontrado bases SQLite.
+### Ejercicio base da dados 1/agenda_empresas.db
+
+```text
+Ejercicio base da dados 1/agenda_empresas.db
+├── tabla agenda
+│   └── columnas
+│       ├── identificador
+│       ├── nonbre
+│       ├── telefono
+│       └── email
+├── tabla empresa1_clientes
+│   └── columnas
+│       ├── id
+│       ├── nombre
+│       ├── apellidos
+│       ├── email
+│       ├── telefono
+│       └── ciudad
+├── tabla empresa1_produtos
+│   └── columnas
+│       ├── id
+│       ├── nombre
+│       ├── categoria
+│       ├── precio
+│       └── stock
+├── tabla empresa2_clientes
+│   └── columnas
+│       ├── id
+│       ├── nombre
+│       ├── apellidos
+│       ├── email
+│       ├── telefono
+│       └── ciudad
+└── tabla empresa2_produtos
+    └── columnas
+        ├── id
+        ├── nombre
+        ├── categoria
+        ├── precio
+        └── stock
+```
 
 ## Código (intercalado)
 
