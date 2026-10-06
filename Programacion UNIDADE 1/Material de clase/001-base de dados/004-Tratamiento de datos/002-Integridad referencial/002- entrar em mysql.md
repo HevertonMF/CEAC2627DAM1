@@ -1,0 +1,1 @@
+"C:\Users\samar\.dbclient\dependency\mysql\mysql.exe" -u root -p  
