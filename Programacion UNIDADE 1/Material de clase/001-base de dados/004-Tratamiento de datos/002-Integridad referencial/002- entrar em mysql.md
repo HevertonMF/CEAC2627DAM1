@@ -1,1 +1,1 @@
-"C:\Users\samar\.dbclient\dependency\mysql\mysql.exe" -u root -p  
+C:\xampp\mysql\bin\mysql.exe -u root -p
