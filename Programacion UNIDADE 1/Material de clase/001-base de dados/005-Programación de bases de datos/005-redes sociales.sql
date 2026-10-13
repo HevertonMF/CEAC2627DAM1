@@ -1,0 +1,19 @@
+CREATE TABLE redes_sociales(
+	id INT PRIMARY KEY AUTO_INCREMENT,
+  id_usuario INT,
+  linkedin VARCHAR(100),
+  facebook VARCHAR(100),
+  instagram VARCHAR(100),
+  github VARCHAR(100)
+);
+
+INSERT INTO redes_sociales VALUES(
+	NULL,
+  1,
+  "https://www.linkedin.com/in/heverton-marques-00a569196/",
+  "https://facebook.com/hevertonmf",
+  "https://www.instagram.com/heverton_marques",
+  "https://github.com/HevertonMF"
+);
+
+SELECT * FROM redes_sociales;
