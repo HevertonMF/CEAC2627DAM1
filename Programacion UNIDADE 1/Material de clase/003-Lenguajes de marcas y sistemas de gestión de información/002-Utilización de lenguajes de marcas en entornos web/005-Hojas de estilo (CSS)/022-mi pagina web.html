@@ -52,6 +52,13 @@
 }
       img { 
         border: 0; }
+      #escorpion{
+        display:block;
+        width:100%;
+        aspect-ratio:10/7;
+        cursor:crosshair;
+        touch-action:none;
+      }
     </style>
   </head>
   <body>
@@ -62,6 +69,7 @@
       <nav>
         <a href="#destacado">Reflexión</a>
         <a href="#sobremi">Sobre mi</a>
+        <a href="#proyecto">Proyecto</a>
         <a href="#blog">Blog</a>
         <a href="#contacto">Contacto</a>
       </nav>
@@ -115,6 +123,12 @@
           	</tr>
           </tbody>
         </table>
+      </section>
+      <section id="proyecto">
+        <h3>Proyecto: escorpión procedural</h3>
+        <p>Animación hecha con JavaScript y canvas. El escorpión sigue al ratón y cada pata decide sola cuándo dar un paso, usando cinemática inversa para calcular la posición de la rodilla. Pasa el ratón por encima y mantén pulsado para cerrar las pinzas.</p>
+        <canvas id="escorpion"></canvas>
+        <script src="escorpion.js"></script>
       </section>
       <section id="blog">
         <h3>Blog</h3>
