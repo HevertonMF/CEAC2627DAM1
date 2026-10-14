@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <title>Curriculum</title>
+    <style>
+      body{background:lightsteelblue;}
+      main{
+        width:210mm;
+        height:400mm;
+        background:white;
+        margin:auto;
+        display:flex;
+      }
+      #izquierda{
+      	flex:1;
+        background: royalblue;
+        color:white;
+        padding:20px;
+      }
+      #izquierda img{
+      	width:100%;
+      }
+      #izquierda ul{
+        padding-left:18px;
+      }
+      #izquierda li{
+        word-break:break-all;
+        margin-bottom:4px;
+      }
+      #derecha{
+      	flex:3;
+        padding:20px;
+      }
+      p{
+        text-align:justify;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <div id="izquierda">
+        <img src="{{ url_for('static', filename='heverton.png') }}">
+        <h3>Contacto</h3>
+        <ul>
+          {% for c in contacto %}
+          <li>{{ c.email }}</li>
+          <li>+34 {{ c.telefono }}</li>
+          {% endfor %}
+          <li>{{ persona.ubicacion }}</li>
+        </ul>
+        <h3>Redes sociales</h3>
+        <ul>
+          {% for r in redes %}
+          {% if r.linkedin %}<li>{{ r.linkedin }}</li>{% endif %}
+          {% if r.github %}<li>{{ r.github }}</li>{% endif %}
+          {% if r.facebook %}<li>{{ r.facebook }}</li>{% endif %}
+          {% if r.instagram %}<li>{{ r.instagram }}</li>{% endif %}
+          {% endfor %}
+        </ul>
+        <h3>Idiomas</h3>
+        <ul>
+          {% for i in idiomas %}
+          <li>{{ i.idioma }}: {{ i.nivel }}</li>
+          {% endfor %}
+        </ul>
+        <h3>Habilidades</h3>
+        <ul>
+          {% for h in habilidades if 'Permiso' not in h.habilidades %}
+          <li>{{ h.habilidades }}</li>
+          {% endfor %}
+        </ul>
+        <h3>Permiso de conducción</h3>
+        <ul>
+          {% for h in habilidades if 'Permiso' in h.habilidades %}
+          <li>{{ h.habilidades }}</li>
+          {% endfor %}
+        </ul>
+      </div>
+      <div id="derecha">
+        <h1>{{ persona.nombre }} {{ persona.apellidos }}</h1>
+        <h2>Administrador, Programador y Estudiante de DAM</h2>
+        <p>Mi nombre es {{ persona.nombre }} {{ persona.apellidos }}, soy brasileño y tengo 35 años. Actualmente estoy estudiando el ciclo superior de Desarrollo de Aplicaciones Multiplataforma.</p>
+        <section id="experiencia">
+          <h3>Experiencia profesional</h3>
+          {% for e in experiencias %}
+          <article>
+            <h4>{{ e.empresa }}</h4>
+            <p>Desde {{ anio(e.inicio) }} hasta {{ anio(e.final) }}</p>
+            <p>{{ e.descripcion }}</p>
+            <p>{{ e.cargo }}</p>
+          </article>
+          {% endfor %}
+        </section>
+        <section id="formacion">
+          <h3>Formación</h3>
+          {% for f in formacion %}
+          <article>
+            <h4>{{ f.centro }}</h4>
+            {% if f.inicio and f.final %}
+            <p>Desde {{ anio(f.inicio) }} hasta {{ anio(f.final) }}</p>
+            {% elif f.final %}
+            <p>Hasta {{ anio(f.final) }}</p>
+            {% endif %}
+            <p>{{ f.descripcion }}</p>
+            <p>{{ f.titulo }}</p>
+          </article>
+          {% endfor %}
+        </section>
+      </div>
+    </main>
+  </body>
+</html>
