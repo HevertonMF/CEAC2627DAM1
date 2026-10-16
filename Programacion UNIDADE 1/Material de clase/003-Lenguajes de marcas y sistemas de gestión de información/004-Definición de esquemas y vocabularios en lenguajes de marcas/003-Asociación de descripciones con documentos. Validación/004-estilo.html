@@ -1,0 +1,202 @@
+<!doctype html>
+<html>
+  <head>
+    <title>El blog Heverton Marques</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap" rel="stylesheet">
+    <style>
+      :root {
+        --papel: #fbfcff;
+        --cuadro: #dce5f4;
+        --tinta: #1b2a6b;
+        --texto: #2c3557;
+        --margen: #e0464f;
+        --lapiz: #5b6478;
+        --marca: #ffe45c;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        background-color: var(--papel);
+        background-image:
+          linear-gradient(var(--cuadro) 1px, transparent 1px),
+          linear-gradient(90deg, var(--cuadro) 1px, transparent 1px);
+        background-size: 24px 24px;
+        color: var(--tinta);
+        font-family: "Source Serif 4", Georgia, serif;
+        font-size: 18px;
+        line-height: 1.7;
+      }
+
+      /* Cabecera: el título subrayado con rotulador */
+      header {
+        max-width: 1180px;
+        margin: 0 auto;
+        padding: 80px 16px 48px;
+      }
+      header h1 {
+        display: inline;
+        margin: 0;
+        font-family: "Bricolage Grotesque", sans-serif;
+        font-weight: 800;
+        font-size: clamp(2.6rem, 8vw, 5.4rem);
+        line-height: 1.05;
+        letter-spacing: -0.03em;
+        background: linear-gradient(transparent 58%, var(--marca) 58%, var(--marca) 92%, transparent 92%);
+        -webkit-box-decoration-break: clone;
+        box-decoration-break: clone;
+      }
+
+      /* Dos columnas: artículos a la izquierda, vídeo a la derecha */
+      .pagina {
+        max-width: 1180px;
+        margin: 0 auto;
+        padding: 0 16px;
+        display: grid;
+        grid-template-columns: 1fr 300px;
+        column-gap: 56px;
+        align-items: start;
+      }
+
+      /* El vídeo se queda fijo al hacer scroll */
+      .anuncio {
+        position: sticky;
+        top: 24px;
+        padding-top: 28px;
+      }
+      .anuncio video {
+        display: block;
+        width: 100%;
+        aspect-ratio: 9 / 16;
+        border: 2px solid var(--tinta);
+        border-radius: 12px;
+        background: var(--papel);
+      }
+
+      /* Artículos: fecha a la izquierda del margen rojo */
+      main {
+        padding-bottom: 64px;
+        background: linear-gradient(var(--margen), var(--margen)) no-repeat;
+        background-size: 2px 100%;
+        background-position: calc(140px + 15px) 0;
+      }
+      article {
+        display: grid;
+        grid-template-columns: 140px 1fr;
+        column-gap: 32px;
+        padding: 28px 0;
+      }
+      article time {
+        grid-column: 1;
+        grid-row: 1 / 3;
+        text-align: right;
+        padding-top: 0.45em;
+        font-family: "Bricolage Grotesque", sans-serif;
+        font-weight: 600;
+        font-size: 0.95rem;
+        color: var(--margen);
+      }
+      article h3 {
+        grid-column: 2;
+        grid-row: 1;
+        margin: 0 0 0.35em;
+        font-family: "Bricolage Grotesque", sans-serif;
+        font-weight: 700;
+        font-size: 1.65rem;
+        line-height: 1.2;
+        letter-spacing: -0.01em;
+      }
+      article p {
+        grid-column: 2;
+        grid-row: 2;
+        margin: 0;
+        max-width: 62ch;
+        color: var(--texto);
+      }
+
+      footer {
+        max-width: 1180px;
+        margin: 0 auto;
+        padding: 24px 16px 56px;
+        color: var(--lapiz);
+        font-size: 0.95rem;
+      }
+
+      /* Tablet: el vídeo pasa arriba de los artículos */
+      @media (max-width: 900px) {
+        .pagina {
+          grid-template-columns: 1fr;
+        }
+        .anuncio {
+          position: static;
+          order: -1;
+          padding-top: 0;
+          margin-bottom: 24px;
+        }
+        .anuncio video {
+          max-width: 300px;
+        }
+      }
+
+      /* Móvil: la fecha sube encima del título */
+      @media (max-width: 640px) {
+        header {
+          padding-top: 56px;
+        }
+        main {
+          background: none;
+        }
+        article {
+          display: block;
+          padding: 20px 0 20px 16px;
+          border-left: 2px solid var(--margen);
+        }
+        article time {
+          display: block;
+          text-align: left;
+          padding-top: 0;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>El blog de Heverton Marques</h1>
+    </header>
+    <div class="pagina">
+      <main>
+        <!-- Quiero meter aqui los articulos -->
+
+      </main>
+      <aside class="anuncio">
+        <video src="anuncio-blog.mp4" autoplay muted loop playsinline></video>
+      </aside>
+    </div>
+    <footer>
+      <p>Apuntes de Heverton Marques, estudiante de DAM 1.</p>
+    </footer>
+    <script>
+        fetch("blog.json")
+      .then(function(resultado){return resultado.json()}) // Lo que viene es un json
+      .then(function(datos){
+      	console.log(datos)
+        let principal = document.querySelector("main")
+        datos.forEach(function(articulo){ // Para cada uno de los artículos:
+        	principal.innerHTML += `
+          	<article>
+            	<h3>`+articulo.titulo+`</h3>
+              <time>`+articulo.fecha+`</time>
+              <p>`+articulo.texto+`</p>
+            </article>
+          `
+        })
+        
+      })
+    </script>
+  </body>
+</html>

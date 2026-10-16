@@ -1,0 +1,37 @@
+<!doctype html>
+<html>
+  <head>
+ <style>
+      @font-face {
+        font-family: "camino verde";
+        src: url("/static/Green Matcha.otf") format("opentype");
+      }
+
+      html,body{padding:0px;margin:0px;width:100%;height:100%;display:flex;
+      align-items:center;justify-content:center;background:rgb(115, 58, 214);}
+
+      form{background:white;width:300px;padding:20px;display:flex;border-radius:10px;
+      flex-direction:column;gap:10px;font-family:"camino verde", sans-serif;}
+
+      p{font-family:"camino verde", sans-serif;}
+
+      label{font-size:16px;border-radius:5px;padding:5px;justify-content:center;}
+</style>
+  </head>
+  <body>
+    <form method="POST" action="/procesa">
+      <label>Introduce tu nombre</label>
+      <input type="text" name="nombre">
+      <label>Introduce tus apellidos</label>
+      <input type="text" name="apellidos">
+      <label>Introduce tu email</label>
+      <input type="text" name="email">
+       <label>Introduce tu telefono</label>
+      <input type="text" name="telefono">
+       <label>Introduce tu equipo</label>
+      <input type="text" name="equipo">
+      <input type="submit">
+    </form>
+  </body>
+</html>
+
