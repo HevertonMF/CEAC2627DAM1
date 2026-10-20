@@ -1,0 +1,135 @@
+/* Colores del sitio Hecho con IA*/
+:root{
+  --fondo:#FFFFFF;
+  --superficie:#F3EEFA;
+  --tinta:#3A2A5C;
+  --tinta-suave:#5E5378;
+  --tinta-gris:#9389A8;
+  --morado:#8E6FAE;
+  --morado-fuerte:#6E4E9A;
+  --lima:#D3E39A;
+  --lima-fuerte:#C2D683;
+  --borde:rgba(58,42,92,0.12);
+}
+
+/* Modo oscuro */
+@media (prefers-color-scheme: dark){
+  :root{
+    --fondo:#241A38;
+    --superficie:#2F2347;
+    --tinta:#F3EEFA;
+    --tinta-suave:#CBBFE0;
+    --tinta-gris:#9C8FB8;
+    --morado:#B69BD6;
+    --morado-fuerte:#CDB8E6;
+    --borde:rgba(243,238,250,0.14);
+  }
+}
+
+*{box-sizing:border-box;}
+
+body{
+  margin:0;
+  background:var(--fondo);
+  color:var(--tinta);
+  font-family:'Calibri', 'Carlito', 'Segoe UI', sans-serif;
+  line-height:1.55;
+}
+
+/* Cabecera */
+header{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  max-width:1100px;
+  margin:auto;
+  padding:16px 20px;
+  border-bottom:1px solid var(--borde);
+}
+
+header img{
+  width:40px;
+  height:40px;
+  border-radius:50%;
+  background:#F7F4EE;
+}
+
+header h1{
+  margin:0;
+  font-size:13px;
+  font-weight:normal;
+  text-transform:uppercase;
+  letter-spacing:0.4em;
+}
+
+nav{
+  margin-left:auto;
+}
+
+nav a{
+  color:var(--tinta-suave);
+  text-decoration:none;
+  font-weight:bold;
+  font-size:14px;
+  margin-left:20px;
+}
+
+nav a:hover{
+  color:var(--morado-fuerte);
+}
+
+/* Contenido */
+main{
+  max-width:1100px;
+  margin:28px auto;
+  padding:0 20px;
+}
+
+main h2{
+  margin:0 0 20px 0;
+  padding:50px 40px;
+  border-radius:22px;
+  color:white;
+  font-size:40px;
+  line-height:1.1;
+  background:linear-gradient(135deg, #7A5A9E 0%, #A07FBE 45%, #6A4C93 100%);
+}
+
+main h3{
+  margin:28px 0 6px 0;
+  font-size:22px;
+}
+
+main p{
+  color:var(--tinta-suave);
+  font-size:16px;
+}
+
+main a{
+  color:var(--morado-fuerte);
+  font-weight:bold;
+}
+
+main img{
+  width:120px;
+  border-radius:50%;
+}
+
+/* Pie */
+footer{
+  border-top:1px solid var(--borde);
+  padding:30px 20px;
+  text-align:center;
+  font-size:13px;
+  color:var(--tinta-gris);
+}
+
+footer p{margin:0;}
+
+/* Móvil */
+@media(max-width:600px){
+  header{flex-wrap:wrap;}
+  nav{margin-left:0; width:100%;}
+  nav a{margin:0 14px 0 0;}
+  main h2{font-size:30px; padding:34px 24px;}
+}

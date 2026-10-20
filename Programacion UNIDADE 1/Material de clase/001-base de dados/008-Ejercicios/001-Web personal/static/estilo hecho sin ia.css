@@ -1,0 +1,7 @@
+body{background:rgb(28, 19, 62);}
+header,main,footer{background:rgb(168, 154, 186);padding:20px;margin:auto;width:700px;}
+header,footer{z-index:110;}
+nav a{color:white;background:rgb(24, 5, 78);padding:7px;text-decoration:none;width:100px;display:inline-block;text-align:center;border-radius:20px;}
+header img{max-width:10%; display:block; margin:0;}
+main{font-family:'Calibri', 'Carlito', 'Segoe UI', sans-serif;}
+h1{font-family:'Calibri', 'Carlito', 'Segoe UI', sans-serif;}
