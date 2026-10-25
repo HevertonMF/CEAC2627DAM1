@@ -1,0 +1,15 @@
+CREATE USER 'psicologos'@'localhost' IDENTIFIED BY 'CEAC123$';
+
+GRANT USAGE ON *.* TO 'psicologos'@'localhost';
+
+ALTER USER 'psicologos'@'localhost' 
+REQUIRE NONE 
+WITH MAX_QUERIES_PER_HOUR 0 
+MAX_CONNECTIONS_PER_HOUR 0 
+MAX_UPDATES_PER_HOUR 0 
+MAX_USER_CONNECTIONS 0;
+
+GRANT ALL PRIVILEGES ON psicologos.* 
+TO 'psicologos'@'localhost';
+
+FLUSH PRIVILEGES;

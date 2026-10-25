@@ -15,4 +15,3 @@
 | 🎵 Música original                                |                      **~10–20 principales + músicos** |
 | 📻 Radio                                          |            **decenas + locutores/artistas/licencias** |
 | 📣 Marketing                                      | **equipo separado; probablemente decenas/centenares** |
-
