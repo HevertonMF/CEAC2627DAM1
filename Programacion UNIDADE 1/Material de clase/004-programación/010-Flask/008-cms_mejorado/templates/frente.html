@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <title>Blog de Heverton Marques</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="{{ url_for('static', filename='estilo.css') }}">
+  </head>
+  <body>
+    <header>
+      <h1>Heverton Marques Ferreira Maciel</h1>
+      <h2>Blog personal</h2>
+    </header>
+    <main>
+      {% for articulo in articulos %}
+      <article>
+        <h3>{{articulo.titulo}}</h3>
+        <time>{{articulo.fecha.strftime('%d/%m/%Y')}}</time>
+        <p>{{articulo.contenido}}</p>
+      </article>
+      {% else %}
+      <p class="vacio">Todavía no hay artículos.</p>
+      {% endfor %}
+    </main>
+    <footer>
+      <span>© 2026 Heverton Marques Ferreira Maciel</span>
+      <a href="/login" class="enlace-admin">Administrar</a>
+    </footer>
+  </body>
+</html>

@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <title>Entrar | Panel de administración</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="{{ url_for('static', filename='estilo.css') }}">
+  </head>
+  <body id="login">
+    <form action="/login" method="POST" class="caja-login">
+      <h1>Panel de administración</h1>
+      <p class="sub">Blog de Heverton Marques</p>
+
+      {% for mensaje in get_flashed_messages() %}
+        <p class="aviso error">{{ mensaje }}</p>
+      {% endfor %}
+
+      <label for="usuario">Usuario</label>
+      <input type="text" name="usuario" id="usuario" autocomplete="username" required autofocus>
+
+      <label for="clave">Contraseña</label>
+      <input type="password" name="clave" id="clave" autocomplete="current-password" required>
+
+      <button type="submit">Entrar</button>
+      <a href="/" class="volver">Volver al blog</a>
+    </form>
+  </body>
+</html>

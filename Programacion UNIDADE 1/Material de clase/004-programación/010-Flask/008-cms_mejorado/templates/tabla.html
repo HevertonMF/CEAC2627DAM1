@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <title>Artículos | Panel de administración</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="{{ url_for('static', filename='estilo.css') }}">
+  </head>
+  <body id="admin">
+    <nav id="izquierda">
+      <a href="/formulario">Nuevo artículo</a>
+      <a href="/tabla" class="activo">Listado de artículos</a>
+      <a href="/" class="ver-blog">Ver el blog</a>
+      <a href="/logout" class="salir">Cerrar sesión</a>
+    </nav>
+    <div id="derecha">
+      <div class="cabecera-admin">
+        <h1>Artículos</h1>
+        <a href="/formulario" class="boton">Nuevo artículo</a>
+      </div>
+
+      {% for mensaje in get_flashed_messages() %}
+        <p class="aviso">{{ mensaje }}</p>
+      {% endfor %}
+
+      <table>
+        <thead>
+          <tr>
+            <th>Título</th>
+            <th>Fecha</th>
+            <th>Contenido</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for articulo in tepasolosarticulos %}
+          <tr>
+            <td>{{articulo.titulo}}</td>
+            <td>{{articulo.fecha.strftime('%d/%m/%Y')}}</td>
+            <td class="resumen">{{articulo.contenido}}</td>
+            <td>
+              <form action="/elimina/{{articulo.id}}" method="POST"
+                    onsubmit="return confirm('¿Eliminar este artículo?')">
+                <button type="submit" class="eliminar">Eliminar</button>
+              </form>
+            </td>
+          </tr>
+          {% else %}
+          <tr><td colspan="4" class="vacio">No hay artículos. Crea el primero.</td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </body>
+</html>

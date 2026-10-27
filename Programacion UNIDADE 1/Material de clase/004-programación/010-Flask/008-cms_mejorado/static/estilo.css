@@ -1,0 +1,561 @@
+@import url('https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700&family=Figtree:wght@400;600;700&display=swap');
+
+/* ============================================
+   Colores (la misma base ciruela de siempre)
+   ============================================ */
+:root{
+  --ciruela:rgb(88, 33, 81);          /* #582151 fondo y menú */
+  --ciruela-oscuro:rgb(58, 20, 54);   /* #3A1436 títulos */
+  --ciruela-medio:rgb(122, 58, 113);  /* enlaces y detalles */
+  --ciruela-claro:rgb(244, 236, 243); /* #F4ECF3 líneas y fondo del panel */
+  --lila:rgb(221, 205, 218);          /* bordes de campos */
+  --texto:rgb(40, 32, 39);
+  --gris:rgb(120, 108, 118);
+  --rojo:rgb(176, 42, 58);
+
+  --display:'Unbounded', 'Arial Black', sans-serif;
+  --cuerpo:'Figtree', Arial, sans-serif;
+
+  --radio:10px;
+  --fecha:120px;   /* ancho de la columna de fechas */
+  --hueco:40px;    /* espacio entre fecha y texto */
+}
+
+*{box-sizing:border-box;}
+
+html,body{
+  margin:0;
+  padding:0;
+  min-height:100%;
+}
+body{
+  background:var(--ciruela);
+  font-family:var(--cuerpo);
+  font-size:17px;
+  color:var(--texto);
+  line-height:1.6;
+  -webkit-font-smoothing:antialiased;
+}
+
+/* Foco visible con teclado en todo el sitio */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible{
+  outline:2px solid var(--ciruela-medio);
+  outline-offset:2px;
+}
+
+/* ============================================
+   BLOG PÚBLICO
+   ============================================ */
+
+header,main,footer{
+  width:960px;
+  max-width:100%;
+  margin:0 auto;
+  padding-left:48px;
+  padding-right:48px;
+}
+
+/* Cabecera: el nombre es la portada */
+header{
+  padding-top:96px;
+  padding-bottom:56px;
+  color:white;
+}
+header h1{
+  margin:0;
+  max-width:14ch;
+  font-family:var(--display);
+  font-weight:700;
+  font-size:clamp(2.3rem, 6.4vw, 4.4rem);
+  line-height:1.04;
+  letter-spacing:-0.025em;
+}
+header h2{
+  margin:24px 0 0;
+  font-family:var(--cuerpo);
+  font-weight:400;
+  font-size:19px;
+  color:rgba(255,255,255,0.72);
+}
+
+/* Única animación: el nombre aparece al cargar */
+@media (prefers-reduced-motion:no-preference){
+  header h1{
+    animation:aparece 0.7s cubic-bezier(0.16,1,0.3,1) both;
+  }
+  header h2{
+    animation:aparece 0.7s 0.12s cubic-bezier(0.16,1,0.3,1) both;
+  }
+}
+@keyframes aparece{
+  from{opacity:0;transform:translateY(18px);}
+  to{opacity:1;transform:none;}
+}
+
+/* La hoja blanca con la línea del tiempo */
+main{
+  position:relative;
+  padding-top:32px;
+  padding-bottom:32px;
+  background:white;
+  border-radius:var(--radio);
+}
+/* El trazo vertical que une los artículos */
+main::before{
+  content:"";
+  position:absolute;
+  top:56px;
+  bottom:56px;
+  left:calc(48px + var(--fecha) + var(--hueco) / 2 - 1px);
+  width:2px;
+  background:var(--ciruela-claro);
+}
+
+article{
+  position:relative;
+  display:grid;
+  grid-template-columns:var(--fecha) 1fr;
+  column-gap:var(--hueco);
+  padding:28px 0;
+}
+/* Un punto en la línea por cada artículo */
+article::before{
+  content:"";
+  position:absolute;
+  top:36px;
+  left:calc(var(--fecha) + var(--hueco) / 2 - 7px);
+  width:14px;
+  height:14px;
+  border-radius:50%;
+  background:white;
+  border:3px solid var(--ciruela);
+}
+
+article time{
+  grid-column:1;
+  grid-row:1 / 3;
+  padding-top:5px;
+  text-align:right;
+  font-size:14px;
+  font-weight:600;
+  color:var(--ciruela-medio);
+  font-variant-numeric:tabular-nums;
+}
+article h3{
+  grid-column:2;
+  grid-row:1;
+  margin:0;
+  font-size:22px;
+  font-weight:700;
+  line-height:1.3;
+  color:var(--ciruela-oscuro);
+}
+article p{
+  grid-column:2;
+  grid-row:2;
+  margin:10px 0 0;
+  max-width:62ch;
+  color:rgb(74, 62, 72);
+}
+
+/* El artículo más reciente destaca */
+article:first-of-type{
+  padding-bottom:44px;
+}
+article:first-of-type::before{
+  background:var(--ciruela);
+}
+article:first-of-type h3{
+  font-family:var(--display);
+  font-weight:500;
+  font-size:clamp(1.5rem, 3vw, 2rem);
+  line-height:1.2;
+  letter-spacing:-0.015em;
+}
+article:first-of-type p{
+  font-size:19px;
+}
+
+.vacio{
+  margin:0;
+  padding:40px 0;
+  color:var(--gris);
+  font-style:italic;
+}
+
+/* Pie */
+footer{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  flex-wrap:wrap;
+  gap:16px;
+  padding-top:28px;
+  padding-bottom:48px;
+  font-size:14px;
+  color:rgba(255,255,255,0.6);
+}
+.enlace-admin{
+  color:rgba(255,255,255,0.75);
+  text-decoration:none;
+  padding:6px 14px;
+  border:1px solid rgba(255,255,255,0.3);
+  border-radius:999px;
+}
+.enlace-admin:hover{
+  color:var(--ciruela);
+  background:white;
+  border-color:white;
+}
+footer a:focus-visible{outline-color:white;}
+
+/* Móvil: la línea del tiempo pasa a la izquierda */
+@media (max-width:700px){
+  header,main,footer{padding-left:20px;padding-right:20px;}
+  header{padding-top:56px;padding-bottom:40px;}
+  main{border-radius:0;}
+  main::before{left:26px;}
+  article{
+    display:block;
+    padding:22px 0 22px 34px;
+  }
+  article::before{left:0;top:28px;}
+  article time{display:block;text-align:left;padding:0 0 4px;}
+}
+
+/* ============================================
+   LOGIN
+   ============================================ */
+body#login{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  min-height:100vh;
+  padding:20px;
+}
+.caja-login{
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+  width:100%;
+  max-width:400px;
+  padding:44px 40px 36px;
+  background:white;
+  border-radius:var(--radio);
+}
+.caja-login h1{
+  margin:0;
+  font-family:var(--display);
+  font-weight:700;
+  font-size:24px;
+  line-height:1.2;
+  letter-spacing:-0.015em;
+  color:var(--ciruela-oscuro);
+}
+.caja-login .sub{
+  margin:4px 0 20px;
+  color:var(--gris);
+}
+.caja-login label{
+  margin-top:8px;
+  font-size:14px;
+  font-weight:600;
+}
+.caja-login input{
+  padding:12px 14px;
+  border:1px solid var(--lila);
+  border-radius:8px;
+  font:inherit;
+}
+.caja-login input:focus{
+  outline:2px solid var(--ciruela);
+  outline-offset:1px;
+  border-color:var(--ciruela);
+}
+.caja-login button{
+  margin-top:20px;
+  padding:13px;
+  border:0;
+  border-radius:8px;
+  background:var(--ciruela);
+  color:white;
+  font:inherit;
+  font-weight:700;
+  cursor:pointer;
+}
+.caja-login button:hover{background:var(--ciruela-oscuro);}
+.caja-login .volver{
+  margin-top:10px;
+  text-align:center;
+  font-size:14px;
+  color:var(--gris);
+}
+
+/* ============================================
+   MENSAJES
+   ============================================ */
+.aviso{
+  margin:0 0 24px;
+  padding:12px 16px;
+  border-left:4px solid var(--ciruela);
+  border-radius:6px;
+  background:white;
+  font-weight:600;
+  color:var(--ciruela-oscuro);
+}
+.aviso.error{
+  margin:0;
+  border-left-color:var(--rojo);
+  background:rgb(252, 239, 241);
+  color:var(--rojo);
+}
+
+/* ============================================
+   PANEL DE ADMINISTRACIÓN
+   ============================================ */
+html:has(body#admin){background:var(--ciruela-claro);}
+
+body#admin{
+  display:flex;
+  min-height:100vh;
+  background:var(--ciruela-claro);
+}
+
+/* Menú lateral */
+#admin #izquierda{
+  display:flex;
+  flex-direction:column;
+  flex:0 0 248px;
+  position:sticky;
+  top:0;
+  height:100vh;
+  padding:32px 16px 24px;
+  background:var(--ciruela);
+  color:white;
+}
+#admin #izquierda::before{
+  content:"Heverton Marques";
+  display:block;
+  margin:0 0 4px;
+  padding:0 12px;
+  font-family:var(--display);
+  font-weight:700;
+  font-size:17px;
+  line-height:1.2;
+}
+#admin #izquierda a{
+  display:block;
+  margin:2px 0;
+  padding:10px 12px;
+  border-radius:8px;
+  color:rgba(255,255,255,0.75);
+  text-decoration:none;
+  font-size:15px;
+}
+#admin #izquierda a:first-of-type{margin-top:28px;}
+#admin #izquierda a:hover{
+  background:rgba(255,255,255,0.08);
+  color:white;
+}
+#admin #izquierda a.activo{
+  background:white;
+  color:var(--ciruela-oscuro);
+  font-weight:700;
+}
+#admin #izquierda a.ver-blog{margin-top:auto;}
+#admin #izquierda a.salir{color:rgba(255,255,255,0.55);}
+#admin #izquierda a:focus-visible{outline-color:white;}
+
+/* Contenido */
+#admin #derecha{
+  flex:1 1 0;
+  min-width:0;
+  padding:48px;
+  overflow-x:auto;
+}
+#admin #derecha h1{
+  margin:0 0 28px;
+  font-family:var(--display);
+  font-weight:700;
+  font-size:30px;
+  line-height:1.15;
+  letter-spacing:-0.02em;
+  color:var(--ciruela-oscuro);
+}
+
+/* Cabecera del listado: título + botón */
+.cabecera-admin{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:16px;
+  margin-bottom:28px;
+}
+#admin #derecha .cabecera-admin h1{margin:0;}
+a.boton{
+  padding:11px 20px;
+  border-radius:8px;
+  background:var(--ciruela);
+  color:white;
+  font-weight:700;
+  text-decoration:none;
+  white-space:nowrap;
+}
+a.boton:hover{background:var(--ciruela-oscuro);}
+
+/* Tabla */
+#admin #derecha table{
+  width:100%;
+  border-collapse:separate;
+  border-spacing:0;
+  background:white;
+  border-radius:var(--radio);
+  overflow:hidden;
+  font-size:15px;
+}
+#admin #derecha th{
+  padding:14px 20px;
+  text-align:left;
+  font-size:13px;
+  font-weight:600;
+  color:var(--gris);
+  background:rgb(251, 247, 250);
+  border-bottom:1px solid var(--ciruela-claro);
+}
+#admin #derecha td{
+  padding:18px 20px;
+  vertical-align:top;
+  border-bottom:1px solid var(--ciruela-claro);
+}
+#admin #derecha td:first-child{
+  min-width:220px;
+  font-weight:700;
+  color:var(--ciruela-oscuro);
+}
+#admin #derecha td:nth-child(2){
+  white-space:nowrap;
+  font-size:14px;
+  color:var(--ciruela-medio);
+  font-variant-numeric:tabular-nums;
+}
+#admin #derecha td.resumen{
+  color:var(--gris);
+  max-width:46ch;
+}
+#admin #derecha td:last-child{
+  width:1%;
+  white-space:nowrap;
+  text-align:right;
+}
+#admin #derecha td.vacio{
+  padding:48px 20px;
+  text-align:center;
+  font-weight:400;
+  color:var(--gris);
+}
+#admin #derecha tbody tr:hover td{background:rgb(252, 249, 251);}
+#admin #derecha tbody tr:last-child td{border-bottom:0;}
+
+/* Campos de formulario */
+#admin #derecha input,
+#admin #derecha textarea{
+  max-width:100%;
+  padding:12px 14px;
+  border:1px solid var(--lila);
+  border-radius:8px;
+  background:white;
+  color:var(--texto);
+  font:inherit;
+}
+#admin #derecha input:focus,
+#admin #derecha textarea:focus{
+  outline:2px solid var(--ciruela);
+  outline-offset:1px;
+  border-color:var(--ciruela);
+}
+#admin #derecha button{
+  padding:12px 22px;
+  border:0;
+  border-radius:8px;
+  background:var(--ciruela);
+  color:white;
+  font:inherit;
+  font-weight:700;
+  cursor:pointer;
+}
+#admin #derecha button:hover{background:var(--ciruela-oscuro);}
+
+/* Botón de eliminar: discreto hasta pasar el ratón */
+#admin #derecha button.eliminar{
+  padding:6px 12px;
+  background:transparent;
+  border:1px solid var(--lila);
+  color:var(--rojo);
+  font-size:14px;
+  font-weight:600;
+}
+#admin #derecha button.eliminar:hover{
+  background:rgb(252, 239, 241);
+  border-color:var(--rojo);
+}
+
+/* Formulario de nuevo artículo: una hoja blanca */
+form.formulario{
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+  max-width:760px;
+  padding:32px;
+  background:white;
+  border-radius:var(--radio);
+}
+form.formulario label{
+  margin-top:14px;
+  font-size:14px;
+  font-weight:600;
+}
+form.formulario label:first-child{margin-top:0;}
+#admin #derecha form.formulario input[type="text"]{
+  font-family:var(--display);
+  font-weight:500;
+  font-size:20px;
+  letter-spacing:-0.01em;
+}
+#admin #derecha form.formulario input[type="date"]{max-width:220px;}
+form.formulario textarea{
+  min-height:260px;
+  resize:vertical;
+  line-height:1.65;
+}
+form.formulario button{
+  align-self:flex-start;
+  margin-top:20px;
+}
+
+/* Móvil */
+@media (max-width:760px){
+  body#admin{flex-direction:column;}
+  #admin #izquierda{
+    position:static;
+    height:auto;
+    flex:none;
+    flex-direction:row;
+    flex-wrap:wrap;
+    gap:4px;
+    padding:16px;
+  }
+  #admin #izquierda::before{width:100%;margin-bottom:12px;}
+  #admin #izquierda a:first-of-type,
+  #admin #izquierda a.ver-blog{margin-top:0;}
+  #admin #derecha{padding:24px 16px;}
+  #admin #derecha h1{font-size:24px;}
+  #admin #derecha th,
+  #admin #derecha td{padding:12px;}
+  #admin #derecha td:first-child{min-width:150px;}
+  #admin #derecha td:nth-child(3){min-width:240px;}
+  .cabecera-admin{flex-wrap:wrap;}
+  form.formulario{padding:20px;}
+}
