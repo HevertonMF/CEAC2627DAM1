@@ -1,0 +1,20 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <title>Prueba de datos</title>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="static/estilo.css">
+  </head>
+  <body>
+    <main>
+      <p>Hola. Abre la consola del navegador (F12) para ver los datos.</p>
+    </main>
+    <script>
+      fetch("/datos")	// Ves a la ruta "/datos" y mira a ver que me traes
+      .then(function(resultado){return resultado.json()}) // Que sepas que lo que viene, viene como json
+      .then(function(datos){	// Cuando vengan los datos
+        console.log(datos)		// Ponmelos en la consola
+      })
+    </script>
+  </body>
+</html>
