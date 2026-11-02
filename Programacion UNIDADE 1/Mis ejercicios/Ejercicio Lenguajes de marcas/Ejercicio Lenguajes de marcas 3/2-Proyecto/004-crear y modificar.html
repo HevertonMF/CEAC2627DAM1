@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8">
+    <title>Paso d – Crear y modificar elementos</title>
+  </head>
+  <body>
+    <h1>Tienda de bicis</h1>
+    <button value="350" data-nombre="Rockrider ST 520">Rockrider ST 520 - 350€</button>
+    <button value="450" data-nombre="Btwin Riverside 500">Btwin Riverside 500 - 450€</button>
+    <button value="700" data-nombre="Giant Talon 2">Giant Talon 2 - 700€</button>
+    <button value="850" data-nombre="Merida Big.Nine 100">Merida Big.Nine 100 - 850€</button>
+    <button value="1000" data-nombre="Specialized Rockhopper">Specialized Rockhopper - 1000€</button>
+    <button value="1200" data-nombre="Trek Marlin 7">Trek Marlin 7 - 1200€</button>
+    <button value="1500" data-nombre="Cannondale Trail 5">Cannondale Trail 5 - 1500€</button>
+    <button value="1800" data-nombre="Orbea Alma H30">Orbea Alma H30 - 1800€</button>
+    <button value="2000" data-nombre="Canyon Grizl 7">Canyon Grizl 7 - 2000€</button>
+    <button value="3000" data-nombre="Scott Spark 960">Scott Spark 960 - 3000€</button>
+
+    <h2>Carrito</h2>
+    <ul id="detalle"></ul>
+    <p id="total">Total: 0 €</p>
+    <script>
+      // PASO d) Creo y modifico elementos del documento
+
+      let total = 0
+      let escenario_detalle = document.querySelector("#detalle")
+      let escenario_total = document.querySelector("#total")
+      let botones = document.querySelectorAll("button[data-nombre]")
+
+      botones.forEach(function(boton){
+        boton.onclick = function(){
+          let precio = boton.value * 1
+          total += precio
+
+          // Creo un elemento <li> nuevo y lo añado a la lista
+          let item = document.createElement("li")
+          item.textContent = boton.dataset.nombre + " - " + precio + " €"
+          escenario_detalle.appendChild(item)
+
+          // Modifico el texto del total
+          escenario_total.textContent = "Total: " + total + " €"
+        }
+      })
+    </script>
+  </body>
+</html>

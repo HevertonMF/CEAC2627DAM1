@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8">
+    <title>Tienda de bicis</title>
+  </head>
+  <body>
+    <h1>Tienda de bicis</h1>
+    <button value="350" data-nombre="Rockrider ST 520">Rockrider ST 520 - 350€</button>
+    <button value="450" data-nombre="Btwin Riverside 500">Btwin Riverside 500 - 450€</button>
+    <button value="700" data-nombre="Giant Talon 2">Giant Talon 2 - 700€</button>
+    <button value="850" data-nombre="Merida Big.Nine 100">Merida Big.Nine 100 - 850€</button>
+    <button value="1000" data-nombre="Specialized Rockhopper">Specialized Rockhopper - 1000€</button>
+    <button value="1200" data-nombre="Trek Marlin 7">Trek Marlin 7 - 1200€</button>
+    <button value="1500" data-nombre="Cannondale Trail 5">Cannondale Trail 5 - 1500€</button>
+    <button value="1800" data-nombre="Orbea Alma H30">Orbea Alma H30 - 1800€</button>
+    <button value="2000" data-nombre="Canyon Grizl 7">Canyon Grizl 7 - 2000€</button>
+    <button value="3000" data-nombre="Scott Spark 960">Scott Spark 960 - 3000€</button>
+
+    <h2>Carrito</h2>
+    <ul id="detalle"></ul>
+    <p id="total">Total: 0 €</p>
+    <button id="vaciar">Vaciar carrito</button>
+
+    <script>
+      // a) Lenguaje de script de cliente: JavaScript (estándar ECMAScript, ES6+)
+      //    Se ejecuta en el navegador y trabaja sobre el DOM de la página.
+
+      // b) Sintaxis básica: variables, operadores, funciones y comentarios
+      let total = 0
+
+      // c) Selección y acceso a elementos
+      let escenario_detalle = document.querySelector("#detalle")
+      let escenario_total = document.querySelector("#total")
+      let botones = document.querySelectorAll("button[data-nombre]")
+      let vaciar = document.querySelector("#vaciar")
+
+      // Función que pinta el total y cambia su estilo
+      function pintarTotal(){
+        escenario_total.textContent = "Total: " + total + " €"
+        // f) Modificación de estilos
+        if(total > 3000){
+          escenario_total.style.color = "red"
+          escenario_total.style.fontWeight = "bold"
+        }else{
+          escenario_total.style.color = "black"
+          escenario_total.style.fontWeight = "normal"
+        }
+      }
+
+      botones.forEach(function(boton){
+        boton.onclick = function(){
+          let precio = boton.value * 1
+          total += precio
+
+          // d) Creación de elementos
+          let item = document.createElement("li")
+          item.textContent = boton.dataset.nombre + " - " + precio + " € "
+
+          let quitar = document.createElement("button")
+          quitar.textContent = "Quitar"
+          item.appendChild(quitar)
+          escenario_detalle.appendChild(item)
+
+          // e) Eliminación de elementos
+          quitar.onclick = function(){
+            total -= precio
+            item.remove()
+            pintarTotal()
+          }
+
+          // f) Estilo del botón seleccionado
+          boton.style.background = "lightgreen"
+
+          pintarTotal()
+        }
+      })
+
+      // e) Eliminación de todos los elementos
+      vaciar.onclick = function(){
+        escenario_detalle.innerHTML = ""
+        total = 0
+        botones.forEach(function(boton){
+          boton.style.background = ""
+        })
+        pintarTotal()
+      }
+    </script>
+  </body>
+</html>

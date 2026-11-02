@@ -1,0 +1,283 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Diagrama de clases</title>
+  <style>
+    :root {
+      --bg: #f4f5f7;
+      --grid: #e2e4e9;
+      --card: #ffffff;
+      --header: #1f2937;
+      --header-text: #ffffff;
+      --accent: #4f46e5;
+      --text: #1f2937;
+      --muted: #6b7280;
+      --row-alt: #f9fafb;
+      --border: #e5e7eb;
+      --danger: #dc2626;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+      color: var(--text);
+      background: var(--bg);
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    /* Barra superior */
+    .toolbar {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      height: 56px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 0 20px;
+      background: var(--card);
+      border-bottom: 1px solid var(--border);
+      z-index: 1000;
+    }
+    .toolbar h1 { font-size: 16px; margin: 0 auto 0 0; }
+
+    .btn {
+      border: none;
+      background: var(--accent);
+      color: white;
+      padding: 8px 14px;
+      border-radius: 8px;
+      font-size: 14px;
+      cursor: pointer;
+      transition: filter .15s;
+    }
+    .btn:hover { filter: brightness(1.1); }
+
+    /* Lienzo con cuadrícula */
+    .canvas {
+      position: absolute;
+      top: 56px; left: 0; right: 0; bottom: 0;
+      background-image: radial-gradient(var(--grid) 1.5px, transparent 1.5px);
+      background-size: 22px 22px;
+      overflow: auto;
+    }
+
+    /* Entidad */
+    .entity {
+      position: absolute;
+      min-width: 220px;
+      background: var(--card);
+      border-radius: 12px;
+      box-shadow: 0 4px 14px rgba(0,0,0,.08);
+      overflow: hidden;
+      user-select: none;
+    }
+    .entity.dragging {
+      box-shadow: 0 12px 30px rgba(0,0,0,.18);
+      outline: 2px solid var(--accent);
+    }
+
+    .entity-header {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--header);
+      color: var(--header-text);
+      padding: 10px 12px;
+      cursor: grab;
+    }
+    .entity.dragging .entity-header { cursor: grabbing; }
+
+    .entity-title {
+      flex: 1;
+      text-align: center;
+      font-weight: 600;
+      outline: none;
+      cursor: text;
+      padding: 2px 4px;
+      border-radius: 4px;
+    }
+    .entity-title:focus { background: rgba(255,255,255,.15); }
+
+    .icon-btn {
+      background: none;
+      border: none;
+      color: inherit;
+      opacity: .6;
+      cursor: pointer;
+      font-size: 16px;
+      line-height: 1;
+      padding: 2px 4px;
+    }
+    .icon-btn:hover { opacity: 1; }
+
+    table { width: 100%; border-collapse: collapse; font-size: 14px; }
+    td {
+      padding: 8px 12px;
+      border-top: 1px solid var(--border);
+      outline: none;
+    }
+    td[contenteditable]:focus { background: #eef2ff; }
+    tr:nth-child(even) td { background: var(--row-alt); }
+    td.type { color: var(--muted); font-family: ui-monospace, monospace; }
+    td.del { width: 24px; padding: 0 6px; text-align: center; }
+    td.del .icon-btn { color: var(--danger); opacity: 0; }
+    tr:hover td.del .icon-btn { opacity: .7; }
+
+    .add-row {
+      width: 100%;
+      border: none;
+      border-top: 1px dashed var(--border);
+      background: none;
+      color: var(--accent);
+      padding: 8px;
+      font-size: 13px;
+      cursor: pointer;
+    }
+    .add-row:hover { background: #eef2ff; }
+  </style>
+</head>
+<body>
+  <div class="toolbar">
+    <h1>Diagrama de clases</h1>
+    <button class="btn" id="addEntity">+ Añadir entidad</button>
+  </div>
+
+  <div class="canvas" id="canvas"></div>
+
+  <script>
+    const canvas = document.getElementById('canvas');
+    let contador = 0;
+    let zTop = 1;
+
+    function crearFila(prop = 'propiedad', tipo = 'String') {
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td contenteditable></td>
+        <td contenteditable class="type"></td>
+        <td class="del"><button class="icon-btn" title="Eliminar propiedad">✕</button></td>`;
+      tr.cells[0].textContent = prop;
+      tr.cells[1].textContent = tipo;
+      tr.querySelector('.del button').onclick = () => tr.remove();
+      return tr;
+    }
+
+    function crearEntidad(x, y, nombre, filas) {
+      contador++;
+      const el = document.createElement('div');
+      el.className = 'entity';
+      el.style.left = x + 'px';
+      el.style.top = y + 'px';
+      el.style.zIndex = ++zTop;
+
+      el.innerHTML = `
+        <div class="entity-header">
+          <span class="entity-title" contenteditable></span>
+          <button class="icon-btn" title="Eliminar entidad">🗑</button>
+        </div>
+        <table><tbody></tbody></table>
+        <button class="add-row">+ Añadir propiedad</button>`;
+      el.querySelector('.entity-title').textContent = nombre || 'Entidad' + contador;
+
+      const tbody = el.querySelector('tbody');
+      const datosFilas = filas || [['id', 'int'], ['nombre', 'String']];
+      datosFilas.forEach(([p, t]) => tbody.append(crearFila(p, t)));
+
+      el.querySelector('.add-row').onclick = () => {
+        const fila = crearFila();
+        tbody.append(fila);
+        fila.cells[0].focus();
+      };
+      el.querySelector('.entity-header .icon-btn').onclick = () => el.remove();
+
+      activarArrastre(el);
+      canvas.append(el);
+      return el;
+    }
+
+    // Drag & drop arrastrando la cabecera
+    function activarArrastre(el) {
+      const header = el.querySelector('.entity-header');
+
+      header.addEventListener('pointerdown', e => {
+        // Si se pulsa el título o un botón, no arrastrar (para poder editar)
+        if (e.target.closest('.entity-title, .icon-btn')) return;
+
+        e.preventDefault();
+        el.style.zIndex = ++zTop;
+        el.classList.add('dragging');
+        header.setPointerCapture(e.pointerId);
+
+        const offsetX = e.clientX - el.offsetLeft;
+        const offsetY = e.clientY - el.offsetTop;
+
+        function mover(ev) {
+          const x = Math.max(0, ev.clientX - offsetX);
+          const y = Math.max(0, ev.clientY - offsetY);
+          el.style.left = x + 'px';
+          el.style.top = y + 'px';
+        }
+        function soltar() {
+          el.classList.remove('dragging');
+          guardar();
+          header.removeEventListener('pointermove', mover);
+          header.removeEventListener('pointerup', soltar);
+        }
+        header.addEventListener('pointermove', mover);
+        header.addEventListener('pointerup', soltar);
+      });
+
+      // Al hacer clic en cualquier parte, la entidad pasa al frente
+      el.addEventListener('pointerdown', () => el.style.zIndex = ++zTop);
+    }
+
+    // Botón añadir: coloca cada nueva entidad un poco desplazada
+    document.getElementById('addEntity').onclick = () => {
+      const n = canvas.children.length;
+      crearEntidad(40 + (n % 5) * 260, 40 + Math.floor(n / 5) * 220);
+    };
+
+    // ---------- Persistencia en localStorage ----------
+    const CLAVE = 'diagrama-clases';
+
+    function guardar() {
+      const datos = [...canvas.querySelectorAll('.entity')].map(el => ({
+        x: el.offsetLeft,
+        y: el.offsetTop,
+        nombre: el.querySelector('.entity-title').textContent,
+        filas: [...el.querySelectorAll('tbody tr')].map(tr =>
+          [tr.cells[0].textContent, tr.cells[1].textContent])
+      }));
+      try {
+        localStorage.setItem(CLAVE, JSON.stringify(datos));
+      } catch (e) {
+        console.warn('No se pudo guardar:', e);
+      }
+    }
+
+    function cargar() {
+      try {
+        const datos = JSON.parse(localStorage.getItem(CLAVE));
+        if (Array.isArray(datos) && datos.length) {
+          datos.forEach(d => crearEntidad(d.x, d.y, d.nombre, d.filas));
+          return true;
+        }
+      } catch (e) {
+        console.warn('No se pudo cargar:', e);
+      }
+      return false;
+    }
+
+    // Cargar lo guardado o crear la entidad inicial
+    if (!cargar()) crearEntidad(40, 40, 'Entidad');
+
+    // Guardado continuo: al escribir y al añadir/eliminar entidades o filas
+    canvas.addEventListener('input', guardar);
+    new MutationObserver(guardar).observe(canvas, { childList: true, subtree: true });
+  </script>
+</body>
+</html>

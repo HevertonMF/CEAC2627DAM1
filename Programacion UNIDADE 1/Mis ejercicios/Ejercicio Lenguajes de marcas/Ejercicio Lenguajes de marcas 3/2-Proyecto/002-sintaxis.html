@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8">
+    <title>Paso b – Sintaxis básica</title>
+  </head>
+  <body>
+    <h1>Tienda de bicis</h1>
+    <button value="350" data-nombre="Rockrider ST 520">Rockrider ST 520 - 350€</button>
+    <button value="450" data-nombre="Btwin Riverside 500">Btwin Riverside 500 - 450€</button>
+    <button value="700" data-nombre="Giant Talon 2">Giant Talon 2 - 700€</button>
+    <button value="850" data-nombre="Merida Big.Nine 100">Merida Big.Nine 100 - 850€</button>
+    <button value="1000" data-nombre="Specialized Rockhopper">Specialized Rockhopper - 1000€</button>
+    <button value="1200" data-nombre="Trek Marlin 7">Trek Marlin 7 - 1200€</button>
+    <button value="1500" data-nombre="Cannondale Trail 5">Cannondale Trail 5 - 1500€</button>
+    <button value="1800" data-nombre="Orbea Alma H30">Orbea Alma H30 - 1800€</button>
+    <button value="2000" data-nombre="Canyon Grizl 7">Canyon Grizl 7 - 2000€</button>
+    <button value="3000" data-nombre="Scott Spark 960">Scott Spark 960 - 3000€</button>
+
+    <script>
+      // PASO b) Sintaxis básica de JavaScript
+
+      // Variables
+      let total = 0
+      const IVA = 21
+
+      // Función
+      function sumar(precio){
+        total += precio          // operador de asignación
+        return total
+      }
+
+      // Llamadas a la función
+      sumar(350)
+      sumar(700)
+
+      // Condicional
+      if(total > 1000){
+        console.log("Total alto: " + total + " €")
+      }else{
+        console.log("Total: " + total + " €")
+      }
+
+      // Bucle
+      let precios = [350, 450, 700]
+      for(let i = 0; i < precios.length; i++){
+        console.log("Precio " + i + ": " + precios[i] + " €")
+      }
+    </script>
+  </body>
+</html>

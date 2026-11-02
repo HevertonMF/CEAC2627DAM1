@@ -1,0 +1,501 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Diagrama de clases</title>
+  <style>
+    :root {
+      --bg: #f4f5f7;
+      --grid: #e2e4e9;
+      --card: #ffffff;
+      --header: #1f2937;
+      --header-text: #ffffff;
+      --accent: #4f46e5;
+      --text: #1f2937;
+      --muted: #6b7280;
+      --row-alt: #f9fafb;
+      --border: #e5e7eb;
+      --danger: #dc2626;
+      --ok: #16a34a;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+      color: var(--text);
+      background: var(--bg);
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    /* Barra superior */
+    .toolbar {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      height: 56px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 0 20px;
+      background: var(--card);
+      border-bottom: 1px solid var(--border);
+      z-index: 1000;
+    }
+    .toolbar h1 { font-size: 16px; margin: 0 auto 0 0; }
+
+    .btn {
+      border: none;
+      background: var(--accent);
+      color: white;
+      padding: 8px 14px;
+      border-radius: 8px;
+      font-size: 14px;
+      cursor: pointer;
+      transition: filter .15s;
+    }
+    .btn:hover { filter: brightness(1.1); }
+
+    /* Lienzo con cuadrícula */
+    .canvas {
+      position: absolute;
+      top: 56px; left: 0; right: 0; bottom: 0;
+      z-index: 0;
+      background-image: radial-gradient(var(--grid) 1.5px, transparent 1.5px);
+      background-size: 22px 22px;
+      overflow: auto;
+    }
+
+    /* Capas SVG para los cables */
+    svg.capa {
+      position: absolute;
+      top: 0; left: 0;
+      pointer-events: none;
+      overflow: visible;
+    }
+    #wires { z-index: 0; }
+    #preview { z-index: 2147483000; }
+
+    .wire path.visible {
+      fill: none;
+      stroke: var(--accent);
+      stroke-width: 2.5;
+    }
+    .wire path.hit {
+      fill: none;
+      stroke: transparent;
+      stroke-width: 14;
+      pointer-events: stroke;
+      cursor: pointer;
+    }
+    .wire:hover path.visible { stroke: var(--danger); stroke-width: 3; }
+
+    .preview-wire {
+      fill: none;
+      stroke: var(--accent);
+      stroke-width: 2.5;
+      stroke-dasharray: 6 5;
+      opacity: .8;
+    }
+    .preview-wire.ok { stroke: var(--ok); stroke-dasharray: none; opacity: 1; }
+
+    /* Entidad */
+    .entity {
+      position: absolute;
+      z-index: 1;
+      min-width: 220px;
+      background: var(--card);
+      border-radius: 12px;
+      box-shadow: 0 4px 14px rgba(0,0,0,.08);
+      user-select: none;
+    }
+    .entity.dragging {
+      box-shadow: 0 12px 30px rgba(0,0,0,.18);
+      outline: 2px solid var(--accent);
+    }
+
+    .entity-header {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--header);
+      color: var(--header-text);
+      padding: 10px 12px;
+      border-radius: 12px 12px 0 0;
+      cursor: grab;
+    }
+    .entity.dragging .entity-header { cursor: grabbing; }
+
+    .entity-title {
+      flex: 1;
+      text-align: center;
+      font-weight: 600;
+      outline: none;
+      cursor: text;
+      padding: 2px 4px;
+      border-radius: 4px;
+    }
+    .entity-title:focus { background: rgba(255,255,255,.15); }
+
+    .icon-btn {
+      background: none;
+      border: none;
+      color: inherit;
+      opacity: .6;
+      cursor: pointer;
+      font-size: 16px;
+      line-height: 1;
+      padding: 2px 4px;
+    }
+    .icon-btn:hover { opacity: 1; }
+
+    table { width: 100%; border-collapse: collapse; font-size: 14px; }
+    td {
+      position: relative;
+      padding: 8px 12px;
+      border-top: 1px solid var(--border);
+      outline: none;
+    }
+    td[contenteditable]:focus { background: #eef2ff; }
+    tr:nth-child(even) td { background: var(--row-alt); }
+    td.type { color: var(--muted); font-family: ui-monospace, monospace; }
+    td.port-cell { width: 0; padding: 0; }
+    td.del { width: 24px; padding: 0 6px; text-align: center; }
+    td.del .icon-btn { color: var(--danger); opacity: 0; }
+    tr:hover td.del .icon-btn { opacity: .7; }
+
+    /* Conectores */
+    .port {
+      position: absolute;
+      top: 50%;
+      width: 12px;
+      height: 12px;
+      margin-top: -6px;
+      border-radius: 50%;
+      background: var(--card);
+      border: 2px solid var(--accent);
+      cursor: crosshair;
+      z-index: 2;
+      transition: transform .12s, background .12s;
+    }
+    .port.in  { left: -6px; }
+    .port.out { right: -6px; }
+    .port:hover,
+    .port.connected { background: var(--accent); }
+    .port:hover { transform: scale(1.3); }
+
+    /* Mientras se conecta, se resaltan los conectores válidos */
+    body.conectando-in  .port.in,
+    body.conectando-out .port.out { transform: scale(1.3); }
+    .port.target { background: var(--ok); border-color: var(--ok); transform: scale(1.6) !important; }
+
+    .add-row {
+      width: 100%;
+      border: none;
+      border-top: 1px dashed var(--border);
+      border-radius: 0 0 12px 12px;
+      background: none;
+      color: var(--accent);
+      padding: 8px;
+      font-size: 13px;
+      cursor: pointer;
+    }
+    .add-row:hover { background: #eef2ff; }
+  </style>
+</head>
+<body>
+  <div class="toolbar">
+    <h1>Diagrama de clases</h1>
+    <button class="btn" id="addEntity">+ Añadir entidad</button>
+  </div>
+
+  <div class="canvas" id="canvas">
+    <svg class="capa" id="wires"></svg>
+    <div id="board"></div>
+    <svg class="capa" id="preview"></svg>
+  </div>
+
+  <script>
+    const NS = 'http://www.w3.org/2000/svg';
+    const canvas = document.getElementById('canvas');
+    const board = document.getElementById('board');
+    const wires = document.getElementById('wires');
+    const preview = document.getElementById('preview');
+
+    let contador = 0;
+    let zTop = 1;
+    let conexiones = []; // [{ from: idFilaSalida, to: idFilaEntrada }]
+
+    const nuevoId = () => Date.now().toString(36) + Math.random().toString(36).slice(2, 8);
+
+    // ---------- Filas (propiedades) ----------
+    function crearFila(prop = 'propiedad', tipo = 'String', id = nuevoId()) {
+      const tr = document.createElement('tr');
+      tr.dataset.id = id;
+      tr.innerHTML = `
+        <td class="port-cell"><span class="port in" title="Entrada"></span></td>
+        <td contenteditable></td>
+        <td contenteditable class="type"></td>
+        <td class="del">
+          <button class="icon-btn" title="Eliminar propiedad">✕</button>
+          <span class="port out" title="Salida"></span>
+        </td>`;
+      tr.cells[1].textContent = prop;
+      tr.cells[2].textContent = tipo;
+      tr.querySelectorAll('.port').forEach(p => p.dataset.id = id);
+      tr.querySelector('.del button').onclick = () => tr.remove();
+      return tr;
+    }
+
+    // ---------- Entidades ----------
+    function crearEntidad(x, y, nombre, filas) {
+      contador++;
+      const el = document.createElement('div');
+      el.className = 'entity';
+      el.style.left = x + 'px';
+      el.style.top = y + 'px';
+      el.style.zIndex = ++zTop;
+
+      el.innerHTML = `
+        <div class="entity-header">
+          <span class="entity-title" contenteditable></span>
+          <button class="icon-btn" title="Eliminar entidad">🗑</button>
+        </div>
+        <table><tbody></tbody></table>
+        <button class="add-row">+ Añadir propiedad</button>`;
+      el.querySelector('.entity-title').textContent = nombre || 'Entidad' + contador;
+
+      const tbody = el.querySelector('tbody');
+      const datosFilas = filas || [['id', 'int'], ['nombre', 'String']];
+      datosFilas.forEach(([p, t, id]) => tbody.append(crearFila(p, t, id || undefined)));
+
+      el.querySelector('.add-row').onclick = () => {
+        const fila = crearFila();
+        tbody.append(fila);
+        fila.cells[1].focus();
+      };
+      el.querySelector('.entity-header .icon-btn').onclick = () => el.remove();
+
+      activarArrastre(el);
+      board.append(el);
+      return el;
+    }
+
+    // Drag & drop de entidades arrastrando la cabecera
+    function activarArrastre(el) {
+      const header = el.querySelector('.entity-header');
+
+      header.addEventListener('pointerdown', e => {
+        if (e.target.closest('.entity-title, .icon-btn')) return;
+
+        e.preventDefault();
+        el.style.zIndex = ++zTop;
+        el.classList.add('dragging');
+        header.setPointerCapture(e.pointerId);
+
+        const offsetX = e.clientX - el.offsetLeft;
+        const offsetY = e.clientY - el.offsetTop;
+
+        function mover(ev) {
+          el.style.left = Math.max(0, ev.clientX - offsetX) + 'px';
+          el.style.top = Math.max(0, ev.clientY - offsetY) + 'px';
+          dibujar(); // los cables siguen a la entidad
+        }
+        function soltar() {
+          el.classList.remove('dragging');
+          header.removeEventListener('pointermove', mover);
+          header.removeEventListener('pointerup', soltar);
+          guardar();
+        }
+        header.addEventListener('pointermove', mover);
+        header.addEventListener('pointerup', soltar);
+      });
+
+      el.addEventListener('pointerdown', () => el.style.zIndex = ++zTop);
+    }
+
+    // ---------- Cables ----------
+    // Centro de un conector en coordenadas del lienzo (incluye el scroll)
+    function centro(port) {
+      const r = port.getBoundingClientRect();
+      const c = canvas.getBoundingClientRect();
+      return {
+        x: r.left + r.width / 2 - c.left + canvas.scrollLeft,
+        y: r.top + r.height / 2 - c.top + canvas.scrollTop
+      };
+    }
+
+    function puntoRaton(ev) {
+      const c = canvas.getBoundingClientRect();
+      return { x: ev.clientX - c.left + canvas.scrollLeft, y: ev.clientY - c.top + canvas.scrollTop };
+    }
+
+    // Curva de Bézier: sale hacia la derecha y entra por la izquierda
+    function curva(a, b) {
+      const dx = Math.max(50, Math.abs(b.x - a.x) / 2);
+      return `M${a.x},${a.y} C${a.x + dx},${a.y} ${b.x - dx},${b.y} ${b.x},${b.y}`;
+    }
+
+    function dibujar() {
+      // Ajustar el tamaño de las capas al área con scroll
+      [wires, preview].forEach(s => { s.setAttribute('width', 0); s.setAttribute('height', 0); });
+      const w = Math.max(canvas.scrollWidth, canvas.clientWidth);
+      const h = Math.max(canvas.scrollHeight, canvas.clientHeight);
+      [wires, preview].forEach(s => { s.setAttribute('width', w); s.setAttribute('height', h); });
+
+      wires.innerHTML = '';
+      board.querySelectorAll('.port.connected').forEach(p => p.classList.remove('connected'));
+
+      // Se descartan las conexiones cuya propiedad ya no existe
+      conexiones = conexiones.filter(c => {
+        const a = board.querySelector(`.port.out[data-id="${c.from}"]`);
+        const b = board.querySelector(`.port.in[data-id="${c.to}"]`);
+        if (!a || !b) return false;
+
+        a.classList.add('connected');
+        b.classList.add('connected');
+
+        const d = curva(centro(a), centro(b));
+        const g = document.createElementNS(NS, 'g');
+        g.classList.add('wire');
+
+        const hit = document.createElementNS(NS, 'path');
+        hit.classList.add('hit');
+        hit.setAttribute('d', d);
+        const titulo = document.createElementNS(NS, 'title');
+        titulo.textContent = 'Clic para eliminar la conexión';
+        hit.append(titulo);
+
+        const linea = document.createElementNS(NS, 'path');
+        linea.classList.add('visible');
+        linea.setAttribute('d', d);
+
+        g.append(linea, hit);
+        hit.addEventListener('click', () => {
+          conexiones = conexiones.filter(x => x !== c);
+          actualizar();
+        });
+        wires.append(g);
+        return true;
+      });
+    }
+
+    // Arrastrar desde un conector para crear una conexión
+    board.addEventListener('pointerdown', e => {
+      const port = e.target.closest('.port');
+      if (!port) return;
+
+      e.preventDefault();
+      e.stopPropagation();
+      port.setPointerCapture(e.pointerId);
+
+      const esSalida = port.classList.contains('out');
+      const origen = centro(port);
+      document.body.classList.add(esSalida ? 'conectando-in' : 'conectando-out');
+
+      const linea = document.createElementNS(NS, 'path');
+      linea.classList.add('preview-wire');
+      preview.append(linea);
+
+      let destino = null;
+
+      function mover(ev) {
+        let p = puntoRaton(ev);
+        const bajo = document.elementFromPoint(ev.clientX, ev.clientY)?.closest('.port');
+        const valido = bajo
+          && bajo.classList.contains(esSalida ? 'in' : 'out')
+          && bajo.dataset.id !== port.dataset.id;
+
+        if (destino && destino !== bajo) destino.classList.remove('target');
+        destino = valido ? bajo : null;
+
+        if (destino) {
+          destino.classList.add('target');
+          p = centro(destino); // el cable "se engancha" al conector
+        }
+        linea.classList.toggle('ok', !!destino);
+        linea.setAttribute('d', esSalida ? curva(origen, p) : curva(p, origen));
+      }
+
+      function soltar() {
+        port.removeEventListener('pointermove', mover);
+        port.removeEventListener('pointerup', soltar);
+        port.removeEventListener('pointercancel', soltar);
+        document.body.classList.remove('conectando-in', 'conectando-out');
+        linea.remove();
+
+        if (destino) {
+          destino.classList.remove('target');
+          const from = esSalida ? port.dataset.id : destino.dataset.id;
+          const to = esSalida ? destino.dataset.id : port.dataset.id;
+          if (!conexiones.some(c => c.from === from && c.to === to)) {
+            conexiones.push({ from, to });
+          }
+          actualizar();
+        }
+      }
+
+      port.addEventListener('pointermove', mover);
+      port.addEventListener('pointerup', soltar);
+      port.addEventListener('pointercancel', soltar);
+      mover(e);
+    });
+
+    // Botón añadir entidad
+    document.getElementById('addEntity').onclick = () => {
+      const n = board.children.length;
+      crearEntidad(40 + (n % 4) * 300, 40 + Math.floor(n / 4) * 240);
+    };
+
+    // ---------- Persistencia en localStorage ----------
+    const CLAVE = 'diagrama-clases';
+
+    function guardar() {
+      const entidades = [...board.querySelectorAll('.entity')].map(el => ({
+        x: el.offsetLeft,
+        y: el.offsetTop,
+        nombre: el.querySelector('.entity-title').textContent,
+        filas: [...el.querySelectorAll('tbody tr')].map(tr =>
+          [tr.cells[1].textContent, tr.cells[2].textContent, tr.dataset.id])
+      }));
+      try {
+        localStorage.setItem(CLAVE, JSON.stringify({ entidades, conexiones }));
+      } catch (e) {
+        console.warn('No se pudo guardar:', e);
+      }
+    }
+
+    function cargar() {
+      try {
+        let datos = JSON.parse(localStorage.getItem(CLAVE));
+        if (Array.isArray(datos)) datos = { entidades: datos, conexiones: [] }; // formato antiguo
+        if (datos && datos.entidades && datos.entidades.length) {
+          datos.entidades.forEach(d => crearEntidad(d.x, d.y, d.nombre, d.filas));
+          conexiones = datos.conexiones || [];
+          return true;
+        }
+      } catch (e) {
+        console.warn('No se pudo cargar:', e);
+      }
+      return false;
+    }
+
+    function actualizar() {
+      dibujar();
+      guardar();
+    }
+
+    // Cargar lo guardado o crear la entidad inicial
+    if (!cargar()) crearEntidad(40, 40, 'Entidad');
+    dibujar();
+    requestAnimationFrame(dibujar);
+
+    // Guardado continuo y redibujado de cables
+    canvas.addEventListener('input', actualizar);
+    new MutationObserver(actualizar).observe(board, { childList: true, subtree: true, characterData: true });
+    window.addEventListener('resize', dibujar);
+  </script>
+</body>
+</html>

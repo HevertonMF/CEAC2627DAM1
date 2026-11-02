@@ -1,0 +1,22 @@
+[
+  {
+    "titulo": "Comienza una nueva etapa en DAM 1",
+    "texto": "Este curso arranca el primer año del ciclo de Desarrollo de Aplicaciones Multiplataforma, con muchas ganas de aprender a programar.",
+    "fecha": "2026-09-15"
+  },
+  {
+    "titulo": "Primer programa en Python",
+    "texto": "Tras las primeras clases de programación, consigue ejecutar su primer script en Python desde Visual Studio Code.",
+    "fecha": "2026-09-29"
+  },
+  {
+    "titulo": "Dominando el formato JSON",
+    "texto": "En la asignatura de Lenguajes de Marcas aprende a estructurar datos en JSON, creando su propio archivo de noticias.",
+    "fecha": "2026-10-16"
+  },
+  {
+    "titulo": "Objetivo: aprobar el primer trimestre",
+    "texto": "Con constancia y práctica diaria, el reto ahora es superar los exámenes del primer trimestre con buena nota.",
+    "fecha": "2026-12-18"
+  }
+]

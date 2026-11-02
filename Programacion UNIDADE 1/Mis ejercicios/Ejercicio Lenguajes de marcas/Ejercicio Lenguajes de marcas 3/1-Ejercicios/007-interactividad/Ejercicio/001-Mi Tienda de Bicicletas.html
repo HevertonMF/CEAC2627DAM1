@@ -1,0 +1,45 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+  </head>
+  <body>
+    <button value="350" nombre="Rockrider ST 520">Rockrider ST 520 - 350€</button>
+<button value="450" nombre="Btwin Riverside 500">Btwin Riverside 500 - 450€</button>
+<button value="700" nombre="Giant Talon 2">Giant Talon 2 - 700€</button>
+<button value="850" nombre="Merida Big.Nine 100">Merida Big.Nine 100 - 850€</button>
+<button value="1000" nombre="Specialized Rockhopper">Specialized Rockhopper - 1000€</button>
+<button value="1200" nombre="Trek Marlin 7">Trek Marlin 7 - 1200€</button>
+<button value="1500" nombre="Cannondale Trail 5">Cannondale Trail 5 - 1500€</button>
+<button value="1800" nombre="Orbea Alma H30">Orbea Alma H30 - 1800€</button>
+<button value="2000" nombre="Canyon Grizl 7">Canyon Grizl 7 - 2000€</button>
+<button value="3000" nombre="Scott Spark 960">Scott Spark 960 - 3000€</button>
+    <div id="detalle"></div>
+    <div id="total"></div>
+    <script>
+      // Selecciono el escenario
+      let escenario_total = document.querySelector("#total")
+      let escenario_detalle = document.querySelector("#detalle")
+      // Selecciono todos los botones
+      let botones = document.querySelectorAll("button")
+      // Creo una variable que al principio vale cero
+      let total = 0;
+      // Creo una lista vacia para guardar los productos
+      let lista = []
+      // Selecciono uno a uno
+      botones.forEach(function(boton){
+      	// Cuando hago click en cada boton
+        boton.onclick = function(){
+          // A la lista le añado el producto
+          lista.push(boton.getAttribute("nombre"))
+          // al total le sumo lo que vale el boton
+        	total += boton.getAttribute("value")*1 // Implicita
+          // Pinto el total en el escenario
+          escenario_total.textContent = total
+          escenario_detalle.textContent = lista
+        }
+      })
+      	
+    </script>
+  </body>
+</html>

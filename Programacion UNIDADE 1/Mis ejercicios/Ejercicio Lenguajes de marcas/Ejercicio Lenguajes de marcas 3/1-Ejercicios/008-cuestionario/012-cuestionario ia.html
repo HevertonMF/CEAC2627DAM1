@@ -1,0 +1,344 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Examen de programación</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Patrick+Hand&family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+      :root {
+        --pizarra: #26392f;
+        --pizarra-borde: #6b4a2b;
+        --tiza: #f3f1e7;
+        --tiza-suave: #b9c2b5;
+        --amarillo: #f5d76e;
+        --verde: #7ed38a;
+        --rojo: #f07a6a;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        background: var(--pizarra);
+        background-image: radial-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+        background-size: 6px 6px;
+        border: 14px solid var(--pizarra-borde);
+        min-height: 100vh;
+        color: var(--tiza);
+        font-family: "Atkinson Hyperlegible", Arial, sans-serif;
+        font-size: 18px;
+      }
+
+      /* Cabecera fija con el reloj */
+      header {
+        position: sticky;
+        top: 0;
+        z-index: 1;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 16px;
+        padding: 16px 24px;
+        background: var(--pizarra);
+        border-bottom: 2px dashed var(--tiza-suave);
+      }
+      h1 {
+        margin: 0;
+        font-family: "Patrick Hand", cursive;
+        font-weight: 400;
+        font-size: clamp(1.6rem, 5vw, 2.4rem);
+      }
+      #reloj {
+        font-family: "Patrick Hand", cursive;
+        font-size: 2.6rem;
+        line-height: 1;
+        color: var(--amarillo);
+        min-width: 3ch;
+        text-align: right;
+      }
+      #reloj.poco {
+        color: var(--rojo);
+      }
+
+      main {
+        max-width: 760px;
+        margin: 0 auto;
+        padding: 24px 16px 64px;
+      }
+      article {
+        padding: 28px 0;
+        border-bottom: 2px dashed rgba(185, 194, 181, 0.35);
+      }
+      article p {
+        margin: 0 0 16px;
+        font-family: "Patrick Hand", cursive;
+        font-size: 1.7rem;
+        line-height: 1.25;
+      }
+      article p span {
+        color: var(--amarillo);
+        margin-right: 8px;
+      }
+      .opciones {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+      }
+      button {
+        font: inherit;
+        color: var(--tiza);
+        background: transparent;
+        border: 2px solid var(--tiza-suave);
+        border-radius: 6px;
+        padding: 12px 14px;
+        text-align: left;
+        cursor: pointer;
+      }
+      button:hover {
+        border-color: var(--tiza);
+      }
+      button:focus-visible {
+        outline: 3px solid var(--amarillo);
+        outline-offset: 2px;
+      }
+      button:disabled {
+        cursor: default;
+        opacity: 0.45;
+      }
+      button.bien {
+        opacity: 1;
+        border-color: var(--verde);
+        background: rgba(126, 211, 138, 0.18);
+      }
+      button.mal {
+        opacity: 1;
+        border-color: var(--rojo);
+        background: rgba(240, 122, 106, 0.18);
+        text-decoration: line-through;
+      }
+
+      /* Resultado final */
+      #resultado {
+        display: none;
+        margin-top: 32px;
+        padding: 24px;
+        border: 2px solid var(--amarillo);
+        border-radius: 6px;
+        text-align: center;
+      }
+      #resultado.visible {
+        display: block;
+      }
+      #resultado h2 {
+        margin: 0 0 8px;
+        font-family: "Patrick Hand", cursive;
+        font-weight: 400;
+        font-size: 2.4rem;
+        color: var(--amarillo);
+      }
+      #resultado p {
+        margin: 0;
+        font-size: 1.2rem;
+      }
+
+      @media (max-width: 560px) {
+        body {
+          border-width: 8px;
+        }
+        .opciones {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>Examen de programación</h1>
+      <div id="reloj">60</div>
+    </header>
+
+    <main>
+      <article>
+        <p><span>1.</span>¿Qué lenguaje de programación sufrió ayer un apocalipsis?</p>
+        <div class="opciones">
+          <button valor="correcto">PHP</button>
+          <button valor="incorrecto">Python</button>
+          <button valor="incorrecto">HTML</button>
+          <button valor="incorrecto">Javascript</button>
+        </div>
+      </article>
+
+      <article>
+        <p><span>2.</span>¿Qué lenguaje de programación revela tu código al navegador?</p>
+        <div class="opciones">
+          <button valor="correcto">Javascript</button>
+          <button valor="incorrecto">PHP</button>
+          <button valor="incorrecto">Python</button>
+          <button valor="incorrecto">MySQL</button>
+        </div>
+      </article>
+
+      <article>
+        <p><span>3.</span>¿Qué etiqueta HTML crea un enlace?</p>
+        <div class="opciones">
+          <button valor="incorrecto">&lt;link&gt;</button>
+          <button valor="correcto">&lt;a&gt;</button>
+          <button valor="incorrecto">&lt;href&gt;</button>
+          <button valor="incorrecto">&lt;url&gt;</button>
+        </div>
+      </article>
+
+      <article>
+        <p><span>4.</span>¿Qué propiedad CSS cambia el color del texto?</p>
+        <div class="opciones">
+          <button valor="incorrecto">font-color</button>
+          <button valor="incorrecto">text-color</button>
+          <button valor="correcto">color</button>
+          <button valor="incorrecto">background</button>
+        </div>
+      </article>
+
+      <article>
+        <p><span>5.</span>¿Qué formato guarda datos con llaves y pares clave-valor?</p>
+        <div class="opciones">
+          <button valor="incorrecto">CSV</button>
+          <button valor="correcto">JSON</button>
+          <button valor="incorrecto">TXT</button>
+          <button valor="incorrecto">PNG</button>
+        </div>
+      </article>
+
+      <article>
+        <p><span>6.</span>¿Qué instrucción SQL sirve para leer datos de una tabla?</p>
+        <div class="opciones">
+          <button valor="incorrecto">INSERT</button>
+          <button valor="incorrecto">UPDATE</button>
+          <button valor="incorrecto">DELETE</button>
+          <button valor="correcto">SELECT</button>
+        </div>
+      </article>
+
+      <article>
+        <p><span>7.</span>¿Qué método de Javascript selecciona el primer elemento que coincide?</p>
+        <div class="opciones">
+          <button valor="correcto">querySelector</button>
+          <button valor="incorrecto">querySelectorAll</button>
+          <button valor="incorrecto">getElement</button>
+          <button valor="incorrecto">selectFirst</button>
+        </div>
+      </article>
+
+      <article>
+        <p><span>8.</span>En Python, ¿qué palabra se usa para definir una función?</p>
+        <div class="opciones">
+          <button valor="incorrecto">function</button>
+          <button valor="correcto">def</button>
+          <button valor="incorrecto">func</button>
+          <button valor="incorrecto">void</button>
+        </div>
+      </article>
+
+      <article>
+        <p><span>9.</span>¿Qué significa DAM?</p>
+        <div class="opciones">
+          <button valor="incorrecto">Diseño de Aplicaciones Móviles</button>
+          <button valor="incorrecto">Desarrollo de Apps Modernas</button>
+          <button valor="correcto">Desarrollo de Aplicaciones Multiplataforma</button>
+          <button valor="incorrecto">Datos y Algoritmos Multimedia</button>
+        </div>
+      </article>
+
+      <article>
+        <p><span>10.</span>¿Qué función ejecuta código pasados unos milisegundos?</p>
+        <div class="opciones">
+          <button valor="incorrecto">wait</button>
+          <button valor="incorrecto">sleep</button>
+          <button valor="correcto">setTimeout</button>
+          <button valor="incorrecto">delay</button>
+        </div>
+      </article>
+
+      <div id="resultado">
+        <h2></h2>
+        <p></p>
+      </div>
+    </main>
+
+    <script>
+      // ---------- EL RELOJ ----------
+      let reloj = document.querySelector("#reloj")
+      let tiempo = 60
+      let temporizador = setTimeout(bucle, 1000)
+
+      function bucle(){
+        tiempo--
+        reloj.textContent = tiempo
+        // Los últimos 10 segundos el número se pone rojo
+        if(tiempo <= 10){
+          reloj.classList.add("poco")
+        }
+        // Si se acaba el tiempo, termino el examen
+        if(tiempo <= 0){
+          terminar("¡Se acabó el tiempo!")
+        }else{
+          // Si no, pongo otra alarma para dentro de un segundo
+          temporizador = setTimeout(bucle, 1000)
+        }
+      }
+
+      // ---------- LAS PREGUNTAS ----------
+      let botones = document.querySelectorAll("button")
+      let puntos = 0
+      let respondidas = 0
+
+      botones.forEach(function(boton){
+        boton.onclick = function(){
+          // Busco la pregunta (article) donde está este botón
+          let pregunta = boton.closest("article")
+          let opciones = pregunta.querySelectorAll("button")
+
+          let estado = boton.getAttribute("valor")
+          if(estado == "correcto"){
+            boton.classList.add("bien")
+            puntos++
+          }else{
+            boton.classList.add("mal")
+          }
+
+          // Enseño cuál era la correcta y bloqueo la pregunta
+          opciones.forEach(function(opcion){
+            if(opcion.getAttribute("valor") == "correcto"){
+              opcion.classList.add("bien")
+            }
+            opcion.disabled = true
+          })
+
+          respondidas++
+          // Si ya respondió las 10, termino el examen
+          if(respondidas == 10){
+            terminar("¡Examen terminado!")
+          }
+        }
+      })
+
+      // ---------- FIN DEL EXAMEN ----------
+      function terminar(titulo){
+        // Paro el reloj
+        clearTimeout(temporizador)
+        // Bloqueo todos los botones que queden
+        botones.forEach(function(boton){
+          boton.disabled = true
+        })
+        // Enseño la nota
+        let resultado = document.querySelector("#resultado")
+        resultado.querySelector("h2").textContent = titulo
+        resultado.querySelector("p").textContent = "Has acertado " + puntos + " de 10 preguntas."
+        resultado.classList.add("visible")
+        resultado.scrollIntoView({ behavior: "smooth" })
+      }
+    </script>
+  </body>
+</html>

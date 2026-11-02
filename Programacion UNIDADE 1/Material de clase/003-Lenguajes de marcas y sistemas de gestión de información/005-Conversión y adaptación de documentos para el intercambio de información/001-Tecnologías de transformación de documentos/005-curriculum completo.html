@@ -1,0 +1,356 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Currículum</title>
+  <style>
+    :root {
+      --acento: #0f766e;
+      --acento-claro: #ccfbf1;
+      --oscuro: #134e4a;
+      --texto: #1f2933;
+      --suave: #64748b;
+      --linea: #e2e8f0;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: #e7ecef;
+      color: var(--texto);
+      font: 13px/1.5 "Segoe UI", Arial, sans-serif;
+    }
+
+    /* ===== Barra superior ===== */
+    .barra {
+      position: sticky; top: 0; z-index: 10;
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 12px 24px;
+      background: white;
+      border-bottom: 3px solid var(--acento);
+    }
+    .barra span { font-weight: 600; color: var(--oscuro); }
+    .barra button {
+      border: 0; border-radius: 999px;
+      padding: 9px 20px;
+      background: var(--acento); color: white;
+      font-weight: 600; cursor: pointer;
+    }
+    .barra button:hover { background: var(--oscuro); }
+
+    /* ===== Hoja A4 ===== */
+    .hoja {
+      width: 210mm; min-height: 297mm;
+      margin: 24px auto;
+      background: white;
+      box-shadow: 0 10px 30px rgba(15, 23, 42, 0.15);
+    }
+
+    /* ===== Cabecera ===== */
+    .cabecera {
+      background: linear-gradient(135deg, var(--oscuro), var(--acento));
+      color: white;
+      padding: 14mm 14mm 10mm;
+    }
+    .cabecera {
+      display: flex; align-items: center; gap: 9mm;
+    }
+    .cabecera .foto {
+      width: 34mm; height: 34mm; flex-shrink: 0;
+      border-radius: 50%; object-fit: cover;
+      border: 4px solid rgba(255, 255, 255, 0.35);
+    }
+    .cabecera h1 { margin: 0; font-size: 30px; letter-spacing: -0.5px; line-height: 1.15; }
+    .cabecera .titular { margin: 6px 0 14px; font-size: 14px; opacity: 0.9; }
+    .contactos { display: flex; flex-wrap: wrap; gap: 8px; }
+    .contactos span {
+      background: rgba(255, 255, 255, 0.15);
+      border-radius: 999px;
+      padding: 4px 12px;
+      font-size: 11.5px;
+    }
+
+    /* ===== Cuerpo en dos columnas ===== */
+    .cuerpo {
+      display: grid;
+      grid-template-columns: 60mm 1fr;
+      gap: 10mm;
+      padding: 10mm 14mm 14mm;
+    }
+
+    h2 {
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: var(--acento);
+      margin: 0 0 10px;
+      display: flex; align-items: center; gap: 8px;
+    }
+    h2::after { content: ""; flex: 1; height: 1px; background: var(--linea); }
+    section { margin-bottom: 20px; }
+
+    .resumen { margin: 0 0 20px; color: #334155; }
+
+    /* Línea de tiempo para experiencia y formación */
+    .linea-tiempo { border-left: 2px solid var(--acento-claro); padding-left: 16px; }
+    .entrada { position: relative; margin-bottom: 14px; break-inside: avoid; }
+    .entrada::before {
+      content: ""; position: absolute; left: -22px; top: 4px;
+      width: 10px; height: 10px; border-radius: 50%;
+      background: white; border: 2px solid var(--acento);
+    }
+    .entrada h3 { margin: 0; font-size: 13.5px; }
+    .entrada .lugar { font-weight: 600; color: var(--oscuro); font-size: 12px; }
+    .entrada .fecha { font-size: 11px; color: var(--suave); }
+    .entrada p { margin: 4px 0 0; font-size: 12px; color: #475569; }
+    .entrada ul { margin: 4px 0 0; padding-left: 16px; font-size: 12px; color: #475569; }
+
+    /* Proyectos */
+    .proyecto { margin-bottom: 12px; break-inside: avoid; }
+    .proyecto h3 { margin: 0; font-size: 13px; }
+    .proyecto p { margin: 2px 0 4px; font-size: 12px; color: #475569; }
+
+    /* Etiquetas */
+    .etiquetas { display: flex; flex-wrap: wrap; gap: 5px; }
+    .entrada .etiquetas { margin-top: 5px; }
+    .etiqueta {
+      font-size: 10.5px;
+      background: var(--acento-claro);
+      color: var(--oscuro);
+      border-radius: 4px;
+      padding: 2px 8px;
+    }
+
+    /* Columna lateral */
+    .lateral { border-right: 1px solid var(--linea); padding-right: 8mm; }
+    .habilidad { margin-bottom: 12px; }
+    .habilidad strong { display: block; font-size: 12px; margin-bottom: 4px; }
+    .habilidad .nivel { font-weight: normal; color: var(--suave); font-size: 11px; }
+    .idioma { display: flex; justify-content: space-between; margin-bottom: 6px; font-size: 12px; }
+    .idioma span:last-child { color: var(--suave); }
+
+    .mensaje { text-align: center; color: #b91c1c; padding: 40px; max-width: 700px; margin: 0 auto; }
+
+    /* Campos pendientes: se ven en pantalla, no en el PDF */
+    .pendiente { background: #fef08a; color: #713f12; border-radius: 3px; padding: 0 4px; font-style: italic; }
+    .cabecera .pendiente { color: #713f12; }
+
+    /* ===== Móvil ===== */
+    /* Solo en pantalla: si no, al imprimir (A4 ≈ 794px) también se aplicaría */
+    @media screen and (max-width: 850px) {
+      .hoja { width: auto; min-height: 0; margin: 10px; }
+      .cuerpo { grid-template-columns: 1fr; padding: 20px; }
+      .cabecera { padding: 24px 20px; flex-direction: column; text-align: center; }
+      .contactos { justify-content: center; }
+      .lateral { border-right: 0; padding-right: 0; order: 2; }
+    }
+
+    /* ===== Impresión ===== */
+    @page { size: A4; margin: 0; }
+    @media print {
+      body { background: white; }
+      .barra { display: none; }
+      .pendiente,
+      .contactos span:has(.pendiente),
+      li:has(.pendiente) { display: none; }
+      .hoja { margin: 0; box-shadow: none; }
+      * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      /* Un poco más compacto para que quepa en una sola hoja */
+      body { font-size: 12px; }
+      .hoja { width: 210mm; height: 297mm; min-height: 0; overflow: hidden; }
+      .cabecera { padding: 8mm 14mm 7mm; }
+      .cabecera .foto { width: 30mm; height: 30mm; }
+      .cuerpo { padding: 7mm 12mm 0; gap: 8mm; }
+      .resumen { font-size: 11.5px; }
+      section { margin-bottom: 12px; }
+      .resumen { margin-bottom: 14px; }
+      .entrada { margin-bottom: 7px; }
+      .entrada p, .entrada ul { font-size: 11px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="barra">
+    <span>Currículum</span>
+    <button onclick="window.print()">Imprimir / Guardar PDF</button>
+  </div>
+
+  <div id="cv"></div>
+
+  <script>
+    // 1. Cargamos el JSON
+    fetch('curriculum.json')
+      .then(respuesta => {
+        if (!respuesta.ok) throw new Error('No se pudo cargar curriculum.json');
+        return respuesta.json();
+      })
+      .then(datos => dibujar(datos))
+      .catch(error => {
+        document.querySelector('#cv').innerHTML =
+          '<p class="mensaje">' + escapar(error.message) +
+          '. Abre el proyecto desde un servidor local (por ejemplo, Live Server o npm run dev).</p>';
+      });
+
+    // 2. Funciones de ayuda
+
+    // Evita que el texto del JSON se interprete como HTML
+    function escapar(valor) {
+      return String(valor ?? '').replace(/[&<>"']/g, c =>
+        ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+    }
+
+    // Un valor "vale" si existe y no es un hueco pendiente de COMPLETAR
+    function vale(valor) {
+      return valor && !String(valor).includes('COMPLETAR');
+    }
+
+    // Muestra el valor, o un aviso amarillo si todavía dice COMPLETAR
+    function mostrar(valor) {
+      if (!valor) return '';
+      if (String(valor).includes('COMPLETAR')) {
+        return '<span class="pendiente">' + escapar(String(valor).replace('COMPLETAR:', '').replace('COMPLETAR', 'completar')) + '</span>';
+      }
+      return escapar(valor);
+    }
+
+    // Convierte 2022-08-22 en 22/08/2022 (otros textos, como "Actual", se dejan igual)
+    function formatoFecha(valor) {
+      const partes = String(valor).match(/^(\d{4})-(\d{2})(?:-(\d{2}))?$/);
+      if (!partes) return mostrar(valor);
+      return [partes[3], partes[2], partes[1]].filter(Boolean).join('/');
+    }
+
+    function fechas(inicio, fin) {
+      return [inicio, fin].filter(Boolean).map(formatoFecha).join(' — ');
+    }
+
+    function etiquetas(lista) {
+      return '<div class="etiquetas">' +
+        (lista || []).filter(vale).map(x => '<span class="etiqueta">' + escapar(x) + '</span>').join('') +
+        '</div>';
+    }
+
+    function seccion(titulo, contenido) {
+      return contenido ? '<section><h2>' + escapar(titulo) + '</h2>' + contenido + '</section>' : '';
+    }
+
+    // 3. Construimos cada parte
+
+    function cabecera(b) {
+      const contactos = [
+        b.email,
+        b.phone && (vale(b.phone) ? b.phone : 'COMPLETAR teléfono'),
+        b.location && [b.location.postalCode, b.location.city, b.location.region, b.location.country].filter(vale).join(', '),
+        b.workPermit,
+        ...(b.profiles || []).map(p => vale(p.url) ? p.network + ': ' + (p.username || p.url) : 'COMPLETAR ' + p.network)
+      ].filter(Boolean);
+
+      // Si la foto no existe, se oculta sola (onerror)
+      const foto = b.image
+        ? '<img class="foto" src="' + escapar(b.image) + '" alt="Foto de ' + escapar(b.name) + '" onerror="this.remove()">'
+        : '';
+
+      return '<header class="cabecera">' +
+        foto +
+        '<div>' +
+          '<h1>' + escapar(b.name) + '</h1>' +
+          '<div class="titular">' + escapar(b.label) + '</div>' +
+          '<div class="contactos">' + contactos.map(c => '<span>' + mostrar(c) + '</span>').join('') + '</div>' +
+        '</div>' +
+        '</header>';
+    }
+
+    function experiencia(lista) {
+      const items = (lista || []).map(e =>
+        '<div class="entrada">' +
+          '<h3>' + mostrar(e.position) + '</h3>' +
+          '<div class="lugar">' + mostrar(e.name) + (e.location ? ' · ' + mostrar(e.location) : '') + '</div>' +
+          '<div class="fecha">' + fechas(e.startDate, e.endDate) + '</div>' +
+          (e.summary ? '<p>' + mostrar(e.summary) + '</p>' : '') +
+          lista_puntos(e.highlights) +
+        '</div>');
+      return items.length ? '<div class="linea-tiempo">' + items.join('') + '</div>' : '';
+    }
+
+    function formacion(lista) {
+      const items = (lista || []).map(e =>
+        '<div class="entrada">' +
+          '<h3>' + escapar(e.area) + '</h3>' +
+          '<div class="lugar">' + escapar(e.institution) + (e.location ? ' · ' + escapar(e.location) : '') + '</div>' +
+          '<div class="fecha">' + [escapar(e.studyType), fechas(e.startDate, e.endDate)].filter(Boolean).join(' · ') + '</div>' +
+          ((e.courses || []).length ? etiquetas(e.courses) : '') +
+        '</div>');
+      return items.length ? '<div class="linea-tiempo">' + items.join('') + '</div>' : '';
+    }
+
+    function lista_puntos(lista) {
+      const puntos = (lista || []).filter(Boolean);
+      return puntos.length ? '<ul>' + puntos.map(p => '<li>' + mostrar(p) + '</li>').join('') + '</ul>' : '';
+    }
+
+    function proyectos(lista) {
+      return (lista || []).map(p =>
+        '<div class="proyecto">' +
+          '<h3>' + escapar(p.name) + '</h3>' +
+          '<p>' + escapar(p.description) + '</p>' +
+          ((p.keywords || []).length ? etiquetas(p.keywords) : '') +
+        '</div>').join('');
+    }
+
+    function habilidades(lista) {
+      return (lista || []).map(h =>
+        '<div class="habilidad">' +
+          '<strong>' + escapar(h.name) + (vale(h.level) ? ' <span class="nivel">· ' + escapar(h.level) + '</span>' : '') + '</strong>' +
+          etiquetas(h.keywords) +
+        '</div>').join('');
+    }
+
+    function idiomas(lista) {
+      return (lista || []).map(i =>
+        '<div class="idioma"><span>' + escapar(i.language) + '</span><span>' +
+        mostrar(i.fluency) + '</span></div>').join('');
+    }
+
+    function intereses(lista) {
+      return (lista || []).length ? etiquetas(lista.map(i => i.name)) : '';
+    }
+
+    function certificados(lista) {
+      return (lista || []).length ? etiquetas(lista.map(c => c.name)) : '';
+    }
+
+    // 4. Montamos la hoja completa
+    function dibujar(d) {
+      // Comprobamos que el JSON tiene el formato de este currículum
+      if (!d.basics) {
+        document.querySelector('#cv').innerHTML =
+          '<p class="mensaje">El archivo curriculum.json de esta carpeta no tiene el formato esperado ' +
+          '(falta "basics"). Puede que sea el JSON del profesor: sustitúyelo por el tuyo y comprueba ' +
+          'que se llama exactamente <b>curriculum.json</b>, no "curriculum (1).json".</p>';
+        return;
+      }
+      const b = d.basics;
+      document.title = 'Currículum | ' + b.name;
+
+      document.querySelector('#cv').innerHTML =
+        '<div class="hoja">' +
+          cabecera(b) +
+          '<div class="cuerpo">' +
+            '<aside class="lateral">' +
+              seccion('Competencias', habilidades(d.skills)) +
+              seccion('Idiomas', idiomas(d.languages)) +
+              seccion('Permiso de conducción', certificados(d.certificates)) +
+              seccion('Intereses', intereses(d.interests)) +
+            '</aside>' +
+            '<div class="principal">' +
+              (vale(b.summary) ? '<p class="resumen">' + escapar(b.summary) + '</p>' : '') +
+              seccion('Formación', formacion(d.education)) +
+              seccion('Experiencia profesional', experiencia(d.work)) +
+              seccion('Proyectos', proyectos(d.projects)) +
+            '</div>' +
+          '</div>' +
+        '</div>';
+    }
+  </script>
+</body>
+</html>

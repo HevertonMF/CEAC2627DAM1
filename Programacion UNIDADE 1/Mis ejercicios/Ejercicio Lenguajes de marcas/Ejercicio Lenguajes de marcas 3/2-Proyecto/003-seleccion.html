@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8">
+    <title>Paso c – Selección de elementos</title>
+  </head>
+  <body>
+    <h1>Tienda de bicis</h1>
+    <button value="350" data-nombre="Rockrider ST 520">Rockrider ST 520 - 350€</button>
+    <button value="450" data-nombre="Btwin Riverside 500">Btwin Riverside 500 - 450€</button>
+    <button value="700" data-nombre="Giant Talon 2">Giant Talon 2 - 700€</button>
+    <button value="850" data-nombre="Merida Big.Nine 100">Merida Big.Nine 100 - 850€</button>
+    <button value="1000" data-nombre="Specialized Rockhopper">Specialized Rockhopper - 1000€</button>
+    <button value="1200" data-nombre="Trek Marlin 7">Trek Marlin 7 - 1200€</button>
+    <button value="1500" data-nombre="Cannondale Trail 5">Cannondale Trail 5 - 1500€</button>
+    <button value="1800" data-nombre="Orbea Alma H30">Orbea Alma H30 - 1800€</button>
+    <button value="2000" data-nombre="Canyon Grizl 7">Canyon Grizl 7 - 2000€</button>
+    <button value="3000" data-nombre="Scott Spark 960">Scott Spark 960 - 3000€</button>
+
+    <script>
+      // PASO c) Selecciono y accedo a los elementos del documento
+
+      // Selecciono todos los botones
+      let botones = document.querySelectorAll("button[data-nombre]")
+
+      // Recorro los botones uno a uno
+      botones.forEach(function(boton){
+        // Cuando hago click, leo sus datos
+        boton.onclick = function(){
+          console.log("Nombre: " + boton.dataset.nombre)
+          console.log("Precio: " + boton.value + " €")
+        }
+      })
+    </script>
+  </body>
+</html>

@@ -1,0 +1,367 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8">
+    <title>Heverton Marques Ferreira Maciel</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600&family=Barlow+Condensed:wght@600;800&display=swap" rel="stylesheet">
+    <style>
+      /* ===== Colores ===== */
+      :root{
+        --tinta:#1d1a33;
+        --morado:#4b2fa0;
+        --morado-claro:#ece7f8;
+        --rosa:#e06be0;
+        --gris:#6b6880;
+        --papel:#ffffff;
+        --fondo:#d9d6e4;
+      }
+
+      *{box-sizing:border-box;}
+
+      @page{size:A4; margin:0;}
+
+      html{background:var(--fondo);}
+
+      body{
+        width:210mm;
+        min-height:297mm;
+        margin:30px auto;
+        display:grid;
+        grid-template-columns:72mm 1fr;
+        background:var(--papel);
+        color:var(--tinta);
+        font-family:"Barlow",Arial,sans-serif;
+        font-size:12.5px;
+        line-height:1.4;
+        box-shadow:0 10px 40px rgba(29,26,51,.25);
+        -webkit-print-color-adjust:exact;
+        print-color-adjust:exact;
+      }
+
+      a{color:inherit; text-decoration:none;}
+      ul{list-style:none; margin:0; padding:0;}
+
+      /* ===== Columna izquierda ===== */
+      #izquierda{
+        background:var(--tinta);
+        color:#fff;
+        padding:30px 24px;
+      }
+
+      .foto{
+        display:block;
+        width:130px;
+        height:130px;
+        margin:0 auto 20px;
+        color:transparent;
+        border-radius:50%;
+        object-fit:cover;
+        border:4px solid var(--rosa);
+        outline:4px solid var(--morado);
+        background:var(--morado);
+      }
+
+      #izquierda h3{
+        font-family:"Barlow Condensed",sans-serif;
+        font-weight:600;
+        font-size:15px;
+        letter-spacing:.12em;
+        text-transform:uppercase;
+        color:var(--rosa);
+        margin:20px 0 8px;
+      }
+
+      /* Contacto */
+      .contacto li{
+        display:flex;
+        flex-direction:column;
+        margin-bottom:8px;
+        word-break:break-word;
+      }
+      .contacto span{
+        font-size:10px;
+        text-transform:uppercase;
+        letter-spacing:.1em;
+        color:#a9a4c4;
+      }
+      .contacto a:hover{color:var(--rosa);}
+
+      /* Idiomas con barras */
+      .idiomas li{margin-bottom:10px;}
+      .idiomas .nivel{
+        display:block;
+        height:6px;
+        margin-top:4px;
+        border-radius:3px;
+        background:rgba(255,255,255,.15);
+        overflow:hidden;
+      }
+      .idiomas .nivel::after{
+        content:"";
+        display:block;
+        height:100%;
+        width:var(--valor);
+        background:linear-gradient(90deg,var(--morado),var(--rosa));
+        border-radius:3px;
+      }
+      .idiomas small{color:#a9a4c4;}
+
+      /* Listas con viñeta propia */
+      .puntos li{
+        position:relative;
+        padding-left:16px;
+        margin-bottom:5px;
+      }
+      .puntos li::before{
+        content:"";
+        position:absolute;
+        left:0;
+        top:7px;
+        width:7px;
+        height:7px;
+        background:var(--rosa);
+        border-radius:2px;
+      }
+
+      /* ===== Columna derecha ===== */
+      #derecha{padding:32px 34px;}
+
+      header{
+        padding-bottom:14px;
+        margin-bottom:6px;
+        border-bottom:3px solid var(--tinta);
+      }
+
+      h1{
+        font-family:"Barlow Condensed",sans-serif;
+        font-weight:800;
+        font-size:40px;
+        line-height:.95;
+        margin:0;
+        letter-spacing:-.01em;
+      }
+      h1 span{color:var(--morado);}
+
+      h2{
+        display:inline-block;
+        margin:12px 0 0;
+        padding:3px 12px;
+        font-weight:500;
+        font-size:14px;
+        color:#fff;
+        background:linear-gradient(90deg,var(--morado),var(--rosa));
+        border-radius:4px;
+      }
+
+      #derecha h3{
+        font-family:"Barlow Condensed",sans-serif;
+        font-weight:800;
+        font-size:20px;
+        text-transform:uppercase;
+        letter-spacing:.06em;
+        margin:18px 0 10px;
+        display:flex;
+        align-items:center;
+        gap:12px;
+      }
+      #derecha h3::after{
+        content:"";
+        flex:1;
+        height:2px;
+        background:var(--morado-claro);
+      }
+
+      section > p{margin:0; text-align:justify;}
+
+      /* Línea de tiempo */
+      .linea{
+        border-left:2px solid var(--morado-claro);
+        margin-left:6px;
+        padding-left:20px;
+      }
+      .linea article{
+        position:relative;
+        margin-bottom:9px;
+        break-inside:avoid;
+      }
+      .linea article::before{
+        content:"";
+        position:absolute;
+        left:-27px;
+        top:4px;
+        width:12px;
+        height:12px;
+        border-radius:50%;
+        background:var(--papel);
+        border:3px solid var(--morado);
+      }
+      .linea article:first-child::before{
+        background:var(--rosa);
+        border-color:var(--rosa);
+      }
+
+      h4{
+        margin:0;
+        font-size:15px;
+        font-weight:600;
+      }
+      .fecha{
+        margin:1px 0 3px;
+        font-size:12px;
+        color:var(--gris);
+      }
+      .fecha b{
+        color:var(--morado);
+        font-weight:600;
+      }
+      article p{margin:0;}
+
+      /* Conocimientos como etiquetas */
+      .etiquetas{
+        display:flex;
+        flex-wrap:wrap;
+        gap:6px;
+      }
+      .etiquetas li{
+        padding:3px 10px;
+        border-radius:20px;
+        background:var(--morado-claro);
+        color:var(--morado);
+        font-weight:500;
+        font-size:12px;
+      }
+
+      /* Al imprimir, sin margen ni sombra */
+      @media print{
+        html{background:none;}
+        body{margin:0; box-shadow:none;}
+      }
+    </style>
+  </head>
+  <body>
+    <aside id="izquierda">
+      <img class="foto" src="heverton.png" alt="Foto de Heverton Marques">
+
+      <h3>Contacto</h3>
+      <ul class="contacto">
+        <li><span>Email</span><a href="mailto:hevertonmf@gmail.com">hevertonmf@gmail.com</a></li>
+        <li><span>Teléfono</span><a href="tel:+34662353018">+34 662 353 018</a></li>
+        <li><span>Ubicación</span>Canet de Berenguer (Valencia)</li>
+        <li><span>LinkedIn</span><a href="https://www.linkedin.com/in/heverton-marques-00a569196/">in/heverton-marques</a></li>
+        <li><span>GitHub</span><a href="https://github.com/HevertonMF">github.com/HevertonMF</a></li>
+      </ul>
+
+      <h3>Idiomas</h3>
+      <ul class="idiomas">
+        <li>Portugués <small>· Lengua materna</small><span class="nivel" style="--valor:100%"></span></li>
+        <li>Español <small>· Básico (en estudio)</small><span class="nivel" style="--valor:45%"></span></li>
+        <li>Inglés <small>· Básico</small><span class="nivel" style="--valor:30%"></span></li>
+      </ul>
+
+      <h3>Capacidades</h3>
+      <ul class="puntos">
+        <li>Responsabilidad en el trabajo</li>
+        <li>Trabajo en equipo</li>
+        <li>Comunicación</li>
+        <li>Resolución de problemas</li>
+        <li>Organización y puntualidad</li>
+      </ul>
+
+      <h3>Permiso de conducción</h3>
+      <ul class="puntos">
+        <li>Permiso B</li>
+      </ul>
+    </aside>
+
+    <main id="derecha">
+      <header>
+        <h1>Heverton Marques<br><span>Ferreira Maciel</span></h1>
+        <h2>Administrador · Estudiante de DAM · Programador</h2>
+      </header>
+
+      <section>
+        <h3>Acerca de mí</h3>
+        <p>
+          Estudiante de FP en Desarrollo de Aplicaciones Multiplataforma (DAM), con 8 años de
+          experiencia en entorno de oficina, donde desarrollé una fuerte capacidad de organización,
+          trabajo en equipo y resolución de problemas bajo presión. Actualmente reforzando
+          competencias en Java, SQL y Python, con el objetivo de iniciar una carrera en
+          programación y desarrollo de software.
+        </p>
+      </section>
+
+      <section>
+        <h3>Conocimientos</h3>
+        <ul class="etiquetas">
+          <li>Python</li>
+          <li>Java</li>
+          <li>SQL (MySQL, MariaDB)</li>
+          <li>HTML</li>
+          <li>CSS</li>
+          <li>JavaScript</li>
+          <li>XML</li>
+          <li>Git y GitHub</li>
+          <li>Linux</li>
+          <li>SAP</li>
+        </ul>
+      </section>
+
+      <section>
+        <h3>Experiencia</h3>
+        <div class="linea">
+          <article>
+            <h4>Operario de logística de almacén</h4>
+            <p class="fecha"><b>Bourbon Automotive Plastics</b> · Portugal · 08/2022 - 06/2025</p>
+            <p>Abastecer la línea de producción, control de stock y movimientos de inventario en SAP, conducción de carretillas elevadoras.</p>
+          </article>
+
+          <article>
+            <h4>Receptor de materia prima</h4>
+            <p class="fecha"><b>Movelog Serviços Logísticos (AMBEV)</b> · Brasil · 02/2020 - 06/2022</p>
+            <p>Control de recepción de carga de proveedores en el área de logística.</p>
+          </article>
+
+          <article>
+            <h4>Empleado administrativo</h4>
+            <p class="fecha"><b>Petrolub</b> · Brasil · 10/2016 - 09/2019</p>
+            <p>Hojas de cálculo de control, pago y jornada de conductores, seguimiento de flota, control de rutas y solicitudes de mantenimiento.</p>
+          </article>
+
+          <article>
+            <h4>Inspector de control de calidad</h4>
+            <p class="fecha"><b>Iveco</b> · Brasil · 02/2015 - 08/2015</p>
+            <p>Contacto con proveedores y resolución de problemas de calidad. Registros en CLICK, SAP y SQP.</p>
+          </article>
+
+          <article>
+            <h4>Administrador</h4>
+            <p class="fecha"><b>Iveco</b> · Brasil · 11/2011 - 01/2015</p>
+            <p>Programación de empleados, registros en general, traslados de empleados y tareas diarias de oficina.</p>
+          </article>
+        </div>
+      </section>
+
+      <section>
+        <h3>Educación</h3>
+        <div class="linea">
+          <article>
+            <h4>Desarrollo de Aplicaciones Multiplataforma (DAM)</h4>
+            <p class="fecha"><b>Centro CEAC de Formación Profesional</b> · España · 09/2026 - Actual</p>
+          </article>
+
+          <article>
+            <h4>Grado en Administración</h4>
+            <p class="fecha"><b>UNIFEMM</b> · Brasil</p>
+          </article>
+
+          <article>
+            <h4>Bachillerato</h4>
+            <p class="fecha"><b>Escola Estadual Cel. Domingues Diniz Couto</b> · Brasil · 2009</p>
+          </article>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>
