@@ -1,0 +1,147 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+}
+
+header {
+    background-color: #333;
+    color: white;
+    padding: 10px;
+    text-align: center;
+}
+
+nav ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+}
+
+nav ul li {
+    margin: 0;
+    padding: 10px;
+    color: white;
+}
+
+nav ul li a {
+    color: white;
+    text-decoration: none;
+}
+
+nav ul li a:hover {
+    background-color: #555;
+}
+
+header h1 {
+    text-align: center;
+    font-size: 24px;
+}
+
+main {
+    background-color: #fff;
+    padding: 10px;
+    margin: 0;
+    display: flex;
+}
+
+section#catalogue {
+    margin: 0;
+    padding: 10px;
+    text-align: center;
+}
+
+section#catalogue h2 {
+    text-align: center;
+    font-size: 20px;
+}
+
+section#catalogue ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+}
+
+section#catalogue ul li {
+    margin: 0;
+    padding: 10px;
+    color: white;
+}
+
+section#catalogue ul li a {
+    color: white;
+    text-decoration: none;
+}
+
+section#cart {
+    margin: 0;
+    padding: 10px;
+    text-align: center;
+}
+
+section#cart h2 {
+    text-align: center;
+    font-size: 20px;
+}
+
+section#cart ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+}
+
+section#cart ul li {
+    margin: 0;
+    padding: 10px;
+    color: white;
+}
+
+section#cart ul li a {
+    color: white;
+    text-decoration: none;
+}
+
+section#checkout {
+    margin: 0;
+    padding: 10px;
+    text-align: center;
+}
+
+section#checkout h2 {
+    text-align: center;
+    font-size: 20px;
+}
+
+section#checkout ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+}
+
+section#checkout ul li {
+    margin: 0;
+    padding: 10px;
+    color: white;
+}
+
+section#checkout ul li a {
+    color: white;
+    text-decoration: none;
+}
+
+footer {
+    background-color: #333;
+    color: white;
+    padding: 10px;
+    text-align: center;
+}
+
+footer p {
+    text-align: center;
+    font-size: 14px;
+    margin-top: 10px;
+}

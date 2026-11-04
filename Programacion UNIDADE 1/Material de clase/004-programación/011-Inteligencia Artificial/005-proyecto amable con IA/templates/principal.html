@@ -1,0 +1,325 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Amable</title>
+<style>
+  *{box-sizing:border-box;}
+  html,body{width:100%;height:100%;margin:0;padding:0;font-family:system-ui,sans-serif;background:#f4f6f5;color:#1d2321;}
+  body{display:flex;}
+  button{font:inherit;cursor:pointer;border:1px solid #d5dbd8;background:white;border-radius:8px;padding:6px 12px;}
+  button:hover{background:#eef3f0;}
+  button.principal{background:#1f9d55;color:white;border-color:#1f9d55;}
+  button.principal:hover{background:#18834a;}
+  button:disabled{opacity:.5;cursor:not-allowed;}
+
+  /* ---- Barra lateral: historial ---- */
+  aside{width:270px;background:white;border-right:1px solid #e1e6e3;display:flex;flex-direction:column;}
+  aside header{padding:16px;border-bottom:1px solid #e1e6e3;}
+  aside h1{margin:0 0 10px;font-size:22px;}
+  aside h1 span{color:#1f9d55;}
+  #nuevo{width:100%;}
+  #buscar{width:100%;margin-top:8px;padding:7px 10px;border:1px solid #d5dbd8;border-radius:8px;outline:none;}
+  #lista{flex:1;overflow:auto;padding:8px;}
+  .proyecto{padding:10px;border-radius:8px;cursor:pointer;position:relative;margin-bottom:2px;}
+  .proyecto:hover{background:#f1f5f3;}
+  .proyecto.activo{background:#e3f4ea;}
+  .proyecto b{display:block;font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;padding-right:22px;}
+  .proyecto small{color:#78827e;font-size:12px;}
+  .proyecto .borrar{position:absolute;right:6px;top:8px;border:none;background:none;padding:2px 6px;color:#aaa;display:none;}
+  .proyecto:hover .borrar{display:block;}
+  .proyecto .borrar:hover{color:#d33;}
+  .vacio{color:#999;font-size:13px;text-align:center;padding:20px;}
+
+  /* ---- Zona principal ---- */
+  main{flex:1;display:flex;flex-direction:column;min-width:0;}
+  #barra{display:flex;align-items:center;gap:8px;padding:10px 16px;background:white;border-bottom:1px solid #e1e6e3;flex-wrap:wrap;}
+  #titulo{font-size:16px;font-weight:600;border:1px solid transparent;border-radius:6px;padding:4px 8px;outline:none;min-width:120px;flex:1;}
+  #titulo:hover,#titulo:focus{border-color:#d5dbd8;}
+  .pestanas{display:flex;background:#eef1f0;border-radius:8px;padding:3px;}
+  .pestanas button{border:none;background:none;padding:5px 12px;}
+  .pestanas button.on{background:white;box-shadow:0 1px 2px rgba(0,0,0,.1);}
+  select{padding:6px;border-radius:8px;border:1px solid #d5dbd8;max-width:220px;}
+
+  #contenido{flex:1;position:relative;min-height:0;}
+  #vista,#codigo{position:absolute;inset:0;width:100%;height:100%;border:none;}
+  #vista{background:white;}
+  #codigo{display:none;font-family:Consolas,monospace;font-size:13px;padding:14px;resize:none;outline:none;background:#1e2421;color:#d9e6df;tab-size:2;}
+  #bienvenida{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;color:#5d6763;}
+  #bienvenida h2{font-size:34px;margin:0 0 6px;color:#1d2321;}
+  #bienvenida .ejemplos{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-top:16px;max-width:600px;}
+  #bienvenida .ejemplos button{border-radius:20px;}
+
+  /* ---- Progreso ---- */
+  #progreso{display:none;padding:10px 16px;background:white;border-top:1px solid #e1e6e3;}
+  #progreso .fila{display:flex;justify-content:space-between;font-size:13px;margin-bottom:6px;}
+  #porcentaje{font-weight:700;color:#1f9d55;font-variant-numeric:tabular-nums;}
+  .pista{height:10px;background:#e7ece9;border-radius:10px;overflow:hidden;}
+  #relleno{height:100%;width:0;background:linear-gradient(90deg,#1f9d55,#4cd187);border-radius:10px;transition:width .3s;}
+  #tiempo{color:#78827e;}
+
+  /* ---- Caja de petición ---- */
+  form{display:flex;gap:8px;padding:12px 16px;background:white;border-top:1px solid #e1e6e3;}
+  #peticion{flex:1;padding:12px 18px;border:1px solid lightgray;border-radius:40px;outline:none;transition:all .4s;font:inherit;}
+  #peticion:focus{background:rgb(225,255,230);border-color:#1f9d55;}
+  form button{border-radius:40px;padding:0 22px;}
+  #aviso{position:fixed;bottom:90px;left:50%;transform:translateX(-50%);background:#1d2321;color:white;padding:8px 16px;border-radius:8px;font-size:14px;display:none;z-index:9;}
+</style>
+</head>
+<body>
+
+<aside>
+  <header>
+    <h1>Am<span>able</span></h1>
+    <button id="nuevo" class="principal">+ Nuevo proyecto</button>
+    <input id="buscar" placeholder="Buscar proyecto...">
+  </header>
+  <div id="lista"></div>
+</aside>
+
+<main>
+  <div id="barra">
+    <input id="titulo" value="Nuevo proyecto" disabled>
+    <div class="pestanas">
+      <button id="tabVista" class="on">Vista previa</button>
+      <button id="tabCodigo">Código</button>
+    </div>
+    <button id="guardar" disabled title="Guardar lo que has cambiado a mano en el código">💾 Guardar código</button>
+    <select id="versiones" disabled><option>Versiones</option></select>
+    <button id="abrir" disabled title="Abrir en pestaña nueva">↗ Abrir</button>
+    <button id="descargar" disabled>⬇ Descargar</button>
+  </div>
+
+  <div id="contenido">
+    <div id="bienvenida">
+      <h2>¿Qué web quieres crear?</h2>
+      <p>Descríbela abajo. Luego podrás pedir cambios, editar el código y volver a ella cuando quieras.</p>
+      <div class="ejemplos">
+        <button>Landing page para una cafetería con tonos marrones</button>
+        <button>Portfolio de un desarrollador con modo oscuro</button>
+        <button>Web profesional con tonos azules</button>
+      </div>
+    </div>
+    <iframe id="vista" sandbox="allow-scripts allow-forms allow-modals" style="display:none"></iframe>
+    <textarea id="codigo" spellcheck="false"></textarea>
+  </div>
+
+  <div id="progreso">
+    <div class="fila"><span id="fase">Preparando...</span><span><span id="tiempo"></span> &nbsp;<span id="porcentaje">0%</span></span></div>
+    <div class="pista"><div id="relleno"></div></div>
+  </div>
+
+  <form id="formulario">
+    <input id="peticion" autocomplete="off" placeholder="Dime lo que quieres...">
+    <button id="enviar" class="principal">Crear</button>
+  </form>
+</main>
+
+<div id="aviso"></div>
+
+<script>
+// ---------- Estado ----------
+let actual = null;          // id del proyecto abierto (null = nuevo)
+let proyectos = [];
+let codigoGuardado = "";    // para saber si hay cambios manuales sin guardar
+let generando = false;
+const $ = id => document.getElementById(id);
+
+// ---------- Utilidades ----------
+function aviso(texto){
+  $("aviso").textContent = texto; $("aviso").style.display = "block";
+  clearTimeout(aviso.t); aviso.t = setTimeout(() => $("aviso").style.display = "none", 2500);
+}
+function pintarVista(html){
+  $("bienvenida").style.display = "none";
+  $("vista").style.display = $("codigo").style.display === "block" ? "none" : "block";
+  $("vista").srcdoc = html;
+}
+function mostrarPestana(cual){
+  $("tabVista").classList.toggle("on", cual === "vista");
+  $("tabCodigo").classList.toggle("on", cual === "codigo");
+  if (actual === null && !generando && !$("codigo").value) return;
+  $("vista").style.display = cual === "vista" ? "block" : "none";
+  $("codigo").style.display = cual === "codigo" ? "block" : "none";
+  if (cual === "vista") $("vista").srcdoc = $("codigo").value;   // la vista refleja las ediciones manuales
+}
+function activarBotones(si){
+  ["guardar","versiones","abrir","descargar","titulo"].forEach(b => $(b).disabled = !si);
+}
+function modoFormulario(){
+  $("enviar").textContent = actual ? "Aplicar cambio" : "Crear";
+  $("peticion").placeholder = actual ? "Pide un cambio: «pon el menú en negro», «añade un formulario de contacto»..." : "Dime lo que quieres...";
+}
+
+// ---------- Historial ----------
+async function cargarLista(){
+  proyectos = await (await fetch("/api/proyectos")).json();
+  pintarLista();
+}
+function pintarLista(){
+  const filtro = $("buscar").value.toLowerCase();
+  const visibles = proyectos.filter(p => (p.titulo || "").toLowerCase().includes(filtro));
+  $("lista").innerHTML = visibles.length ? "" : '<div class="vacio">Aún no hay proyectos</div>';
+  visibles.forEach(p => {
+    const div = document.createElement("div");
+    div.className = "proyecto" + (p.id === actual ? " activo" : "");
+    div.innerHTML = `<b></b><small>${p.actualizado || p.fecha} · ${p.num_versiones} versión(es)</small><button class="borrar" title="Borrar">✕</button>`;
+    div.querySelector("b").textContent = p.titulo || "(sin título)";
+    div.onclick = () => abrirProyecto(p.id);
+    div.querySelector(".borrar").onclick = e => { e.stopPropagation(); borrarProyecto(p.id); };
+    $("lista").appendChild(div);
+  });
+}
+async function abrirProyecto(id, forzar){
+  if (generando) return aviso("Espera a que termine la IA");
+  if (!forzar && cambiosSinGuardar() && !confirm("Tienes cambios en el código sin guardar. ¿Salir igualmente?")) return;
+  const p = await (await fetch("/api/proyectos/" + id)).json();
+  actual = p.id;
+  $("titulo").value = p.titulo || "";
+  $("codigo").value = codigoGuardado = p.respuesta || "";
+  pintarVista(p.respuesta || "");
+  mostrarPestana($("tabCodigo").classList.contains("on") ? "codigo" : "vista");
+  $("versiones").innerHTML = `<option value="">Versiones (${p.versiones.length})</option>` +
+    p.versiones.map((v, i) => `<option value="${v.id}">${i === 0 ? "● " : ""}${v.fecha} — ${escapar(v.peticion).slice(0,40)}</option>`).join("");
+  activarBotones(true); modoFormulario(); pintarLista();
+}
+function escapar(t){ return (t || "").replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c])); }
+function nuevoProyecto(){
+  if (generando) return;
+  if (cambiosSinGuardar() && !confirm("Tienes cambios en el código sin guardar. ¿Salir igualmente?")) return;
+  actual = null; codigoGuardado = "";
+  $("titulo").value = "Nuevo proyecto"; $("codigo").value = "";
+  $("vista").style.display = "none"; $("codigo").style.display = "none"; $("bienvenida").style.display = "flex";
+  $("versiones").innerHTML = "<option>Versiones</option>";
+  activarBotones(false); modoFormulario(); pintarLista(); $("peticion").focus();
+}
+async function borrarProyecto(id){
+  if (!confirm("¿Borrar este proyecto y todas sus versiones?")) return;
+  await fetch("/api/proyectos/" + id, {method: "DELETE"});
+  if (id === actual) { codigoGuardado = $("codigo").value; nuevoProyecto(); }
+  cargarLista(); aviso("Proyecto borrado");
+}
+function cambiosSinGuardar(){ return actual !== null && $("codigo").value !== codigoGuardado; }
+
+// ---------- Generar / editar con IA (streaming + porcentaje) ----------
+async function generar(peticion){
+  if (cambiosSinGuardar()) await guardarCodigo(true);   // la IA trabaja sobre lo último que ves
+  generando = true;
+  $("enviar").disabled = true; $("peticion").disabled = true;
+  $("progreso").style.display = "block";
+  ponerProgreso(0, "Preparando...");
+  const inicio = Date.now();
+  const reloj = setInterval(() => $("tiempo").textContent = ((Date.now() - inicio) / 1000).toFixed(0) + " s", 500);
+  // Mientras Ollama carga el modelo no llegan tokens: avanzo poco a poco hasta 5% para que se vea vida
+  let espera = setInterval(() => { if (pct < 4.5) ponerProgreso(pct + 0.3); }, 400);
+
+  let texto = "";
+  let ultimoPintado = 0;
+  $("bienvenida").style.display = "none";
+  mostrarPestana("codigo"); $("codigo").value = "";
+
+  try {
+    const resp = await fetch("/api/generar", {
+      method: "POST", headers: {"Content-Type": "application/json"},
+      body: JSON.stringify({peticion, id: actual})
+    });
+    if (!resp.ok) throw new Error((await resp.json()).error || "Error del servidor");
+    const lector = resp.body.getReader();
+    const decodificador = new TextDecoder();
+    let resto = "";
+    while (true) {
+      const {value, done} = await lector.read();
+      if (done) break;
+      resto += decodificador.decode(value, {stream: true});
+      const lineas = resto.split("\n"); resto = lineas.pop();
+      for (const l of lineas) {
+        if (!l.trim()) continue;
+        const d = JSON.parse(l);
+        if (d.tipo === "progreso") { clearInterval(espera); ponerProgreso(d.porcentaje, d.fase); }
+        else if (d.tipo === "token") {
+          texto += d.texto;
+          $("codigo").value = texto; $("codigo").scrollTop = $("codigo").scrollHeight;
+          if (Date.now() - ultimoPintado > 1500) { $("vista").srcdoc = texto; ultimoPintado = Date.now(); } // vista en vivo
+        }
+        else if (d.tipo === "error") throw new Error(d.mensaje);
+        else if (d.tipo === "fin") {
+          actual = d.id;
+          await cargarLista();
+          generando = false;
+          await abrirProyecto(d.id, true);
+          mostrarPestana("vista");
+          aviso("✔ Hecho en " + ((Date.now() - inicio) / 1000).toFixed(1) + " s");
+        }
+      }
+    }
+  } catch (e) {
+    aviso("⚠ " + e.message);
+    ponerProgreso(pct, "Error: " + e.message);
+    if (actual) await (async () => { generando = false; await abrirProyecto(actual, true); })();
+  } finally {
+    clearInterval(reloj); clearInterval(espera);
+    generando = false;
+    $("enviar").disabled = false; $("peticion").disabled = false; $("peticion").value = ""; $("peticion").focus();
+    setTimeout(() => { if (!generando) $("progreso").style.display = "none"; }, 2500);
+  }
+}
+let pct = 0;
+function ponerProgreso(p, fase){
+  pct = p;
+  $("relleno").style.width = p + "%";
+  $("porcentaje").textContent = Math.round(p) + "%";
+  if (fase) $("fase").textContent = fase;
+}
+
+// ---------- Edición manual ----------
+async function guardarCodigo(silencioso){
+  if (actual === null) return;
+  await fetch("/api/proyectos/" + actual, {method: "PUT", headers: {"Content-Type": "application/json"},
+    body: JSON.stringify({codigo: $("codigo").value})});
+  codigoGuardado = $("codigo").value;
+  if (!silencioso) { aviso("Código guardado como nueva versión"); await abrirProyecto(actual, true); }
+  cargarLista();
+}
+
+// ---------- Eventos ----------
+$("formulario").onsubmit = e => {
+  e.preventDefault();
+  const p = $("peticion").value.trim();
+  if (p && !generando) generar(p);
+};
+document.querySelectorAll("#bienvenida .ejemplos button").forEach(b => b.onclick = () => { $("peticion").value = b.textContent; $("peticion").focus(); });
+$("nuevo").onclick = nuevoProyecto;
+$("buscar").oninput = pintarLista;
+$("tabVista").onclick = () => mostrarPestana("vista");
+$("tabCodigo").onclick = () => mostrarPestana("codigo");
+$("guardar").onclick = () => guardarCodigo(false);
+$("abrir").onclick = () => window.open("/ver/" + actual, "_blank");
+$("descargar").onclick = () => {
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(new Blob([$("codigo").value], {type: "text/html"}));
+  a.download = ($("titulo").value || "web").replace(/[^\w\-áéíóúñ ]/gi, "").trim().replace(/\s+/g, "_") + ".html";
+  a.click();
+};
+$("titulo").onchange = async () => {
+  await fetch("/api/proyectos/" + actual, {method: "PUT", headers: {"Content-Type": "application/json"},
+    body: JSON.stringify({titulo: $("titulo").value})});
+  cargarLista(); aviso("Título cambiado");
+};
+$("versiones").onchange = async () => {
+  const v = $("versiones").value; if (!v) return;
+  if (confirm("¿Restaurar esta versión? (la actual se conserva en el historial)")) {
+    await fetch(`/api/proyectos/${actual}/restaurar/${v}`, {method: "POST"});
+    await abrirProyecto(actual, true); aviso("Versión restaurada");
+  } else $("versiones").value = "";
+};
+$("codigo").addEventListener("keydown", e => {
+  if ((e.ctrlKey || e.metaKey) && e.key === "s") { e.preventDefault(); guardarCodigo(false); }   // Ctrl+S
+  if (e.key === "Tab") { e.preventDefault(); document.execCommand("insertText", false, "  "); }
+});
+window.addEventListener("beforeunload", e => { if (cambiosSinGuardar() || generando) e.preventDefault(); });
+
+cargarLista();
+</script>
+</body>
+</html>
