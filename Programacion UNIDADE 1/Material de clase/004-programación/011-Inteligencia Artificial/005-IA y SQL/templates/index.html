@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Consultor SQL con IA</title>
+<style>
+  :root {
+    --bg: #0f1117;
+    --panel: #171a23;
+    --panel-2: #1e2230;
+    --border: #2a2f40;
+    --text: #e6e8ef;
+    --muted: #8b91a5;
+    --accent: #7c6cff;
+    --accent-2: #4fd1c5;
+    --error: #ff6b6b;
+    --ok: #4ade80;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    background:
+      radial-gradient(circle at 15% 0%, rgba(124,108,255,.18), transparent 40%),
+      radial-gradient(circle at 90% 10%, rgba(79,209,197,.12), transparent 35%),
+      var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+  }
+  .wrap { max-width: 1000px; margin: 0 auto; padding: 40px 20px 60px; }
+
+  header { display: flex; align-items: center; gap: 14px; margin-bottom: 28px; }
+  .logo {
+    width: 46px; height: 46px; border-radius: 12px;
+    background: linear-gradient(135deg, var(--accent), var(--accent-2));
+    display: grid; place-items: center; font-weight: 800; font-size: 18px; color: #fff;
+  }
+  h1 { margin: 0; font-size: 24px; }
+  .sub { color: var(--muted); font-size: 14px; margin-top: 2px; }
+  .badge {
+    margin-left: auto; font-size: 12px; color: var(--muted);
+    border: 1px solid var(--border); padding: 6px 10px; border-radius: 999px;
+  }
+  .badge b { color: var(--accent-2); font-weight: 600; }
+
+  .card {
+    background: var(--panel); border: 1px solid var(--border);
+    border-radius: 16px; padding: 20px; margin-bottom: 20px;
+  }
+  .card h2 {
+    margin: 0 0 12px; font-size: 13px; text-transform: uppercase;
+    letter-spacing: .08em; color: var(--muted); font-weight: 600;
+  }
+
+  textarea {
+    width: 100%; min-height: 90px; resize: vertical;
+    background: var(--panel-2); color: var(--text);
+    border: 1px solid var(--border); border-radius: 12px;
+    padding: 14px; font-size: 16px; font-family: inherit; outline: none;
+    transition: border-color .15s;
+  }
+  textarea:focus { border-color: var(--accent); }
+
+  .chips { display: flex; flex-wrap: wrap; gap: 8px; margin: 12px 0 16px; }
+  .chip {
+    background: transparent; color: var(--muted);
+    border: 1px solid var(--border); border-radius: 999px;
+    padding: 6px 12px; font-size: 13px; cursor: pointer; transition: all .15s;
+  }
+  .chip:hover { color: var(--text); border-color: var(--accent); }
+
+  .actions { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+  .btn {
+    background: linear-gradient(135deg, var(--accent), #9b8cff);
+    color: #fff; border: 0; border-radius: 12px;
+    padding: 12px 22px; font-size: 15px; font-weight: 600; cursor: pointer;
+    display: inline-flex; align-items: center; gap: 10px; transition: transform .1s, opacity .15s;
+  }
+  .btn:hover { transform: translateY(-1px); }
+  .btn:disabled { opacity: .6; cursor: wait; transform: none; }
+  .hint { color: var(--muted); font-size: 12px; }
+
+  .toggle { display: flex; align-items: center; gap: 8px; font-size: 14px; color: var(--muted); cursor: pointer; margin-left: auto; }
+  .toggle input { accent-color: var(--error); width: 16px; height: 16px; }
+
+  .spinner {
+    width: 16px; height: 16px; border: 2px solid rgba(255,255,255,.4);
+    border-top-color: #fff; border-radius: 50%; animation: spin .7s linear infinite; display: none;
+  }
+  .loading .spinner { display: inline-block; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .sql-box { position: relative; }
+  pre {
+    margin: 0; background: #0b0d13; border: 1px solid var(--border);
+    border-radius: 12px; padding: 16px; overflow-x: auto;
+    font-family: "JetBrains Mono", Consolas, monospace; font-size: 14px; line-height: 1.5;
+    color: #c9d1ff; white-space: pre-wrap; word-break: break-word;
+  }
+  .kw { color: var(--accent); font-weight: 600; }
+  .str { color: var(--accent-2); }
+  .copy {
+    position: absolute; top: 10px; right: 10px;
+    background: var(--panel-2); color: var(--muted); border: 1px solid var(--border);
+    border-radius: 8px; padding: 4px 10px; font-size: 12px; cursor: pointer;
+  }
+  .copy:hover { color: var(--text); }
+
+  .msg { padding: 12px 14px; border-radius: 10px; font-size: 14px; margin-top: 14px; }
+  .msg.error { background: rgba(255,107,107,.1); border: 1px solid rgba(255,107,107,.35); color: var(--error); }
+  .msg.ok { background: rgba(74,222,128,.08); border: 1px solid rgba(74,222,128,.3); color: var(--ok); }
+
+  .table-wrap { overflow-x: auto; border-radius: 12px; border: 1px solid var(--border); }
+  table { width: 100%; border-collapse: collapse; font-size: 14px; }
+  th, td { padding: 10px 14px; text-align: left; white-space: nowrap; }
+  th {
+    background: var(--panel-2); color: var(--muted); font-weight: 600;
+    font-size: 12px; text-transform: uppercase; letter-spacing: .05em;
+    position: sticky; top: 0;
+  }
+  tr:nth-child(even) td { background: rgba(255,255,255,.02); }
+  tr:hover td { background: rgba(124,108,255,.08); }
+  td.null { color: var(--muted); font-style: italic; }
+  .count { color: var(--muted); font-size: 13px; margin-top: 10px; }
+
+  .history { list-style: none; margin: 0; padding: 0; }
+  .history li {
+    padding: 10px 12px; border-radius: 10px; cursor: pointer;
+    display: flex; justify-content: space-between; gap: 10px; font-size: 14px;
+  }
+  .history li:hover { background: var(--panel-2); }
+  .history .q { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .history .t { color: var(--muted); font-size: 12px; flex-shrink: 0; }
+  .empty { color: var(--muted); font-size: 14px; }
+  .hidden { display: none; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="logo">SQL</div>
+    <div>
+      <h1>Consultor SQL con IA</h1>
+      <div class="sub">Pregunta en lenguaje natural sobre la tabla <code>clientes</code></div>
+    </div>
+    <div class="badge">Modelo: <b>{{ modelo }}</b></div>
+  </header>
+
+  <div class="card">
+    <h2>Tu pregunta</h2>
+    <textarea id="pregunta" placeholder="Ej.: Dame todos los clientes de Valencia ordenados por apellido"></textarea>
+    <div class="chips">
+      <button class="chip">Muéstrame todos los clientes</button>
+      <button class="chip">¿Cuántos clientes hay por provincia?</button>
+      <button class="chip">Clientes cuyo email sea de gmail</button>
+      <button class="chip">Las 5 ciudades con más clientes</button>
+    </div>
+    <div class="actions">
+      <button class="btn" id="enviar"><span class="spinner"></span><span id="btn-text">Generar y ejecutar</span></button>
+      <span class="hint">Ctrl + Enter para enviar</span>
+      <label class="toggle"><input type="checkbox" id="permitir"> Permitir modificar datos</label>
+    </div>
+    <div id="mensaje" class="msg hidden"></div>
+  </div>
+
+  <div class="card hidden" id="card-sql">
+    <h2>SQL generado</h2>
+    <div class="sql-box">
+      <pre id="sql"></pre>
+      <button class="copy" id="copiar">Copiar</button>
+    </div>
+  </div>
+
+  <div class="card hidden" id="card-res">
+    <h2>Resultado</h2>
+    <div class="table-wrap"><table id="tabla"></table></div>
+    <div class="count" id="contador"></div>
+  </div>
+
+  <div class="card">
+    <h2>Historial</h2>
+    <ul class="history" id="historial"></ul>
+    <div class="empty" id="hist-vacio">Todavía no has hecho ninguna consulta.</div>
+  </div>
+</div>
+
+<script>
+  const $ = (id) => document.getElementById(id);
+  const historial = [];
+
+  // Pequeño resaltado de palabras clave SQL
+  const KW = /\b(SELECT|FROM|WHERE|AND|OR|NOT|IN|LIKE|ORDER|BY|GROUP|HAVING|LIMIT|OFFSET|AS|COUNT|SUM|AVG|MIN|MAX|DISTINCT|INSERT|INTO|VALUES|UPDATE|SET|DELETE|JOIN|LEFT|RIGHT|INNER|ON|ASC|DESC|IS|NULL|WITH|CASE|WHEN|THEN|ELSE|END|BETWEEN)\b/gi;
+  function escapar(t) {
+    return String(t).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+  }
+  function resaltar(sql) {
+    return escapar(sql)
+      .replace(/('[^']*')/g, '<span class="str">$1</span>')
+      .replace(KW, m => `<span class="kw">${m.toUpperCase()}</span>`);
+  }
+
+  function mostrarMensaje(texto, tipo) {
+    const m = $("mensaje");
+    m.textContent = texto;
+    m.className = "msg " + tipo;
+  }
+  function ocultar(id) { $(id).classList.add("hidden"); }
+  function mostrar(id) { $(id).classList.remove("hidden"); }
+
+  function pintarTabla(columnas, filas) {
+    const tabla = $("tabla");
+    let html = "<thead><tr>" + columnas.map(c => `<th>${escapar(c)}</th>`).join("") + "</tr></thead><tbody>";
+    for (const fila of filas) {
+      html += "<tr>" + fila.map(v => v === null
+        ? '<td class="null">NULL</td>'
+        : `<td>${escapar(v)}</td>`).join("") + "</tr>";
+    }
+    tabla.innerHTML = html + "</tbody>";
+    $("contador").textContent = `${filas.length} fila${filas.length === 1 ? "" : "s"}`;
+  }
+
+  function anadirHistorial(pregunta) {
+    historial.unshift({ pregunta, hora: new Date().toLocaleTimeString("es-ES", {hour: "2-digit", minute: "2-digit"}) });
+    $("hist-vacio").classList.add("hidden");
+    $("historial").innerHTML = historial.slice(0, 10).map(h =>
+      `<li data-q="${escapar(h.pregunta)}"><span class="q">${escapar(h.pregunta)}</span><span class="t">${h.hora}</span></li>`
+    ).join("");
+  }
+
+  async function consultar() {
+    const pregunta = $("pregunta").value.trim();
+    if (!pregunta) { $("pregunta").focus(); return; }
+
+    const btn = $("enviar");
+    btn.disabled = true; btn.classList.add("loading");
+    $("btn-text").textContent = "Pensando…";
+    ocultar("mensaje"); ocultar("card-res");
+
+    try {
+      const r = await fetch("/consultar", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ pregunta, permitir_cambios: $("permitir").checked })
+      });
+      const data = await r.json();
+
+      if (data.sql) {
+        $("sql").innerHTML = resaltar(data.sql);
+        mostrar("card-sql");
+      } else {
+        ocultar("card-sql");
+      }
+
+      if (data.error) {
+        mostrarMensaje(data.error, "error");
+      } else if (data.columnas && data.columnas.length) {
+        pintarTabla(data.columnas, data.filas);
+        mostrar("card-res");
+      } else {
+        mostrarMensaje(`Sentencia ejecutada. Filas afectadas: ${data.afectadas ?? 0}`, "ok");
+      }
+      anadirHistorial(pregunta);
+    } catch (e) {
+      mostrarMensaje("No se pudo contactar con el servidor Flask.", "error");
+    } finally {
+      btn.disabled = false; btn.classList.remove("loading");
+      $("btn-text").textContent = "Generar y ejecutar";
+    }
+  }
+
+  $("enviar").addEventListener("click", consultar);
+  $("pregunta").addEventListener("keydown", e => {
+    if (e.key === "Enter" && (e.ctrlKey || e.metaKey)) consultar();
+  });
+  document.querySelectorAll(".chip").forEach(c =>
+    c.addEventListener("click", () => { $("pregunta").value = c.textContent; consultar(); })
+  );
+  $("historial").addEventListener("click", e => {
+    const li = e.target.closest("li");
+    if (li) { $("pregunta").value = li.dataset.q; $("pregunta").focus(); }
+  });
+  $("copiar").addEventListener("click", () => {
+    navigator.clipboard.writeText($("sql").textContent);
+    $("copiar").textContent = "¡Copiado!";
+    setTimeout(() => $("copiar").textContent = "Copiar", 1200);
+  });
+</script>
+</body>
+</html>
