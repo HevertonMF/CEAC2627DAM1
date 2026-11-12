@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block title %}Mente Perto | Encontrar psicólogos{% endblock %}
+{% block content %}
+<main>
+  <section class="hero">
+    <p class="etiqueta">CUIDADO EMOCIONAL, COM CALMA</p>
+    <h1>Encontre um espaço para se escutar.</h1>
+    <p class="subtitulo">Pesquise profissionais por tema, especialidade, cidade ou modalidade de atendimento.</p>
+    <form class="busca-principal" action="{{ url_for('buscar') }}" method="get">
+      <label for="q">O que você procura?</label>
+      <div class="linha-busca">
+        <input id="q" name="q" type="search" placeholder="Ex.: ansiedade, luto, terapia de casal" autofocus>
+        <button type="submit">Buscar</button>
+      </div>
+      <div class="filtros-inicio">
+        <select name="especialidade" aria-label="Especialidade">
+          <option value="">Todas as especialidades</option>
+          {% for item in especialidades %}<option value="{{ item }}">{{ item }}</option>{% endfor %}
+        </select>
+        <select name="cidade" aria-label="Cidade">
+          <option value="">Todas as cidades</option>
+          {% for item in cidades %}<option value="{{ item }}">{{ item }}</option>{% endfor %}
+        </select>
+      </div>
+    </form>
+  </section>
+  <section class="como-funciona" aria-labelledby="como">
+    <p class="etiqueta">SIMPLES E DIRETO</p>
+    <h2 id="como">Comece por aquilo que importa agora.</h2>
+    <div class="passos">
+      <article><strong>01</strong><h3>Conte o que busca</h3><p>Use uma palavra, um tema ou uma especialidade.</p></article>
+      <article><strong>02</strong><h3>Compare perfis</h3><p>Veja modalidade, cidade, idiomas e abordagem.</p></article>
+      <article><strong>03</strong><h3>Escolha com calma</h3><p>Este é um protótipo: os perfis são apenas exemplos.</p></article>
+    </div>
+  </section>
+</main>
+{% endblock %}

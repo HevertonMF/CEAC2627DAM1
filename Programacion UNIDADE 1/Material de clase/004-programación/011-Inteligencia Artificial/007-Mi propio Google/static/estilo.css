@@ -1,0 +1,19 @@
+html,body{width:100%;min-height:100%;margin:0;padding:0;font-family:Ubuntu,Arial,sans-serif;color:#242424;box-sizing:border-box}
+*,*::before,*::after{box-sizing:inherit}
+body.inicio{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.inicio main{width:min(90%,620px);text-align:center}
+h1{font-size:34px;font-weight:500;margin:0 0 28px}
+input[type=search]{padding:13px 19px;border:1px solid #aaa;border-radius:30px;outline:none;width:100%;font:inherit;transition:border-color .15s,box-shadow .15s}
+input[type=search]:focus{border-color:#777;box-shadow:0 2px 9px #00000012}
+.cabecera{display:flex;align-items:center;gap:34px;padding:24px 5%;border-bottom:1px solid #eee}
+.marca{font-size:23px;white-space:nowrap;color:#242424;text-decoration:none}
+.cabecera form{width:min(100%,650px)}
+.contenido{max-width:850px;margin:28px 0 70px;padding:0 24px 0 max(24px,calc(5% + 255px))}
+.contador{font-size:13px;color:#777;margin:0 0 28px}
+.resultado{margin:0 0 30px;overflow-wrap:anywhere}
+.resultado .url{font-size:13px;color:#555;margin-bottom:6px}
+.resultado h2{font-size:20px;font-weight:500;margin:0 0 7px}
+.resultado h2 a{color:#174ea6;text-decoration:none}
+.resultado h2 a:hover{text-decoration:underline}
+.resultado p{font-size:14px;line-height:1.6;color:#555;margin:0;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:3;overflow:hidden}
+@media(max-width:700px){.cabecera{flex-direction:column;align-items:stretch;gap:16px;padding:20px 24px}.contenido{margin-top:24px;padding:0 24px}.marca{font-size:22px}}

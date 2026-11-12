@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block title %}{{ psicologo.nome }} | Mente Perto{% endblock %}
+{% block content %}
+<main class="pagina-perfil">
+  <a class="voltar" href="{{ url_for('buscar') }}">← Voltar aos resultados</a>
+  <article class="perfil-completo">
+    <div class="avatar grande" aria-hidden="true">{{ psicologo.nome[4] }}</div>
+    <div><p class="especialidade">{{ psicologo.especialidade }}</p><h1>{{ psicologo.nome }}</h1><p class="registro">{{ psicologo.registro }}</p></div>
+    <div class="bloco"><h2>Sobre o atendimento</h2><p>{{ psicologo.apresentacao }}</p><p>{{ psicologo.temas }}</p></div>
+    <dl><div><dt>Localidade</dt><dd>{{ psicologo.cidade }}</dd></div><div><dt>Modalidade</dt><dd>{{ psicologo.modalidade }}</dd></div><div><dt>Idiomas</dt><dd>{{ psicologo.idiomas }}</dd></div></dl>
+  </article>
+  <aside class="alerta"><strong>Importante:</strong> este perfil é fictício e exibido somente como demonstração do buscador.</aside>
+  {% if psicologo.origem != 'demonstração' and psicologo.fonte_url %}
+  <aside class="alerta"><strong>Fonte pública:</strong> <a href="{{ psicologo.fonte_url }}" target="_blank" rel="noopener noreferrer">consultar a página de origem</a>. Confirme os dados diretamente com o profissional.</aside>
+  {% endif %}
+</main>
+{% endblock %}

@@ -1,0 +1,17 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Heverton | buscador</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='estilo.css') }}">
+</head>
+<body class="inicio">
+  <main>
+    <h1>Heverton | buscador</h1>
+    <form action="{{ url_for('buscar') }}" method="GET">
+      <input type="search" name="busca" placeholder="Buscar páginas web..." aria-label="Buscar" required autofocus>
+    </form>
+  </main>
+</body>
+</html>

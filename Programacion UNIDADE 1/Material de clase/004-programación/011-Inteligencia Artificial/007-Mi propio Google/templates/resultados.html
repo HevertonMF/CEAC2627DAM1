@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{ busca }} - jocarsa | buscador</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='estilo.css') }}">
+</head>
+<body class="pagina-resultados">
+  <header class="cabecera">
+    <a href="{{ url_for('inicio') }}" class="marca">jocarsa | buscador</a>
+    <form action="{{ url_for('buscar') }}" method="GET">
+      <input type="search" name="busca" value="{{ busca }}" placeholder="Buscar páginas web..." aria-label="Buscar" required>
+    </form>
+  </header>
+  <main class="contenido">
+    {% if busca %}
+      <p class="contador">{{ resultados|length }} resultados encontrados{% if resultados|length == 100 %} (máximo mostrado){% endif %}</p>
+      {% for pagina in resultados %}
+        <article class="resultado">
+          <div class="url">{{ pagina.url }}</div>
+          <h2><a href="{{ pagina.url }}" target="_blank" rel="noopener noreferrer">{{ pagina.titulo or pagina.url }}</a></h2>
+          <p>{{ pagina.descripcionia or pagina.descripcion or 'Sin descripción disponible.' }}</p>
+        </article>
+      {% else %}
+        <p>No se han encontrado resultados para <strong>{{ busca }}</strong>.</p>
+      {% endfor %}
+    {% else %}
+      <p>Introduce una consulta para buscar.</p>
+    {% endif %}
+  </main>
+</body>
+</html>

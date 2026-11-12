@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block title %}Resultados | Mente Perto{% endblock %}
+{% block content %}
+<main class="pagina-resultados">
+  <form class="busca-secundaria" action="{{ url_for('buscar') }}" method="get">
+    <input name="q" type="search" value="{{ q }}" placeholder="Tema, especialidade ou nome" aria-label="Pesquisar">
+    <select name="especialidade" aria-label="Especialidade"><option value="">Especialidade</option>{% for item in especialidades %}<option value="{{ item }}" {% if item == especialidade %}selected{% endif %}>{{ item }}</option>{% endfor %}</select>
+    <select name="cidade" aria-label="Cidade"><option value="">Cidade</option>{% for item in cidades %}<option value="{{ item }}" {% if item == cidade %}selected{% endif %}>{{ item }}</option>{% endfor %}</select>
+    <select name="modalidade" aria-label="Modalidade"><option value="">Modalidade</option><option {% if modalidade == 'Online' %}selected{% endif %}>Online</option><option {% if modalidade == 'Presencial' %}selected{% endif %}>Presencial</option><option {% if modalidade == 'Online e presencial' %}selected{% endif %}>Online e presencial</option></select>
+    <button type="submit">Filtrar</button>
+  </form>
+  <div class="cabecalho-resultados"><p class="etiqueta">RESULTADOS</p><h1>{{ resultados|length }} profissional{% if resultados|length != 1 %}is{% endif %} encontrado{% if resultados|length != 1 %}s{% endif %}</h1></div>
+  <section class="lista-perfis">
+    {% for psicologo in resultados %}
+    <article class="cartao-perfil">
+      <div class="avatar" aria-hidden="true">{{ psicologo.nome[4] }}</div>
+      <div><p class="especialidade">{{ psicologo.especialidade }}</p><h2>{{ psicologo.nome }}</h2><p class="registro">{{ psicologo.registro }}</p><p>{{ psicologo.apresentacao }}</p><ul class="metadados"><li>{{ psicologo.cidade }}</li><li>{{ psicologo.modalidade }}</li><li>{{ psicologo.idiomas }}</li></ul><a href="{{ url_for('perfil', identificador=psicologo.id) }}">Ver perfil <span aria-hidden="true">→</span></a></div>
+    </article>
+    {% else %}
+    <div class="sem-resultados"><h2>Nenhum perfil encontrado.</h2><p>Tente usar um termo mais amplo ou remover algum filtro.</p><a href="{{ url_for('inicio') }}">Limpar busca</a></div>
+    {% endfor %}
+  </section>
+</main>
+{% endblock %}
