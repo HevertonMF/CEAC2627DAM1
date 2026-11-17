@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Médico guardado - Hospital São Paulo</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='médicos.css') }}">
+  </head>
+  <body>
+    <header>
+      <div class="cabecalho">
+        <div class="logo">
+          <span class="cruz">+</span>
+          <h1>Hospital São Paulo</h1>
+        </div>
+        <nav>
+          <a href="/">Médicos</a>
+          <a href="/formulario">Insertar médico</a>
+        </nav>
+      </div>
+    </header>
+
+    <main>
+      <div class="cartao confirmacao">
+        <div class="icone">&#10003;</div>
+        <h2 class="titulo-pagina">¡Datos recibidos!</h2>
+        <p class="subtitulo">
+          Te confirmo que he recibido correctamente los datos{% if nombre %} de <strong>{{ nombre }}</strong>{% endif %}.
+        </p>
+        <div class="acoes">
+          <a class="botao" href="/">Ver médicos</a>
+          <a class="botao secundario" href="/formulario">Insertar otro</a>
+        </div>
+      </div>
+    </main>
+
+    <footer>
+      &copy; 2026 Hospital São Paulo
+    </footer>
+  </body>
+</html>

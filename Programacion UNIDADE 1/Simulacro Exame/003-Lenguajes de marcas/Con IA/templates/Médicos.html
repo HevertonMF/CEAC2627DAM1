@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Lista de Médicos - Hospital São Paulo</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='médicos.css') }}">
+  </head>
+  <body>
+    <header>
+      <div class="cabecalho">
+        <div class="logo">
+          <span class="cruz">+</span>
+          <h1>Hospital São Paulo</h1>
+        </div>
+        <nav>
+          <a href="/" class="activo">Médicos</a>
+          <a href="/formulario">Insertar médico</a>
+        </nav>
+      </div>
+    </header>
+
+    <main>
+      <h2 class="titulo-pagina">Nuestro equipo médico</h2>
+      <p class="subtitulo">Profesionales registrados en el hospital.</p>
+
+      {% if datos %}
+      <section class="grade">
+        {% for articulo in datos %}
+        <article>
+          <div class="medico-topo">
+            <div class="avatar">{{ articulo.nombre[:1] }}{{ articulo.apellidos[:1] }}</div>
+            <div>
+              <h3>{{ articulo.nombre }} {{ articulo.apellidos }}</h3>
+              <span class="etiqueta">{{ articulo.especialidad }}</span>
+            </div>
+          </div>
+          <p><strong>Email:</strong> {{ articulo.email }}</p>
+          <p><strong>Nº de colegiado:</strong> {{ articulo.numero_de_colegiado }}</p>
+        </article>
+        {% endfor %}
+      </section>
+      {% else %}
+      <div class="vazio">
+        <p>Todavía no hay médicos registrados.</p>
+        <a class="botao" href="/formulario">Insertar el primero</a>
+      </div>
+      {% endif %}
+    </main>
+
+    <footer>
+      &copy; 2026 Hospital São Paulo
+    </footer>
+  </body>
+</html>

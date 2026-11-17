@@ -1,0 +1,29 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Lista de Médicos</title>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="static/médicos.css">
+  </head>
+  <body>
+    <header>
+      <h1>Hospital São Paulo</h1>
+       <nav>
+        <a href="/">Médicos</a>
+        <a href="/formulario">Insertar médicos</a>
+      </nav>
+    </header>
+    <main>
+      {% for articulo in datos %}
+      	<article>
+        <h3>{{articulo.nombre}} {{articulo.apellidos}}</h3>
+                <p>Email: {{articulo.email}}</p>
+                    <p>Especialidad: {{articulo.especialidad}}</p>
+                        <p>Número de colegiado: {{articulo.numero_de_colegiado}}</p>
+      </article>
+      {% endfor %}
+    </main>
+    <footer>
+    </footer>
+  </body>
+</html>

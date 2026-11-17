@@ -1,0 +1,25 @@
+<!doctype html>
+<html>
+  <head>
+    <title>El blog de Heverton Marques</title>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="static/estilo.css">
+  </head>
+  <body>
+    <header>
+      <h1>Heverton Marques</h1>
+      <h2>Blog personal</h2>
+    </header>
+    <main>
+      {% for articulo in datos %}
+      	<article>
+          <h3>{{articulo.titulo}}</h3>
+          <time>{{articulo.fecha}}</time>
+          <p>{{articulo.contenido}}</p>
+      </article>
+      {% endfor %}
+    </main>
+    <footer>
+    </footer>
+  </body>
+</html>

@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Insertar médico - Hospital São Paulo</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='médicos.css') }}">
+  </head>
+  <body>
+    <header>
+      <div class="cabecalho">
+        <div class="logo">
+          <span class="cruz">+</span>
+          <h1>Hospital São Paulo</h1>
+        </div>
+        <nav>
+          <a href="/">Médicos</a>
+          <a href="/formulario" class="activo">Insertar médico</a>
+        </nav>
+      </div>
+    </header>
+
+    <main>
+      <div class="cartao">
+        <h2 class="titulo-pagina">Nuevo médico</h2>
+        <p class="subtitulo">Rellena los datos para registrarlo.</p>
+
+        <form method="POST" action="/recibedatos">
+          <div class="linha">
+            <div class="campo">
+              <label for="nombre">Nombre</label>
+              <input type="text" name="nombre" id="nombre" placeholder="Ej.: Ana" required>
+            </div>
+            <div class="campo">
+              <label for="apellidos">Apellidos</label>
+              <input type="text" name="apellidos" id="apellidos" placeholder="Ej.: García López" required>
+            </div>
+          </div>
+
+          <div class="campo">
+            <label for="correo">Correo</label>
+            <input type="email" name="correo" id="correo" placeholder="ana@hospital.com" required>
+          </div>
+
+          <div class="linha">
+            <div class="campo">
+              <label for="especialidad">Especialidad</label>
+              <input type="text" name="especialidad" id="especialidad" placeholder="Ej.: Cardiología" required>
+            </div>
+            <div class="campo">
+              <label for="numero_de_colegiado">Número de colegiado</label>
+              <input type="text" name="numero_de_colegiado" id="numero_de_colegiado" placeholder="Ej.: 280412345" required>
+            </div>
+          </div>
+
+          <input type="submit" value="Guardar médico">
+        </form>
+      </div>
+    </main>
+
+    <footer>
+      &copy; 2026 Hospital São Paulo
+    </footer>
+  </body>
+</html>
