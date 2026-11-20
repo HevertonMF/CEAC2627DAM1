@@ -3,12 +3,12 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>{{ busca }} - jocarsa | buscador</title>
+  <title>{{ busca }} - Heverton | buscador</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='estilo.css') }}">
 </head>
 <body class="pagina-resultados">
   <header class="cabecera">
-    <a href="{{ url_for('inicio') }}" class="marca">jocarsa | buscador</a>
+    <a href="{{ url_for('inicio') }}" class="marca">Heverton | buscador</a>
     <form action="{{ url_for('buscar') }}" method="GET">
       <input type="search" name="busca" value="{{ busca }}" placeholder="Buscar páginas web..." aria-label="Buscar" required>
     </form>

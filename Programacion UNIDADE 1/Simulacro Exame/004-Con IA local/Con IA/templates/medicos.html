@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+{% block titulo %}Médicos · Hospital São Paulo{% endblock %}
+
+{% block contenido %}
+<section class="portada">
+  <p class="antetitulo">Cuadro médico</p>
+  <h1>Nuestros médicos</h1>
+  <p class="entradilla">Todo el personal registrado en la base de datos, ordenado por apellidos.</p>
+</section>
+
+<section class="cifras">
+  <div class="cifra"><span>{{ total }}</span>médicos</div>
+  <div class="cifra"><span>{{ activos }}</span>en activo</div>
+  <div class="cifra"><span>{{ especialidades|length }}</span>especialidades</div>
+</section>
+
+<section class="filtros">
+  <input type="search" id="buscar" placeholder="Buscar por nombre, email o colegiado">
+  <select id="especialidad">
+    <option value="">Todas las especialidades</option>
+    {% for e in especialidades %}
+      <option>{{ e }}</option>
+    {% endfor %}
+  </select>
+</section>
+
+<section class="rejilla" id="rejilla">
+  {% for medico in datos %}
+  <article class="ficha{{ '' if medico.activo else ' inactivo' }}"
+           data-texto="{{ (medico.nombre ~ ' ' ~ medico.apellidos ~ ' ' ~ medico.email ~ ' ' ~ medico.numero_de_colegiado)|lower }}"
+           data-especialidad="{{ medico.especialidad }}">
+    <div class="avatar">{{ (medico.nombre or '?')[0] }}{{ (medico.apellidos or '?')[0] }}</div>
+    <div class="datos">
+      <h3>{{ medico.nombre }} {{ medico.apellidos }}</h3>
+      <span class="etiqueta">{{ medico.especialidad }}</span>
+      <dl>
+        <dt>Email</dt><dd>{{ medico.email }}</dd>
+        <dt>Colegiado</dt><dd>{{ medico.numero_de_colegiado }}</dd>
+      </dl>
+    </div>
+    <span class="estado">{{ 'Activo' if medico.activo else 'Inactivo' }}</span>
+  </article>
+  {% else %}
+  <p class="vacio">Todavía no hay médicos. <a href="/formulario">Da de alta el primero</a>.</p>
+  {% endfor %}
+</section>
+<p class="vacio oculto" id="sin-resultados">Ningún médico coincide con la búsqueda.</p>
+{% endblock %}
+
+{% block scripts %}
+<script>
+  const buscar = document.getElementById("buscar");
+  const selector = document.getElementById("especialidad");
+  const fichas = document.querySelectorAll(".ficha");
+
+  function filtrar() {
+    const texto = buscar.value.trim().toLowerCase();
+    const esp = selector.value;
+    let visibles = 0;
+    fichas.forEach(f => {
+      const ok = f.dataset.texto.includes(texto) && (!esp || f.dataset.especialidad === esp);
+      f.classList.toggle("oculto", !ok);
+      if (ok) visibles++;
+    });
+    document.getElementById("sin-resultados").classList.toggle("oculto", visibles > 0);
+  }
+
+  buscar.addEventListener("input", filtrar);
+  selector.addEventListener("change", filtrar);
+</script>
+{% endblock %}

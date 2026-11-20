@@ -1,0 +1,156 @@
+{% extends "base.html" %}
+{% block titulo %}Consultor IA · Hospital São Paulo{% endblock %}
+
+{% block contenido %}
+<section class="portada">
+  <p class="antetitulo">Consultor con IA local</p>
+  <h1>Pregunta a la base de datos <em>en español</em></h1>
+  <p class="entradilla">
+    Escribe lo que quieres saber sobre la tabla <code>médicos</code>. La IA lo traduce a SQL y lo ejecuta.
+    <span class="modelo">Modelo: {{ modelo }}</span>
+  </p>
+</section>
+
+<section class="tarjeta">
+  <h2>Tu pregunta</h2>
+  <textarea id="pregunta" rows="3" placeholder="Dame todos los médicos de Cardiología que estén activos"></textarea>
+  <div class="chips">
+    <button class="chip" type="button">Muéstrame todos los médicos</button>
+    <button class="chip" type="button">¿Cuántos médicos hay por especialidad?</button>
+    <button class="chip" type="button">Médicos de Pediatría que estén activos</button>
+    <button class="chip" type="button">Médicos que no están activos</button>
+  </div>
+  <div class="acciones">
+    <button class="boton" id="enviar" type="button">
+      <span class="spinner" aria-hidden="true"></span><span id="btn-texto">Generar y ejecutar</span>
+    </button>
+    <span class="pista">Ctrl + Enter para enviar</span>
+    <label class="interruptor">
+      <input type="checkbox" id="permitir"><span class="pista-switch" aria-hidden="true"></span>
+      Permitir modificar datos
+    </label>
+  </div>
+  <div id="mensaje" class="mensaje oculto" role="status"></div>
+</section>
+
+<section class="tarjeta oculto" id="tarjeta-sql">
+  <div class="titulo-tarjeta">
+    <h2>SQL generado</h2>
+    <button class="copiar" id="copiar" type="button">Copiar</button>
+  </div>
+  <pre class="sql" id="sql"></pre>
+</section>
+
+<section class="tarjeta oculto" id="tarjeta-res">
+  <div class="titulo-tarjeta">
+    <h2>Resultado</h2>
+    <span class="contador" id="contador"></span>
+  </div>
+  <div class="tabla-envoltorio"><table id="tabla"></table></div>
+</section>
+
+<section class="tarjeta">
+  <h2>Historial</h2>
+  <ul class="historial" id="historial"></ul>
+  <p class="vacio" id="hist-vacio">Todavía no has hecho ninguna consulta.</p>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script>
+  const $ = (id) => document.getElementById(id);
+  const historial = [];
+
+  // Resaltado sencillo de palabras clave SQL
+  const KW = /\b(SELECT|FROM|WHERE|AND|OR|NOT|IN|LIKE|ORDER|BY|GROUP|HAVING|LIMIT|OFFSET|AS|COUNT|SUM|AVG|MIN|MAX|DISTINCT|INSERT|INTO|VALUES|UPDATE|SET|DELETE|JOIN|LEFT|RIGHT|INNER|ON|ASC|DESC|IS|NULL|WITH|CASE|WHEN|THEN|ELSE|END|BETWEEN)\b/gi;
+  function escapar(t) {
+    return String(t).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+  }
+  function resaltar(sql) {
+    return escapar(sql)
+      .replace(/('[^']*')/g, '<span class="str">$1</span>')
+      .replace(KW, m => `<span class="kw">${m.toUpperCase()}</span>`);
+  }
+
+  function mostrarMensaje(texto, tipo) {
+    const m = $("mensaje");
+    m.textContent = texto;
+    m.className = "mensaje " + tipo;
+  }
+  const ocultar = (id) => $(id).classList.add("oculto");
+  const mostrar = (id) => $(id).classList.remove("oculto");
+
+  function pintarTabla(columnas, filas) {
+    let html = "<thead><tr>" + columnas.map(c => `<th>${escapar(c)}</th>`).join("") + "</tr></thead><tbody>";
+    for (const fila of filas) {
+      html += "<tr>" + fila.map(v => v === null
+        ? '<td class="nulo">NULL</td>'
+        : `<td>${escapar(v)}</td>`).join("") + "</tr>";
+    }
+    $("tabla").innerHTML = html + "</tbody>";
+    $("contador").textContent = `${filas.length} fila${filas.length === 1 ? "" : "s"}`;
+  }
+
+  function anadirHistorial(pregunta) {
+    historial.unshift({ pregunta, hora: new Date().toLocaleTimeString("es-ES", {hour: "2-digit", minute: "2-digit"}) });
+    ocultar("hist-vacio");
+    $("historial").innerHTML = historial.slice(0, 10).map(h =>
+      `<li data-q="${escapar(h.pregunta)}"><span>${escapar(h.pregunta)}</span><time>${h.hora}</time></li>`
+    ).join("");
+  }
+
+  async function consultar() {
+    const pregunta = $("pregunta").value.trim();
+    if (!pregunta) { $("pregunta").focus(); return; }
+
+    const btn = $("enviar");
+    btn.disabled = true; btn.classList.add("cargando");
+    $("btn-texto").textContent = "La IA está pensando…";
+    ocultar("mensaje"); ocultar("tarjeta-res");
+
+    try {
+      const r = await fetch("/consultar", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ pregunta, permitir_cambios: $("permitir").checked })
+      });
+      const data = await r.json();
+
+      if (data.sql) { $("sql").innerHTML = resaltar(data.sql); mostrar("tarjeta-sql"); }
+      else { ocultar("tarjeta-sql"); }
+
+      if (data.error) {
+        mostrarMensaje(data.error, "error");
+      } else if (data.columnas && data.columnas.length) {
+        pintarTabla(data.columnas, data.filas);
+        mostrar("tarjeta-res");
+      } else {
+        mostrarMensaje(`Sentencia ejecutada. Filas afectadas: ${data.afectadas ?? 0}`, "ok");
+      }
+      anadirHistorial(pregunta);
+    } catch (e) {
+      mostrarMensaje("No se pudo contactar con el servidor Flask.", "error");
+    } finally {
+      btn.disabled = false; btn.classList.remove("cargando");
+      $("btn-texto").textContent = "Generar y ejecutar";
+    }
+  }
+
+  $("enviar").addEventListener("click", consultar);
+  $("pregunta").addEventListener("keydown", e => {
+    if (e.key === "Enter" && (e.ctrlKey || e.metaKey)) consultar();
+  });
+  document.querySelectorAll(".chip").forEach(c =>
+    c.addEventListener("click", () => { $("pregunta").value = c.textContent; consultar(); })
+  );
+  $("historial").addEventListener("click", e => {
+    const li = e.target.closest("li");
+    if (li) { $("pregunta").value = li.dataset.q; $("pregunta").focus(); }
+  });
+  $("copiar").addEventListener("click", () => {
+    navigator.clipboard.writeText($("sql").textContent);
+    $("copiar").textContent = "¡Copiado!";
+    setTimeout(() => $("copiar").textContent = "Copiar", 1200);
+  });
+</script>
+{% endblock %}

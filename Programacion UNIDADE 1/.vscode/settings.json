@@ -1,4 +1,14 @@
 {
+    "python.useEnvironmentsExtension": false,
+    "python.defaultInterpreterPath": "/usr/bin/python3",
+    "python.terminal.executeInFileDir": true,
+    "code-runner.runInTerminal": true,
+    "code-runner.fileDirectoryAsCwd": true,
+    "code-runner.saveFileBeforeRun": true,
+    "code-runner.clearPreviousOutput": true,
+    "code-runner.executorMap": {
+        "python": "python3 -u"
+    },
     "python-envs.pythonProjects": [
         {
             "path": ".",

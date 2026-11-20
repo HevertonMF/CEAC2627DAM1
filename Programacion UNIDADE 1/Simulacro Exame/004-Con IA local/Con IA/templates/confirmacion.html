@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block titulo %}Médico registrado · Hospital São Paulo{% endblock %}
+
+{% block contenido %}
+<section class="tarjeta confirmacion">
+  <div class="sello" aria-hidden="true">✓</div>
+  <p class="antetitulo">Alta completada</p>
+  <h1>Te confirmo que he recibido correctamente los datos</h1>
+  <p class="entradilla">
+    <strong>{{ nombre }} {{ apellidos }}</strong> ya forma parte del cuadro médico
+    {% if especialidad %}en <strong>{{ especialidad }}</strong>{% endif %}.
+  </p>
+  <div class="acciones">
+    <a class="boton" href="/medicos">Ver cuadro médico</a>
+    <a class="enlace" href="/formulario">Dar de alta otro</a>
+  </div>
+</section>
+{% endblock %}

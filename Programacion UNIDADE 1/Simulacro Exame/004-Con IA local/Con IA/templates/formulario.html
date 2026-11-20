@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% block titulo %}Alta de médico · Hospital São Paulo{% endblock %}
+
+{% block contenido %}
+<section class="portada">
+  <p class="antetitulo">Recursos humanos</p>
+  <h1>Alta de médico</h1>
+  <p class="entradilla">Rellena los datos y el médico aparecerá al momento en el cuadro médico.</p>
+</section>
+
+<form class="tarjeta formulario" method="POST" action="/recibedatos">
+  <div class="campo">
+    <label for="nombre">Nombre</label>
+    <input type="text" name="nombre" id="nombre" placeholder="Lucía" required>
+  </div>
+  <div class="campo">
+    <label for="apellidos">Apellidos</label>
+    <input type="text" name="apellidos" id="apellidos" placeholder="Fernández Soler" required>
+  </div>
+  <div class="campo ancho">
+    <label for="correo">Correo</label>
+    <input type="email" name="correo" id="correo" placeholder="lucia.fernandez@ejemplo.com" required>
+  </div>
+  <div class="campo">
+    <label for="especialidad">Especialidad</label>
+    <input type="text" name="especialidad" id="especialidad" list="lista-especialidades" placeholder="Cardiología" required>
+    <datalist id="lista-especialidades">
+      <option>Anestesiología</option><option>Cardiología</option><option>Dermatología</option>
+      <option>Digestivo</option><option>Endocrinología</option><option>Ginecología</option>
+      <option>Medicina de Familia</option><option>Medicina Interna</option><option>Neumología</option>
+      <option>Neurología</option><option>Oftalmología</option><option>Oncología</option>
+      <option>Otorrinolaringología</option><option>Pediatría</option><option>Psiquiatría</option>
+      <option>Reumatología</option><option>Traumatología</option><option>Urología</option>
+    </datalist>
+  </div>
+  <div class="campo">
+    <label for="numero_de_colegiado">Número de colegiado</label>
+    <input type="number" name="numero_de_colegiado" id="numero_de_colegiado" placeholder="464610231" min="1" required>
+  </div>
+  <div class="acciones ancho">
+    <button class="boton" type="submit">Dar de alta</button>
+    <a class="enlace" href="/medicos">Ver cuadro médico</a>
+  </div>
+</form>
+{% endblock %}
