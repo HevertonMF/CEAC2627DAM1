@@ -1,5 +1,6 @@
 {
     "python.useEnvironmentsExtension": false,
+    "sqlite.sqlite3": "/usr/bin/sqlite3",
     "python.defaultInterpreterPath": "/usr/bin/python3",
     "python.terminal.executeInFileDir": true,
     "code-runner.runInTerminal": true,
