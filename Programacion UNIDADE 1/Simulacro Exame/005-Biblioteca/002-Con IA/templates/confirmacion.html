@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Libro guardado · Biblioteca Heverton</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='libros.css') }}">
+</head>
+<body>
+
+  <header class="cabecera">
+    <div class="contenedor">
+      <a class="marca" href="/">
+        <span class="logo">📚</span>
+        <h1>Biblioteca Heverton <small>Catálogo + consultor SQL con IA</small></h1>
+      </a>
+      <nav>
+        <a href="/#catalogo">Catálogo</a>
+        <a href="/#ia">Consultor IA</a>
+        <a href="/formulario">＋ Añadir libro</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="contenedor">
+    <section class="confirmacion">
+      <div class="check">✓</div>
+      <h2>¡Libro guardado!</h2>
+      <p>Te confirmo que he recibido correctamente los datos de <b>«{{ libro.titulo }}»</b>{% if id %} (id {{ id }}){% endif %}.</p>
+
+      <div class="card resumen">
+        <dl>
+          <dt>Título</dt>      <dd>{{ libro.titulo }}</dd>
+          <dt>Autor</dt>       <dd>{{ libro.autor }}</dd>
+          {% if libro.fecha_de_publicacion %}<dt>Publicado</dt><dd>{{ libro.fecha_de_publicacion }}</dd>{% endif %}
+          {% if libro.editorial %}<dt>Editorial</dt><dd>{{ libro.editorial }}</dd>{% endif %}
+          {% if libro.isbn %}<dt>ISBN</dt><dd>{{ libro.isbn }}</dd>{% endif %}
+          {% if libro.genero %}<dt>Género</dt><dd>{{ libro.genero }}</dd>{% endif %}
+          <dt>Precio</dt>      <dd>{{ "%.2f"|format(libro.precio or 0) }} €</dd>
+          <dt>Disponible</dt>
+          <dd>
+            {% if libro.disponible == 'Sí' %}<span class="estado si">● Sí</span>
+            {% else %}<span class="estado no">● No</span>{% endif %}
+          </dd>
+          {% if libro.sinopsis %}<dt>Sinopsis</dt><dd>{{ libro.sinopsis }}</dd>{% endif %}
+        </dl>
+      </div>
+
+      <div class="form-acciones" style="justify-content:center">
+        <a class="btn btn-secundario" href="/formulario">＋ Añadir otro</a>
+        <a class="btn btn-primario" href="/#catalogo">Ver catálogo</a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="pie-pagina">
+    © 2026 Biblioteca Heverton Marques · Todos los derechos reservados
+  </footer>
+</body>
+</html>

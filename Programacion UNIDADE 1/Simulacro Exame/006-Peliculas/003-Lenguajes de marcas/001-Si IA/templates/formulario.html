@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <title>Peliculas</title>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="static/estilo.css">
+  </head>
+  <body>
+    <header>
+          <h1>Peliculas</h1>
+        <nav>
+        <a href="/">peliculas</a>
+        <a href="/formulario">Insertar peliculas</a>
+      </nav>
+      </header>
+      <main>
+  <section class="tarjeta">
+    <h2>Añadir a peliculas</h2>
+    <form method="post" action="/recibedatos" class="formulario">
+      <label for="titulo">Titulo</label>
+      <input id="titulo" name="titulo">
+      <label for="titulo_original">Titulo original</label>
+      <input id="titulo_original" name="titulo_original">
+      <label for="director">Director</label>
+      <input id="director" name="director">
+      <label for="genero">Genero</label>
+      <input id="genero" name="genero">
+      <label for="sinopsis">Sinopsis</label>
+      <input id="sinopsis" name="sinopsis">
+      <label for="anio_estreno">Año de estreno</label>
+      <input id="anio_estreno" name="anio_estreno" type="number" step="any">
+      <label for="fecha_estreno">Fecha de estreno</label>
+      <input id="fecha_estreno" name="fecha_estreno" type="number" step="any">
+      <label for="duracion_minutos">Duración (minutos)</label>
+      <input id="duracion_minutos" name="duracion_minutos" type="number" step="any">
+      <label for="pais">País</label>
+      <input id="pais" name="pais">
+      <label for="idioma_original">Idioma original</label>
+      <input id="idioma_original" name="idioma_original">
+      <label for="clasificacion_edades">Clasificación por edades</label>
+      <input id="clasificacion_edades" name="clasificacion_edades">
+      <label for="presupuesto">Presupuesto</label>
+      <input id="presupuesto" name="presupuesto">
+      <label for="recaudacion">Recaudación</label>
+      <input id="recaudacion" name="recaudacion">
+      <label for="valoracion_media">Valoración media</label>
+      <input id="valoracion_media" name="valoracion_media" type="number" step="any">
+      <label for="numero_valoraciones">Número de valoraciones</label>
+      <input id="numero_valoraciones" name="numero_valoraciones" type="number" step="any">
+      <label for="numero_visualizaciones">Número de visualizaciones</label>
+      <input id="numero_visualizaciones" name="numero_visualizaciones" type="number" step="any">
+      <label for="disponible">Disponible</label>
+      <input id="disponible" name="disponible">
+      <label for="vista">Vista</label>
+      <input id="vista" name="vista">
+      <label for="favorita">Favorita</label>
+      <input id="favorita" name="favorita">
+      <label for="imagen_portada">Imagen de portada</label>
+      <input id="imagen_portada" name="imagen_portada">
+      <label for="url_trailer">URL del tráiler</label>
+      <input id="url_trailer" name="url_trailer">
+      <label for="precio_alquiler">Precio de alquiler</label>
+      <input id="precio_alquiler" name="precio_alquiler" type="number" step="any">
+      <label for="precio_compra">Precio de compra</label>
+      <input id="precio_compra" name="precio_compra" type="number" step="any">
+      <label for="formato">Formato</label>
+      <input id="formato" name="formato">
+      <label for="subtitulos_disponibles">Subtítulos disponibles</label>
+      <input id="subtitulos_disponibles" name="subtitulos_disponibles">
+
+      <button type="submit">Guardar</button>
+    </form>
+      </main>
+      <footer>
+        (C) 2026 Biblioteca Heverton Marques. Todos los derechos reservados.
+      </footer>
+    </div>
+  </body>
+</html>

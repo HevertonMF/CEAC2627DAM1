@@ -1,0 +1,28 @@
+body{background:rgb(186, 173, 223);}
+header,main,footer{background:rgb(162, 146, 241);padding:20px;margin:auto;width:1000px;}
+header,footer{z-index:110;}
+nav a{color:white;background:rgb(123, 9, 125);padding:10px;text-decoration:none;width:auto;display:inline-block;text-align:center;border-radius:20px;}
+header img{max-width:10%; display:block; margin:0;}
+main{font-family:'Calibri', 'Carlito', 'Segoe UI', sans-serif;}
+h1,h2,h3{font-family: Georgia;align-items:center;align-content:center;justify-content:center;text-align:center;}
+main form{display:flex;flex-direction:column;align-items:center;border-radius:20px;}
+input[type="text"]{width:300px;margin:10px;padding:10px;border-radius:20px;border:none;}
+label{margin-top:10px;font-family: Arial, Helvetica, sans-serif; font-size:20px;}
+input[type="submit"]{width:200px;margin-top:20px;padding:10px;border-radius:20px;border:none;background:rgb(123, 9, 125);color:white;font-weight:bold;cursor:pointer;}
+article{margin-top:20px;font-family: cursive;width: 100%;}
+div.card{background:rgb(162, 146, 241);padding:20px;margin:auto;width:1000px;}
+button{width:250px;margin-top:20px;padding:10px;border-radius:20px;border:none;background:rgb(123, 9, 125);color:white;font-weight:bold;cursor:pointer; }
+textarea{width:auto;margin:10px;padding:30px;border-radius:20px;border:none;}
+span{font-family: Arial, Helvetica, sans-serif;font-weight:bold;}
+label[for="comentario"]{margin-top:20px;font-family: Arial, Helvetica, sans-serif;}
+button[id="enviar"]{width:200px;margin-top:20px;padding:10px;border-radius:20px;border:none;background:rgb(65, 52, 73);color:white;font-weight:bold;cursor:pointer;}
+textarea[id="pregunta"]{width:860px;margin:auto;padding:20px;border-radius:20px;border:none;}
+html{scroll-behavior:smooth;align-items:center;align-content:center;justify-content:center;} 
+nav{font-family: Georgia;align-items:center;align-content:center;justify-content:center;text-align:center;}
+div{font-family: Arial, Helvetica, sans-serif;font-weight:bold;align-items:center;align-content:center;justify-content:center;text-align:center;}
+input[type="number"]{width:300px;margin:10px;padding:10px;border-radius:20px;border:none;}
+h3.confirmacion{font-family: Arial, Helvetica, sans-serif;font-weight:bold;align-items:center;align-content:center;justify-content:center;text-align:center;font-size:50px;color:rgb(65, 52, 73);}   
+textarea[id="pregunta"]{width:860px;margin:auto;padding:20px;border-radius:20px;border:none;}
+tbody{background:rgb(186, 173, 223);width:100%;margin:100px;padding:20px;border-radius:20px;align-items:center;align-content:center;justify-content:center;text-align:center;}
+thead{background:rgb(186, 173, 223);}
+ul.historial{list-style-type:none;margin:0;padding:0;overflow:hidden;background-color:rgb(123, 9, 125);border-radius:20px;}

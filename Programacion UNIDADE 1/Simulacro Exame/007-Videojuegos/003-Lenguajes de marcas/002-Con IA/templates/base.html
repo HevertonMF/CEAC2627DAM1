@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block titulo %}GameTeca{% endblock %} · GameTeca</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='estilo.css') }}">
+</head>
+<body>
+  <!-- Cabecera con el menú (igual en todas las páginas) -->
+  <header class="cabecera">
+    <a href="/" class="logo">🎮 Game<span>Teca</span></a>
+    <nav>
+      <a href="/" class="{{ 'activo' if request.path == '/' }}">Catálogo</a>
+      <a href="/formulario" class="{{ 'activo' if request.path == '/formulario' }}">Añadir juego</a>
+      <a href="/consultor" class="{{ 'activo' if request.path == '/consultor' }}">Consultor IA</a>
+    </nav>
+  </header>
+
+  <!-- Aquí va el contenido de cada página -->
+  <main class="contenedor">
+    {% block contenido %}{% endblock %}
+  </main>
+
+  <footer class="pie">(C) 2026 videojuegos.com · Todos los derechos reservados</footer>
+</body>
+</html>

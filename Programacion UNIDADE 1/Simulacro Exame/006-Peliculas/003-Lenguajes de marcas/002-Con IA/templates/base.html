@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block titulo %}Videoteca Heverton{% endblock %}</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='estilo.css') }}">
+</head>
+<body>
+  <header class="cabecera">
+    <a class="marca" href="/">
+      <span class="claqueta" aria-hidden="true"></span>
+      <span>
+        <strong>Videoteca</strong>
+        <small>Heverton · desde 2026</small>
+      </span>
+    </a>
+    <nav>
+      <a href="/" class="{{ 'activo' if pagina == 'catalogo' }}">Catálogo</a>
+      <a href="/consultor" class="{{ 'activo' if pagina == 'consultor' }}">Consultor IA</a>
+      <a href="/formulario" class="boton-nav {{ 'activo' if pagina == 'formulario' }}">+ Añadir película</a>
+    </nav>
+  </header>
+
+  <main>
+    {% block contenido %}{% endblock %}
+  </main>
+
+  <footer class="pie">
+    © 2026 Videoteca Heverton Marques · Simulacro de examen DAM · Datos de ejemplo
+  </footer>
+
+  {% block scripts %}{% endblock %}
+</body>
+</html>

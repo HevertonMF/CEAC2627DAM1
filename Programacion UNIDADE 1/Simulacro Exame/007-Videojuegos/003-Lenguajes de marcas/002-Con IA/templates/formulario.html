@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% block titulo %}Añadir juego{% endblock %}
+{% block contenido %}
+
+  <section class="tarjeta">
+    <h1>Añadir un videojuego</h1>
+    <form method="post" action="/recibedatos" class="formulario">
+
+      <h3>Datos básicos</h3>
+      <div class="campos">
+        <label>Título <input name="titulo" required></label>
+        <label>Desarrollador <input name="desarrollador"></label>
+        <label>Distribuidor <input name="distribuidor"></label>
+        <label>Género <input name="genero" placeholder="Acción, Rol..."></label>
+        <label class="ancho">Descripción <textarea name="descripcion" rows="3"></textarea></label>
+        <label>Año <input name="anio_lanzamiento" type="number"></label>
+        <label>Fecha de lanzamiento <input name="fecha_lanzamiento" type="date"></label>
+        <label>Plataforma <input name="plataforma"></label>
+        <label>País <input name="pais"></label>
+        <label>Idioma <input name="idioma" value="Español"></label>
+        <label>Edad mínima <input name="clasificacion_edades" type="number"></label>
+      </div>
+
+      <h3>Números</h3>
+      <div class="campos">
+        <label>Presupuesto <input name="presupuesto" type="number" step="any"></label>
+        <label>Ingresos <input name="ingresos" type="number" step="any"></label>
+        <label>Valoración media <input name="valoracion_media" type="number" step="0.1" min="0" max="10"></label>
+        <label>Nº de valoraciones <input name="numero_valoraciones" type="number"></label>
+        <label>Unidades vendidas <input name="unidades_vendidas" type="number"></label>
+        <label>Precio original <input name="precio_original" type="number" step="0.01"></label>
+        <label>Precio rebajado <input name="precio_rebajado" type="number" step="0.01"></label>
+        <label>Espacio requerido <input name="espacio_requerido" type="number" step="any"></label>
+      </div>
+
+      <h3>Sí o no</h3>
+      <div class="campos">
+        <label>Disponible <select name="disponible"><option>Verdadero</option><option>Falso</option></select></label>
+        <label>Multijugador <select name="multijugador"><option>Verdadero</option><option>Falso</option></select></label>
+        <label>Favorito <select name="favorito"><option>Falso</option><option>Verdadero</option></select></label>
+        <label>Compras integradas <select name="compras_integradas"><option>Falso</option><option>Verdadero</option></select></label>
+      </div>
+
+      <h3>Multimedia</h3>
+      <div class="campos">
+        <label>Imagen de portada <input name="imagen_portada" placeholder="juego.jpg"></label>
+        <label>URL del tráiler <input name="url_trailer" type="url"></label>
+      </div>
+
+      <button class="boton">Guardar videojuego</button>
+    </form>
+  </section>
+
+{% endblock %}

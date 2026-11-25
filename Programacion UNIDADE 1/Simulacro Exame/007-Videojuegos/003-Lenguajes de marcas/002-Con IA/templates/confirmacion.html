@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block titulo %}Guardado{% endblock %}
+{% block contenido %}
+
+  <section class="tarjeta centro">
+    <div class="icono-grande">✅</div>
+    <h1>¡Guardado!</h1>
+    <p><b>{{ nombre }}</b> ya está en el catálogo.</p>
+    <a class="boton" href="/">Ver catálogo</a>
+    <a class="boton secundario" href="/formulario">Añadir otro</a>
+  </section>
+
+{% endblock %}

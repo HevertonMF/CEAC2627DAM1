@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+{% from "macros.html" import poster, estrellas with context %}
+{% block titulo %}{{ p.titulo }} · Videoteca Heverton{% endblock %}
+
+{% block contenido %}
+<a class="volver" href="/">← Volver al catálogo</a>
+
+<section class="ficha" style="--c: {{ color(p.genero) }}">
+  {{ poster(p, true) }}
+  <div class="ficha-texto">
+    <p class="antetitulo">{{ p.genero }}</p>
+    <h1>{{ p.titulo }}</h1>
+    {% if p.titulo_original and p.titulo_original|lower != p.titulo|lower %}
+      <p class="original">{{ p.titulo_original }}</p>
+    {% endif %}
+    <p class="meta">
+      {{ estrellas(p.valoracion_media) }}
+      <span>{{ p.anio_estreno }}</span>
+      <span>{{ p.duracion_minutos|duracion }}</span>
+      <span class="edad">{{ p.clasificacion_edades }}</span>
+    </p>
+    <p class="sinopsis">{{ p.sinopsis }}</p>
+
+    <div class="etiquetas">
+      <span class="pildora {{ 'si' if es_si(p.disponible) else 'no' }}">{{ 'Disponible' if es_si(p.disponible) else 'No disponible' }}</span>
+      {% if es_si(p.vista) %}<span class="pildora si">✓ Vista</span>{% endif %}
+      {% if es_si(p.favorita) %}<span class="pildora fav">♥ Favorita</span>{% endif %}
+      {% if es_si(p.subtitulos_disponibles) %}<span class="pildora">Subtítulos</span>{% endif %}
+      {% if p.formato %}<span class="pildora">{{ p.formato }}</span>{% endif %}
+    </div>
+
+    <div class="precios">
+      <div><small>Alquiler</small><strong>{{ p.precio_alquiler|euros }}</strong></div>
+      <div><small>Compra</small><strong>{{ p.precio_compra|euros }}</strong></div>
+      {% if p.url_trailer %}<a class="boton" href="{{ p.url_trailer }}" target="_blank" rel="noopener">▶ Ver tráiler</a>{% endif %}
+    </div>
+  </div>
+</section>
+
+<section class="datos-tecnicos">
+  <h2>Ficha técnica</h2>
+  <dl>
+    <div><dt>Director</dt><dd>{{ p.director }}</dd></div>
+    <div><dt>Estreno</dt><dd>{{ p.fecha_estreno|fecha }}</dd></div>
+    <div><dt>País</dt><dd>{{ p.pais }}</dd></div>
+    <div><dt>Idioma original</dt><dd>{{ p.idioma_original }}</dd></div>
+    <div><dt>Presupuesto</dt><dd>{{ p.presupuesto|millones }}</dd></div>
+    <div><dt>Recaudación</dt><dd>{{ p.recaudacion|millones }}</dd></div>
+    <div><dt>Valoraciones</dt><dd>{{ p.numero_valoraciones|miles }}</dd></div>
+    <div><dt>Visualizaciones</dt><dd>{{ p.numero_visualizaciones|miles }}</dd></div>
+  </dl>
+</section>
+
+{% if parecidas %}
+<section class="parecidas">
+  <h2>Más de {{ p.genero }}</h2>
+  <div class="rejilla">
+    {% for q in parecidas %}
+    <a class="tarjeta-peli" href="/pelicula/{{ q.id }}">
+      {{ poster(q) }}
+      <div class="info">
+        <h3>{{ q.titulo }}</h3>
+        <p>{{ q.anio_estreno }}</p>
+        <div class="fila">{{ estrellas(q.valoracion_media) }}</div>
+      </div>
+    </a>
+    {% endfor %}
+  </div>
+</section>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% block titulo %}Catálogo{% endblock %}
+{% block contenido %}
+
+  <!-- Portada de la página -->
+  <section class="hero">
+    <h1>Tu biblioteca de <span>videojuegos</span></h1>
+    <p>{{ juegos|length }} juegos en el catálogo</p>
+
+    <!-- Buscador: manda q y genero por la URL -->
+    <form class="buscador" method="get" action="/">
+      <input name="q" value="{{ texto }}" placeholder="Buscar por título o estudio...">
+      <select name="genero">
+        <option value="">Todos los géneros</option>
+        {% for g in generos %}
+          <option {{ 'selected' if g.genero == genero }}>{{ g.genero }}</option>
+        {% endfor %}
+      </select>
+      <button>Buscar</button>
+    </form>
+  </section>
+
+  <!-- Rejilla de tarjetas -->
+  <section class="rejilla">
+    {% for j in juegos %}
+      <a class="tarjeta-juego" href="/juego/{{ j.id }}">
+        <!-- Portada inventada con las iniciales y el color del género -->
+        <div class="portada" style="--color: {{ color(j.genero) }}">
+          <span>{{ iniciales(j.titulo) }}</span>
+          {% if j.favorito == 'Verdadero' %}<b class="fav">★</b>{% endif %}
+          <i class="nota">{{ j.valoracion_media }}</i>
+        </div>
+        <div class="info">
+          <h3>{{ j.titulo }}</h3>
+          <p>{{ j.desarrollador }} · {{ j.anio_lanzamiento }}</p>
+          <div class="pie-tarjeta">
+            <span class="etiqueta" style="--color: {{ color(j.genero) }}">{{ j.genero }}</span>
+            <strong>{{ dinero(j.precio_rebajado) }}</strong>
+          </div>
+        </div>
+      </a>
+    {% else %}
+      <p class="vacio">No hay juegos con esa búsqueda 😢</p>
+    {% endfor %}
+  </section>
+
+{% endblock %}

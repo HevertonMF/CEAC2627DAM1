@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+{% block titulo %}{{ j.titulo }}{% endblock %}
+{% block contenido %}
+
+  <a href="/" class="volver">← Volver al catálogo</a>
+
+  <!-- Parte de arriba: portada grande + datos principales -->
+  <section class="ficha">
+    <div class="portada grande" style="--color: {{ color(j.genero) }}">
+      <span>{{ iniciales(j.titulo) }}</span>
+    </div>
+
+    <div>
+      <span class="etiqueta" style="--color: {{ color(j.genero) }}">{{ j.genero }}</span>
+      <h1>{{ j.titulo }}</h1>
+      <p class="sub">{{ j.desarrollador }} · {{ j.distribuidor }}</p>
+      <p class="descripcion">{{ j.descripcion }}</p>
+
+      <!-- Precio: tachado el original si hay rebaja -->
+      <div class="precio">
+        {% if j.precio_original != j.precio_rebajado %}
+          <s>{{ dinero(j.precio_original) }}</s>
+        {% endif %}
+        <strong>{{ dinero(j.precio_rebajado) }}</strong>
+      </div>
+
+      <!-- Etiquetas de Verdadero / Falso -->
+      <div class="chapas">
+        <span class="{{ 'si' if j.disponible == 'Verdadero' else 'no' }}">Disponible</span>
+        <span class="{{ 'si' if j.multijugador == 'Verdadero' else 'no' }}">Multijugador</span>
+        <span class="{{ 'si' if j.favorito == 'Verdadero' else 'no' }}">Favorito</span>
+        <span class="{{ 'si' if j.compras_integradas == 'Verdadero' else 'no' }}">Compras integradas</span>
+      </div>
+
+      {% if j.url_trailer %}
+        <a class="boton" href="{{ j.url_trailer }}" target="_blank">▶ Ver tráiler</a>
+      {% endif %}
+    </div>
+  </section>
+
+  <!-- Números grandes -->
+  <section class="stats">
+    <div><b>{{ j.valoracion_media }}</b><span>Valoración</span></div>
+    <div><b>{{ numero(j.numero_valoraciones) }}</b><span>Valoraciones</span></div>
+    <div><b>{{ numero(j.unidades_vendidas) }}</b><span>Unidades vendidas</span></div>
+    <div><b>+{{ j.clasificacion_edades }}</b><span>Edad</span></div>
+  </section>
+
+  <!-- Resto de datos en una tabla -->
+  <section class="tarjeta">
+    <h2>Ficha técnica</h2>
+    <table class="datos">
+      <tr><th>Fecha de lanzamiento</th><td>{{ j.fecha_lanzamiento }}</td></tr>
+      <tr><th>Plataforma</th><td>{{ j.plataforma }}</td></tr>
+      <tr><th>País</th><td>{{ j.pais }}</td></tr>
+      <tr><th>Idioma</th><td>{{ j.idioma }}</td></tr>
+      <tr><th>Presupuesto</th><td>{{ numero(j.presupuesto) }} €</td></tr>
+      <tr><th>Ingresos</th><td>{{ numero(j.ingresos) }} €</td></tr>
+      <tr><th>Espacio requerido</th><td>{{ j.espacio_requerido }}</td></tr>
+      <tr><th>Imagen de portada</th><td>{{ j.imagen_portada }}</td></tr>
+    </table>
+  </section>
+
+{% endblock %}

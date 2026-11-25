@@ -1,0 +1,19 @@
+{# Póster: usa la imagen si existe en static/portadas, si no lo pinta con CSS #}
+{% macro poster(p, grande=false) %}
+  {% set img = portada(p) %}
+  <div class="poster{{ ' grande' if grande }}" style="--c: {{ color(p.genero) }}">
+    {% if img %}
+      <img src="{{ url_for('static', filename='portadas/' ~ img) }}" alt="Portada de {{ p.titulo }}">
+    {% else %}
+      <span class="poster-genero">{{ p.genero }}</span>
+      <span class="poster-titulo">{{ p.titulo }}</span>
+      <span class="poster-director">{{ p.director }}</span>
+    {% endif %}
+    {% if p.formato %}<span class="poster-formato">{{ p.formato }}</span>{% endif %}
+  </div>
+{% endmacro %}
+
+{% macro estrellas(nota) %}
+  {% set n = a_numero(nota) or 0 %}
+  <span class="nota" title="{{ nota }} / 10"><span class="estrella">★</span> {{ '%.1f'|format(n) }}</span>
+{% endmacro %}

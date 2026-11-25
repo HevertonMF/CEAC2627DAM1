@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% block titulo %}Consultor IA{% endblock %}
+{% block contenido %}
+
+  <section class="tarjeta">
+    <div class="titulo-ia">
+      <h1>🤖 Consultor SQL con IA</h1>
+      <span class="modelo">Modelo: <b>{{ modelo }}</b></span>
+    </div>
+    <p class="sub">Pregunta en español sobre la tabla <code>videojuegos</code> y la IA hace el SQL.</p>
+
+    <textarea id="pregunta" rows="3" placeholder="Ej.: Dame los juegos de Nintendo"></textarea>
+
+    <!-- Preguntas de ejemplo -->
+    <div class="chips">
+      <button class="chip">Muéstrame todos los videojuegos</button>
+      <button class="chip">¿Cuántos videojuegos hay por género?</button>
+      <button class="chip">Los 5 juegos más vendidos</button>
+      <button class="chip">Los 5 videojuegos más caros</button>
+    </div>
+
+    <div class="acciones">
+      <button class="boton" id="enviar">Generar y ejecutar</button>
+      <label class="casilla"><input type="checkbox" id="permitir"> Permitir modificar datos</label>
+    </div>
+    <p id="mensaje" class="mensaje oculto"></p>
+  </section>
+
+  <!-- El SQL que devuelve la IA -->
+  <section class="tarjeta oculto" id="caja-sql">
+    <h2>SQL generado</h2>
+    <pre class="sql" id="sql"></pre>
+  </section>
+
+  <!-- La tabla con el resultado -->
+  <section class="tarjeta oculto" id="caja-resultado">
+    <h2>Resultado <small id="contador"></small></h2>
+    <div class="tabla-scroll"><table class="resultado" id="tabla"></table></div>
+  </section>
+
+  <script src="{{ url_for('static', filename='consultor.js') }}"></script>
+
+{% endblock %}

@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <title>Biblioteca Heverton</title>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="static/libros.css">
+  </head>
+  <body>
+    <header>
+          <h1>Biblioteca Heverton</h1>
+       <nav>
+        <a href="/">Libros</a>
+        <a href="/formulario">Formulario</a>
+      </nav>
+      </header>
+      <main>
+        <form method="POST" action="/recibedatos">
+          <label for="titulo">Título</label>
+          <input type="text" name="titulo" id="titulo">
+          <label for="autor">Autor</label>
+          <input type="text" name="autor" id="autor">
+          <label for="fecha_de_publicacion">Fecha de publicación</label>
+          <input type="text" name="fecha_de_publicacion" id="fecha_de_publicacion">
+          <label for="sinopsis">Sipnosis</label>
+          <input type="text" name="sinopsis" id="sinopsis">
+          <label for="editorial">Editorial</label>
+          <input type="text" name="editorial" id="editorial">
+          <label for="isbn">ISBN</label>
+          <input type="text" name="isbn" id="isbn">
+          <label for="genero">Género</label>
+          <input type="text" name="genero" id="genero">
+          <label for="precio">Precio</label>
+          <input type="number" name="precio" id="precio">
+          <label for="disponible">Disponible</label>
+          <input type="text" name="disponible" id="disponible">
+          <input type="submit">
+        </form>
+      </main>
+      <footer>
+        (C) 2026 Biblioteca Heverton Marques. Todos los derechos reservados.
+      </footer>
+    </div>
+  </body>
+</html>

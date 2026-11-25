@@ -1,0 +1,91 @@
+{% extends "base.html" %}
+{% block titulo %}Añadir película · Videoteca Heverton{% endblock %}
+
+{% macro sino(nombre, texto, valor="Verdadero") %}
+  <label for="{{ nombre }}">{{ texto }}</label>
+  <select id="{{ nombre }}" name="{{ nombre }}">
+    <option {{ 'selected' if valor == 'Verdadero' }}>Verdadero</option>
+    <option {{ 'selected' if valor == 'Falso' }}>Falso</option>
+  </select>
+{% endmacro %}
+
+{% block contenido %}
+<section class="portada">
+  <p class="antetitulo">Nueva película</p>
+  <h1>Añadir al catálogo</h1>
+  <p class="entradilla">Rellena la ficha. Los campos con * son obligatorios.</p>
+</section>
+
+<form method="post" action="/recibedatos" class="formulario">
+  <fieldset>
+    <legend>🎬 La película</legend>
+    <div class="campos">
+      <div class="ancho"><label for="titulo">Título *</label><input id="titulo" name="titulo" required></div>
+      <div class="ancho"><label for="titulo_original">Título original</label><input id="titulo_original" name="titulo_original"></div>
+      <div><label for="director">Director</label><input id="director" name="director"></div>
+      <div><label for="genero">Género</label>
+        <input id="genero" name="genero" list="lista-generos">
+        <datalist id="lista-generos">
+          {% for g in ["Acción","Animación","Aventura","Ciencia ficción","Comedia","Crimen","Drama","Fantasía","Infantil","Musical","Romance","Terror","Thriller"] %}<option>{{ g }}</option>{% endfor %}
+        </datalist>
+      </div>
+      <div class="ancho"><label for="sinopsis">Sinopsis</label><textarea id="sinopsis" name="sinopsis" rows="3"></textarea></div>
+    </div>
+  </fieldset>
+
+  <fieldset>
+    <legend>📅 Estreno y origen</legend>
+    <div class="campos">
+      <div><label for="anio_estreno">Año de estreno</label><input id="anio_estreno" name="anio_estreno" type="number" min="1888" max="2100"></div>
+      <div><label for="fecha_estreno">Fecha de estreno</label><input id="fecha_estreno" name="fecha_estreno" type="date"></div>
+      <div><label for="duracion_minutos">Duración (minutos)</label><input id="duracion_minutos" name="duracion_minutos" type="number" min="1"></div>
+      <div><label for="clasificacion_edades">Clasificación por edades</label>
+        <select id="clasificacion_edades" name="clasificacion_edades">
+          {% for e in ["TP","7","12","16","18"] %}<option>{{ e }}</option>{% endfor %}
+        </select>
+      </div>
+      <div><label for="pais">País</label><input id="pais" name="pais"></div>
+      <div><label for="idioma_original">Idioma original</label><input id="idioma_original" name="idioma_original"></div>
+    </div>
+  </fieldset>
+
+  <fieldset>
+    <legend>📊 Cifras</legend>
+    <div class="campos">
+      <div><label for="presupuesto">Presupuesto ($)</label><input id="presupuesto" name="presupuesto" type="number" min="0"></div>
+      <div><label for="recaudacion">Recaudación ($)</label><input id="recaudacion" name="recaudacion" type="number" min="0"></div>
+      <div><label for="valoracion_media">Valoración media (0-10)</label><input id="valoracion_media" name="valoracion_media" type="number" step="0.1" min="0" max="10"></div>
+      <div><label for="numero_valoraciones">Número de valoraciones</label><input id="numero_valoraciones" name="numero_valoraciones" type="number" min="0"></div>
+      <div><label for="numero_visualizaciones">Número de visualizaciones</label><input id="numero_visualizaciones" name="numero_visualizaciones" type="number" min="0"></div>
+    </div>
+  </fieldset>
+
+  <fieldset>
+    <legend>🛒 Tienda</legend>
+    <div class="campos">
+      <div><label for="precio_alquiler">Precio de alquiler (€)</label><input id="precio_alquiler" name="precio_alquiler" type="number" step="0.01" min="0"></div>
+      <div><label for="precio_compra">Precio de compra (€)</label><input id="precio_compra" name="precio_compra" type="number" step="0.01" min="0"></div>
+      <div><label for="formato">Formato</label>
+        <select id="formato" name="formato">{% for f in ["4K","HD","SD","Blu-ray","DVD"] %}<option>{{ f }}</option>{% endfor %}</select>
+      </div>
+      <div>{{ sino("subtitulos_disponibles", "Subtítulos disponibles") }}</div>
+      <div><label for="imagen_portada">Imagen de portada</label><input id="imagen_portada" name="imagen_portada" placeholder="pelicula.jpg"></div>
+      <div><label for="url_trailer">URL del tráiler</label><input id="url_trailer" name="url_trailer" type="url" placeholder="https://"></div>
+    </div>
+  </fieldset>
+
+  <fieldset>
+    <legend>⭐ Mi colección</legend>
+    <div class="campos">
+      <div>{{ sino("disponible", "Disponible") }}</div>
+      <div>{{ sino("vista", "Vista", "Falso") }}</div>
+      <div>{{ sino("favorita", "Favorita", "Falso") }}</div>
+    </div>
+  </fieldset>
+
+  <div class="acciones">
+    <button type="submit" class="boton">Guardar película</button>
+    <a href="/" class="enlace">Cancelar</a>
+  </div>
+</form>
+{% endblock %}

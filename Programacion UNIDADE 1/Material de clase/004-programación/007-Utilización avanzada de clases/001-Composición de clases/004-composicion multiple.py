@@ -25,4 +25,3 @@ class Coche():
     return "El coche ha acelerado"
   
 micoche = Coche("gasolina",True,"rojo")
-

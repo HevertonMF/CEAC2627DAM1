@@ -15,7 +15,7 @@ class Pedido():
     self.productos = []
     
 
-pedido1 = Pedido("2026-11-02","Jose Vicente","Carratala")
+pedido1 = Pedido("2026-11-02","Heverton","Marques")
 pedido1.productos.append(Producto("Producto1",34))
 pedido1.productos.append(Producto("Producto2",45))
 

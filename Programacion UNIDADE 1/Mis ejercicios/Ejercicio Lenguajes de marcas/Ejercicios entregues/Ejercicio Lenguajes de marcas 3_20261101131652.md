@@ -51,7 +51,7 @@
     │   ├── 005-Manipulación de estilos
     │   │   ├── 000-introdución.md
     │   │   ├── 001-montamos un servidor web.md
-    │   │   ├── 002-carga json.html
+    │   │   ├── 
     │   │   └── minicurriculum.json
     │   ├── 006-recuperar datos
     │   │   ├── 001-base de datos.md
@@ -1181,7 +1181,7 @@ Caso supuesto: 1.-Primero mova uma pasta de /home/josevicente/prueba1 para /var/
 http://localhost = /var/www/html/
 ```
 
-**002-carga json.html**
+****
 
 ```html
 <!doctype html>

@@ -1,0 +1,122 @@
+{% extends "base.html" %}
+{% from "macros.html" import poster, estrellas with context %}
+{% block titulo %}Catálogo · Videoteca Heverton{% endblock %}
+
+{% block contenido %}
+{% if destacada %}
+<section class="destacada" style="--c: {{ color(destacada.genero) }}">
+  <div class="destacada-texto">
+    <p class="antetitulo">La mejor valorada del catálogo</p>
+    <h1>{{ destacada.titulo }}</h1>
+    <p class="meta">
+      {{ estrellas(destacada.valoracion_media) }}
+      <span>{{ destacada.anio_estreno }}</span>
+      <span>{{ destacada.duracion_minutos|duracion }}</span>
+      <span>{{ destacada.genero }}</span>
+      <span class="edad">{{ destacada.clasificacion_edades }}</span>
+    </p>
+    <p class="sinopsis">{{ destacada.sinopsis }}</p>
+    <a class="boton" href="/pelicula/{{ destacada.id }}">Ver ficha</a>
+  </div>
+  {{ poster(destacada, true) }}
+</section>
+{% endif %}
+
+<section class="cifras">
+  <div class="cifra"><span>{{ resumen.total }}</span>películas</div>
+  <div class="cifra"><span>{{ resumen.horas }}</span>horas de cine</div>
+  <div class="cifra"><span>{{ resumen.nota }}</span>nota media</div>
+  <div class="cifra"><span>{{ resumen.disponibles }}</span>disponibles</div>
+</section>
+
+<section class="filtros">
+  <input type="search" id="buscar" placeholder="Buscar por título, director o país…">
+  <select id="genero">
+    <option value="">Todos los géneros</option>
+    {% for g in generos %}<option>{{ g }}</option>{% endfor %}
+  </select>
+  <select id="formato">
+    <option value="">Cualquier formato</option>
+    {% for f in formatos %}<option>{{ f }}</option>{% endfor %}
+  </select>
+  <select id="orden">
+    <option value="titulo">Orden: título</option>
+    <option value="nota">Orden: mejor nota</option>
+    <option value="anio">Orden: más recientes</option>
+    <option value="vistas">Orden: más vistas</option>
+  </select>
+  <label class="chip-check"><input type="checkbox" id="solo-disp"> Disponibles</label>
+  <label class="chip-check"><input type="checkbox" id="solo-fav"> ♥ Favoritas</label>
+</section>
+<p class="contador" id="contador"></p>
+
+<section class="rejilla" id="rejilla">
+  {% for p in datos %}
+  <a class="tarjeta-peli{{ '' if es_si(p.disponible) else ' no-disponible' }}" href="/pelicula/{{ p.id }}"
+     data-texto="{{ (p.titulo ~ ' ' ~ p.titulo_original ~ ' ' ~ p.director ~ ' ' ~ p.pais)|lower }}"
+     data-genero="{{ p.genero }}" data-formato="{{ p.formato }}"
+     data-disp="{{ 1 if es_si(p.disponible) else 0 }}" data-fav="{{ 1 if es_si(p.favorita) else 0 }}"
+     data-titulo="{{ p.titulo|lower }}" data-nota="{{ a_numero(p.valoracion_media) or 0 }}"
+     data-anio="{{ p.anio_estreno }}" data-vistas="{{ p.numero_visualizaciones or 0 }}">
+    {{ poster(p) }}
+    <div class="info">
+      <h3>{{ p.titulo }}</h3>
+      <p>{{ p.anio_estreno }} · {{ p.genero }}</p>
+      <div class="fila">
+        {{ estrellas(p.valoracion_media) }}
+        <span class="iconos">
+          {% if es_si(p.favorita) %}<span class="fav" title="Favorita">♥</span>{% endif %}
+          {% if es_si(p.vista) %}<span class="vista" title="Vista">✓</span>{% endif %}
+        </span>
+      </div>
+    </div>
+    {% if not es_si(p.disponible) %}<span class="cinta">No disponible</span>{% endif %}
+  </a>
+  {% else %}
+  <p class="vacio">Todavía no hay películas. <a href="/formulario">Añade la primera</a>.</p>
+  {% endfor %}
+</section>
+<p class="vacio oculto" id="sin-resultados">Ninguna película coincide con la búsqueda.</p>
+{% endblock %}
+
+{% block scripts %}
+<script>
+  const $ = id => document.getElementById(id);
+  const rejilla = $("rejilla");
+  const tarjetas = [...document.querySelectorAll(".tarjeta-peli")];
+
+  function filtrar() {
+    const texto = $("buscar").value.trim().toLowerCase();
+    const gen = $("genero").value, fmt = $("formato").value;
+    const disp = $("solo-disp").checked, fav = $("solo-fav").checked;
+    let visibles = 0;
+    tarjetas.forEach(t => {
+      const ok = t.dataset.texto.includes(texto)
+        && (!gen || t.dataset.genero === gen)
+        && (!fmt || t.dataset.formato === fmt)
+        && (!disp || t.dataset.disp === "1")
+        && (!fav || t.dataset.fav === "1");
+      t.classList.toggle("oculto", !ok);
+      if (ok) visibles++;
+    });
+    $("sin-resultados").classList.toggle("oculto", visibles > 0);
+    $("contador").textContent = `Mostrando ${visibles} de ${tarjetas.length} películas`;
+  }
+
+  function ordenar() {
+    const o = $("orden").value;
+    const num = (t, k) => parseFloat(t.dataset[k]) || 0;
+    tarjetas.sort((a, b) =>
+      o === "titulo" ? a.dataset.titulo.localeCompare(b.dataset.titulo, "es")
+      : o === "nota" ? num(b, "nota") - num(a, "nota")
+      : o === "anio" ? num(b, "anio") - num(a, "anio")
+      : num(b, "vistas") - num(a, "vistas"));
+    tarjetas.forEach(t => rejilla.appendChild(t));
+  }
+
+  ["buscar", "genero", "formato", "solo-disp", "solo-fav"].forEach(id =>
+    $(id).addEventListener(id === "buscar" ? "input" : "change", filtrar));
+  $("orden").addEventListener("change", ordenar);
+  filtrar();
+</script>
+{% endblock %}

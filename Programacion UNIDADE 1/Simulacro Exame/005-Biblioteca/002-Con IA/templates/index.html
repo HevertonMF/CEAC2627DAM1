@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Biblioteca Heverton</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='libros.css') }}">
+</head>
+<body>
+
+  <!-- ===== Cabecera ===== -->
+  <header class="cabecera">
+    <div class="contenedor">
+      <a class="marca" href="/">
+        <span class="logo">📚</span>
+        <h1>Biblioteca Heverton <small>Catálogo + consultor SQL con IA</small></h1>
+      </a>
+      <nav>
+        <a href="#catalogo" class="activo">Catálogo</a>
+        <a href="#ia">Consultor IA</a>
+        <a href="/formulario">＋ Añadir libro</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ===== Portada con estadísticas ===== -->
+  <section class="hero">
+    <div class="contenedor">
+      <h2>Bienvenido a la biblioteca</h2>
+      <p>Explora el catálogo, filtra por género o pregúntale a la IA lo que quieras saber de los libros en lenguaje natural.</p>
+      <div class="stats">
+        <div class="stat"><div class="num">{{ stats.total }}</div><div class="txt">Libros en total</div></div>
+        <div class="stat"><div class="num">{{ stats.disponibles or 0 }}</div><div class="txt">Disponibles</div></div>
+        <div class="stat"><div class="num">{{ stats.generos }}</div><div class="txt">Géneros</div></div>
+        <div class="stat"><div class="num">{{ "%.2f"|format(stats.precio_medio or 0) }} €</div><div class="txt">Precio medio</div></div>
+      </div>
+    </div>
+  </section>
+
+  <main class="contenedor">
+
+    <!-- ===== Catálogo ===== -->
+    <section class="seccion" id="catalogo">
+      <div class="seccion-titulo">
+        <div>
+          <h2>Catálogo</h2>
+          <p><span id="visibles">{{ datos|length }}</span> de {{ datos|length }} libros</p>
+        </div>
+        <div class="filtros">
+          <input type="search" id="buscar" placeholder="🔍 Buscar título, autor, editorial…">
+          <select id="filtro-genero">
+            <option value="">Todos los géneros</option>
+            {% for g in generos %}<option>{{ g }}</option>{% endfor %}
+          </select>
+          <select id="filtro-disponible">
+            <option value="">Todos</option>
+            <option value="Sí">Disponibles</option>
+            <option value="No">No disponibles</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="libros" id="libros">
+        {% for articulo in datos %}
+        <article class="libro"
+                 data-texto="{{ (articulo.titulo ~ ' ' ~ articulo.autor ~ ' ' ~ articulo.editorial ~ ' ' ~ articulo.isbn)|lower }}"
+                 data-genero="{{ articulo.genero }}"
+                 data-disponible="{{ articulo.disponible }}">
+          <div class="portada" style="--h: {{ (articulo.id * 47) % 360 }}">
+            <span class="inicial">{{ (articulo.titulo or '?')[0] }}</span>
+            <span class="genero">{{ articulo.genero or 'Sin género' }}</span>
+          </div>
+          <div class="cuerpo">
+            <h3>{{ articulo.titulo }}</h3>
+            <div class="autor">{{ articulo.autor }}</div>
+            <p class="sinopsis">{{ articulo.sinopsis }}</p>
+            <div class="meta">
+              <span><b>Publicado:</b> {{ articulo.fecha_de_publicacion }}</span>
+              <span><b>Editorial:</b> {{ articulo.editorial }}</span>
+              <span><b>ISBN:</b> {{ articulo.isbn }}</span>
+            </div>
+          </div>
+          <div class="pie">
+            <span class="precio">{{ "%.2f"|format(articulo.precio or 0) }} €</span>
+            {% if articulo.disponible == 'Sí' %}
+              <span class="estado si">● Disponible</span>
+            {% else %}
+              <span class="estado no">● No disponible</span>
+            {% endif %}
+          </div>
+        </article>
+        {% endfor %}
+      </div>
+      <div class="vacio {% if datos %}hidden{% endif %}" id="sin-resultados">
+        {% if datos %}Ningún libro coincide con tu búsqueda.{% else %}Todavía no hay libros. <a href="/formulario">Añade el primero</a>.{% endif %}
+      </div>
+    </section>
+
+    <!-- ===== Consultor SQL con IA ===== -->
+    <section class="seccion" id="ia">
+      <div class="seccion-titulo">
+        <div>
+          <h2>Consultor SQL con IA</h2>
+          <p>Pregunta en lenguaje natural sobre la tabla <code>libros</code></p>
+        </div>
+        <span class="badge">Modelo: <b>{{ modelo }}</b></span>
+      </div>
+
+      <div class="card">
+        <h3>Tu pregunta</h3>
+        <textarea id="pregunta" placeholder="Ej.: Dame todos los libros de Gabriel García Márquez"></textarea>
+        <div class="chips">
+          <button class="chip">Muéstrame todos los libros</button>
+          <button class="chip">¿Cuántos libros hay por género?</button>
+          <button class="chip">Los 5 libros más caros</button>
+          <button class="chip">Libros que no están disponibles</button>
+          <button class="chip">Libros publicados antes de 1900</button>
+        </div>
+        <div class="acciones">
+          <button class="btn btn-primario" id="enviar"><span class="spinner"></span><span id="btn-text">Generar y ejecutar</span></button>
+          <span class="hint"><kbd>Ctrl</kbd> + <kbd>Enter</kbd> para enviar</span>
+          <label class="toggle"><input type="checkbox" id="permitir"> Permitir modificar datos</label>
+        </div>
+        <div id="mensaje" class="msg hidden"></div>
+      </div>
+
+      <div class="card hidden" id="card-sql">
+        <h3>SQL generado</h3>
+        <div class="sql-box">
+          <pre id="sql"></pre>
+          <button class="copy" id="copiar">Copiar</button>
+        </div>
+      </div>
+
+      <div class="card hidden" id="card-res">
+        <h3>Resultado</h3>
+        <div class="table-wrap"><table id="tabla"></table></div>
+        <div class="count" id="contador"></div>
+      </div>
+
+      <div class="card">
+        <h3>Historial</h3>
+        <ul class="history" id="historial"></ul>
+        <div class="empty" id="hist-vacio">Todavía no has hecho ninguna consulta.</div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="pie-pagina">
+    © 2026 Biblioteca Heverton Marques · Todos los derechos reservados
+  </footer>
+
+<script>
+  const $ = (id) => document.getElementById(id);
+
+  /* ---------- Filtros del catálogo (sin recargar la página) ---------- */
+  const libros = [...document.querySelectorAll(".libro")];
+  function filtrar() {
+    const texto = $("buscar").value.trim().toLowerCase();
+    const genero = $("filtro-genero").value;
+    const disp = $("filtro-disponible").value;
+    let visibles = 0;
+    for (const l of libros) {
+      const ok = (!texto || l.dataset.texto.includes(texto))
+              && (!genero || l.dataset.genero === genero)
+              && (!disp || l.dataset.disponible === disp);
+      l.classList.toggle("hidden", !ok);
+      if (ok) visibles++;
+    }
+    $("visibles").textContent = visibles;
+    if (libros.length) $("sin-resultados").classList.toggle("hidden", visibles > 0);
+  }
+  ["buscar", "filtro-genero", "filtro-disponible"].forEach(id => $(id).addEventListener("input", filtrar));
+
+  /* ---------- Menú: marca la sección visible ---------- */
+  const enlaces = document.querySelectorAll('nav a[href^="#"]');
+  const observador = new IntersectionObserver(entradas => {
+    entradas.forEach(e => {
+      if (e.isIntersecting) enlaces.forEach(a => a.classList.toggle("activo", a.getAttribute("href") === "#" + e.target.id));
+    });
+  }, { rootMargin: "-40% 0px -55% 0px" });
+  document.querySelectorAll("section[id]").forEach(s => observador.observe(s));
+
+  /* ---------- Consultor IA ---------- */
+  const historial = [];
+  const KW = /\b(SELECT|FROM|WHERE|AND|OR|NOT|IN|LIKE|ORDER|BY|GROUP|HAVING|LIMIT|OFFSET|AS|COUNT|SUM|AVG|MIN|MAX|DISTINCT|INSERT|INTO|VALUES|UPDATE|SET|DELETE|JOIN|LEFT|RIGHT|INNER|ON|ASC|DESC|IS|NULL|WITH|CASE|WHEN|THEN|ELSE|END|BETWEEN)\b/gi;
+  function escapar(t) {
+    return String(t).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+  }
+  function resaltar(sql) {
+    return escapar(sql)
+      .replace(/('[^']*')/g, '<span class="str">$1</span>')
+      .replace(KW, m => `<span class="kw">${m.toUpperCase()}</span>`);
+  }
+  function mostrarMensaje(texto, tipo) { const m = $("mensaje"); m.textContent = texto; m.className = "msg " + tipo; }
+  const ocultar = (id) => $(id).classList.add("hidden");
+  const mostrar = (id) => $(id).classList.remove("hidden");
+
+  function pintarTabla(columnas, filas) {
+    let html = "<thead><tr>" + columnas.map(c => `<th>${escapar(c)}</th>`).join("") + "</tr></thead><tbody>";
+    for (const fila of filas) {
+      html += "<tr>" + fila.map(v => v === null ? '<td class="null">NULL</td>' : `<td>${escapar(v)}</td>`).join("") + "</tr>";
+    }
+    $("tabla").innerHTML = html + "</tbody>";
+    $("contador").textContent = `${filas.length} fila${filas.length === 1 ? "" : "s"}`;
+  }
+
+  function anadirHistorial(pregunta) {
+    historial.unshift({ pregunta, hora: new Date().toLocaleTimeString("es-ES", {hour: "2-digit", minute: "2-digit"}) });
+    ocultar("hist-vacio");
+    $("historial").innerHTML = historial.slice(0, 10).map(h =>
+      `<li data-q="${escapar(h.pregunta)}"><span class="q">${escapar(h.pregunta)}</span><span class="t">${h.hora}</span></li>`
+    ).join("");
+  }
+
+  async function consultar() {
+    const pregunta = $("pregunta").value.trim();
+    if (!pregunta) { $("pregunta").focus(); return; }
+
+    const btn = $("enviar");
+    btn.disabled = true; btn.classList.add("loading");
+    $("btn-text").textContent = "Pensando…";
+    ocultar("mensaje"); ocultar("card-res");
+
+    try {
+      const r = await fetch("/consultar", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ pregunta, permitir_cambios: $("permitir").checked })
+      });
+      const data = await r.json();
+
+      if (data.sql) { $("sql").innerHTML = resaltar(data.sql); mostrar("card-sql"); }
+      else ocultar("card-sql");
+
+      if (data.error) mostrarMensaje(data.error, "error");
+      else if (data.columnas && data.columnas.length) { pintarTabla(data.columnas, data.filas); mostrar("card-res"); }
+      else mostrarMensaje(`Sentencia ejecutada. Filas afectadas: ${data.afectadas ?? 0}. Recarga la página para ver el catálogo actualizado.`, "ok");
+
+      anadirHistorial(pregunta);
+    } catch (e) {
+      mostrarMensaje("No se pudo contactar con el servidor Flask.", "error");
+    } finally {
+      btn.disabled = false; btn.classList.remove("loading");
+      $("btn-text").textContent = "Generar y ejecutar";
+    }
+  }
+
+  $("enviar").addEventListener("click", consultar);
+  $("pregunta").addEventListener("keydown", e => { if (e.key === "Enter" && (e.ctrlKey || e.metaKey)) consultar(); });
+  document.querySelectorAll(".chip").forEach(c =>
+    c.addEventListener("click", () => { $("pregunta").value = c.textContent; consultar(); })
+  );
+  $("historial").addEventListener("click", e => {
+    const li = e.target.closest("li");
+    if (li) { $("pregunta").value = li.dataset.q; $("pregunta").focus(); }
+  });
+  $("copiar").addEventListener("click", () => {
+    navigator.clipboard.writeText($("sql").textContent);
+    $("copiar").textContent = "¡Copiado!";
+    setTimeout(() => $("copiar").textContent = "Copiar", 1200);
+  });
+</script>
+</body>
+</html>

@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Añadir libro · Biblioteca Heverton</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='libros.css') }}">
+</head>
+<body>
+
+  <header class="cabecera">
+    <div class="contenedor">
+      <a class="marca" href="/">
+        <span class="logo">📚</span>
+        <h1>Biblioteca Heverton <small>Catálogo + consultor SQL con IA</small></h1>
+      </a>
+      <nav>
+        <a href="/#catalogo">Catálogo</a>
+        <a href="/#ia">Consultor IA</a>
+        <a href="/formulario" class="activo">＋ Añadir libro</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="contenedor">
+    <section class="seccion">
+      <div class="seccion-titulo">
+        <div>
+          <h2>Añadir un libro nuevo</h2>
+          <p>Rellena los datos y pulsa «Guardar libro». Los campos con <span class="obligatorio">*</span> son obligatorios.</p>
+        </div>
+      </div>
+
+      {% if errores %}
+      <div class="errores">
+        <b>Revisa estos datos:</b>
+        <ul>{% for e in errores %}<li>{{ e }}</li>{% endfor %}</ul>
+      </div>
+      {% endif %}
+
+      <form class="card" method="POST" action="/recibedatos">
+        <div class="form-grid">
+          <div class="campo">
+            <label for="titulo">Título <span class="obligatorio">*</span></label>
+            <input type="text" name="titulo" id="titulo" required autofocus
+                   value="{{ valores.titulo }}" placeholder="Don Quijote de la Mancha">
+          </div>
+          <div class="campo">
+            <label for="autor">Autor <span class="obligatorio">*</span></label>
+            <input type="text" name="autor" id="autor" required
+                   value="{{ valores.autor }}" placeholder="Miguel de Cervantes">
+          </div>
+
+          <div class="campo ancho">
+            <label for="sinopsis">Sinopsis</label>
+            <textarea name="sinopsis" id="sinopsis" placeholder="¿De qué trata el libro?">{{ valores.sinopsis }}</textarea>
+          </div>
+
+          <div class="campo">
+            <label for="fecha_de_publicacion">Fecha de publicación</label>
+            <input type="date" name="fecha_de_publicacion" id="fecha_de_publicacion"
+                   value="{{ valores.fecha_de_publicacion }}">
+          </div>
+          <div class="campo">
+            <label for="editorial">Editorial</label>
+            <input type="text" name="editorial" id="editorial"
+                   value="{{ valores.editorial }}" placeholder="Nuevo Mundo">
+          </div>
+
+          <div class="campo">
+            <label for="isbn">ISBN</label>
+            <input type="text" name="isbn" id="isbn" inputmode="numeric"
+                   pattern="[0-9\-]{10,17}" value="{{ valores.isbn }}" placeholder="9788400000001">
+            <div class="ayuda">10 o 13 dígitos (se permiten guiones).</div>
+          </div>
+          <div class="campo">
+            <label for="genero">Género</label>
+            <input type="text" name="genero" id="genero" list="lista-generos"
+                   value="{{ valores.genero }}" placeholder="Novela">
+            <datalist id="lista-generos">
+              {% for g in generos %}<option value="{{ g }}">{% endfor %}
+            </datalist>
+            <div class="ayuda">Elige uno de la lista o escribe uno nuevo.</div>
+          </div>
+
+          <div class="campo">
+            <label for="precio">Precio (€)</label>
+            <input type="number" name="precio" id="precio" min="0" step="0.01"
+                   value="{{ valores.precio }}" placeholder="19.95">
+          </div>
+          <div class="campo">
+            <label for="disponible">Disponible</label>
+            <select name="disponible" id="disponible">
+              <option value="Sí" {% if valores.disponible != 'No' %}selected{% endif %}>Sí</option>
+              <option value="No" {% if valores.disponible == 'No' %}selected{% endif %}>No</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-acciones">
+          <a class="btn btn-secundario" href="/">Cancelar</a>
+          <button type="submit" class="btn btn-primario">💾 Guardar libro</button>
+        </div>
+      </form>
+    </section>
+  </main>
+
+  <footer class="pie-pagina">
+    © 2026 Biblioteca Heverton Marques · Todos los derechos reservados
+  </footer>
+</body>
+</html>

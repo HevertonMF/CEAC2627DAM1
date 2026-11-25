@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block titulo %}Guardada · Videoteca Heverton{% endblock %}
+
+{% block contenido %}
+<section class="confirmacion">
+  <div class="sello">✓</div>
+  <h1>¡Película guardada!</h1>
+  <p><strong>{{ titulo }}</strong> ya forma parte del catálogo.</p>
+  <div class="acciones">
+    <a class="boton" href="/pelicula/{{ nuevo_id }}">Ver su ficha</a>
+    <a class="boton secundario" href="/formulario">Añadir otra</a>
+    <a class="enlace" href="/">Volver al catálogo</a>
+  </div>
+</section>
+{% endblock %}
