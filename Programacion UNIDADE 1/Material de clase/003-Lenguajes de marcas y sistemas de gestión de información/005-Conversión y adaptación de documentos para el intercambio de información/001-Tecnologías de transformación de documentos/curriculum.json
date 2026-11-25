@@ -1,0 +1,136 @@
+{
+  "basics": {
+    "name": "Heverton Marques Ferreira Maciel",
+    "image": "image.png",
+    "label": "Estudiante de FP en Desarrollo de Aplicaciones Multiplataforma (DAM)",
+    "email": "hevertonmf@gmail.com",
+    "phone": "+34 662 353 018",
+    "workPermit": "Permiso de trabajo: España",
+    "summary": "Estudiante de FP en Desarrollo de Aplicaciones Multiplataforma (DAM), con 8 años de experiencia en entorno de oficina, donde desarrollé una fuerte capacidad de organización, trabajo en equipo y resolución de problemas bajo presión. Actualmente reforzando competencias en Java, SQL y Python, con el objetivo de iniciar una carrera en programación/desarrollo de software, aplicando tanto los conocimientos técnicos adquiridos en el ciclo formativo como la madurez profesional de los años de experiencia anterior.",
+    "location": {
+      "postalCode": "46529",
+      "city": "Canet de Berenguer",
+      "countryCode": "ES",
+      "country": "España"
+    },
+    "profiles": [
+      {
+        "network": "LinkedIn",
+        "username": "heverton-marques-00a569196",
+        "url": "https://www.linkedin.com/in/heverton-marques-00a569196/"
+      },
+      {
+        "network": "GitHub",
+        "username": "HevertonMF",
+        "url": "https://github.com/HevertonMF"
+      }
+    ]
+  },
+
+  "work": [
+    {
+      "name": "BOURBON AUTOMOTIVE PLASTICS",
+      "position": "Operario de logística de almacén",
+      "location": "Portugal",
+      "startDate": "2022-08-22",
+      "endDate": "2025-06-06",
+      "highlights": [
+        "Abastecer la línea de producción, control de stock, movimientos de inventario a través del sistema SAP, tareas relacionadas con la conducción de carretillas elevadoras en el almacén en general."
+      ]
+    },
+    {
+      "name": "MOVELOG SERVIÇOS LOGISTICOS S.A, AMBEV",
+      "position": "Receptor de materia prima",
+      "location": "Brasil",
+      "startDate": "2020-02-14",
+      "endDate": "2022-06-03",
+      "highlights": [
+        "Control de recepción de carga de proveedores, trabajo en el área de logística de la empresa."
+      ]
+    },
+    {
+      "name": "PETROLUB",
+      "position": "Empleado administrativo",
+      "location": "Brasil",
+      "startDate": "2016-10-07",
+      "endDate": "2019-09-27",
+      "highlights": [
+        "Crear hojas de cálculo para control, control de pago de conductores, seguimiento de vehículos de flota, carga horaria de conductores, control de rutas, solicitud de mantenimiento en sistemas de seguimiento."
+      ]
+    },
+    {
+      "name": "IVECO",
+      "position": "Inspector de control de calidad",
+      "location": "Brasil",
+      "startDate": "2015-02-02",
+      "endDate": "2015-08-31",
+      "highlights": [
+        "Contacto con proveedores, resolución de problemas de calidad con los proveedores, registros en programas como: CLICK, SAP, SQP."
+      ]
+    },
+    {
+      "name": "IVECO",
+      "position": "Empleado administrativo",
+      "location": "Brasil",
+      "startDate": "2011-11-07",
+      "endDate": "2015-01-30",
+      "highlights": [
+        "Programación de empleados, registros en general, traslados de empleados, tareas diarias de oficina."
+      ]
+    }
+  ],
+
+  "education": [
+    {
+      "institution": "Centro CEAC de Formación Profesional",
+      "area": "Desarrollo de Aplicaciones Multiplataforma (DAM)",
+      "studyType": "Nivel en el MEC: 5",
+      "location": "España",
+      "startDate": "2026-09-09",
+      "endDate": "Actual"
+    },
+    {
+      "institution": "UNIFEMM - Centro Universitário de Sete Lagoas",
+      "area": "Grado en Administración y Dirección de Empresas",
+      "studyType": "Nivel en el MEC: 6",
+      "location": "Sete Lagoas-MG, Brasil",
+      "startDate": "2010-02-02",
+      "endDate": "2014-12-13"
+    }
+  ],
+
+  "skills": [
+    {
+      "name": "Capacidades",
+      "keywords": [
+        "Responsabilidad en el trabajo",
+        "Trabajo en equipo",
+        "Comunicación",
+        "Resolución de problemas",
+        "Sociable",
+        "Organización y puntualidad"
+      ]
+    }
+  ],
+
+  "languages": [
+    {
+      "language": "Portugués",
+      "fluency": "Lengua materna"
+    },
+    {
+      "language": "Español",
+      "fluency": "Básico (En estudio)"
+    },
+    {
+      "language": "Inglés",
+      "fluency": "Básico"
+    }
+  ],
+
+  "certificates": [
+    {
+      "name": "Permiso de conducción B"
+    }
+  ]
+}

@@ -1,0 +1,20 @@
+📁000-Presentación
+📁001-Identificación de los elementos de un programa informático
+📁002-Utilización de objetos
+📁003-Uso de estructuras de control
+📁004-Desarrollo de clases
+📁005-Lectura y escritura de información
+📁001-Flujos. Tipos bytes y caracteres. Clases relacionadas
+📁.terminal
+📄000-Introducción.md
+📄001-escribir.py
+📄002-leer.py
+📄agenda.txt
+📁002-Ficheros de datos. Registros
+📁003-Apertura y cierre de ficheros. Modos de acceso. Escritura y lectura de información en ficheros
+📁004-Utilización de los sistemas de ficheros
+📁005-Creación y eliminación de ficheros y directorios
+📁006-Entrada desde teclado. Salida a pantalla. Formatos de visualización
+📁007-Interfaces gráficas
+📁008-Concepto de evento
+📁009-Creación de controladores de eventos

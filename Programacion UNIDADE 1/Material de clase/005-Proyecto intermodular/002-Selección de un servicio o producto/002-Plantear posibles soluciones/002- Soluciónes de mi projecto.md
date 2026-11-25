@@ -1,0 +1,2 @@
+Dar al paciente la opción de elegir al psicólogo correcto para su problema, además de poder investigar sobre el mismo, evitando pérdidas de dinero y la falta de continuidad en el tratamiento. Siendo más ágil y cómodo hacer la reserva de citas.
+Para el psicólogo, resulta más fácil conseguir clientes y tener al paciente ideal para su trabajo, evitando la falta de continuidad en el tratamiento, además de tener ya acceso anticipado al problema del paciente.
