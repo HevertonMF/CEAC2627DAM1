@@ -1,2 +1,0 @@
-# Características de los objetos
-

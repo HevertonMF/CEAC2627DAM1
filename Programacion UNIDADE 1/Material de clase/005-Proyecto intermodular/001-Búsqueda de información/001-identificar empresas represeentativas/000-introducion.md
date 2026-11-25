@@ -1,1 +1,0 @@
-# Identificar empresas representativas

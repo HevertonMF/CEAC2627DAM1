@@ -1,6 +1,0 @@
-Les presento una base de datos creada para almacenar registros de médicos en una aplicación donde los pacientes pueden encontrar especialistas y pedir cita según las fechas disponibles de cada médico. Esto facilita la gestión de las citas, agiliza el trabajo del médico y brinda mayor comodidad al paciente.
-Hemos creado una aplicación para conectar a pacientes y médicos. Esta aplicación puede ser utilizada tanto por médicos y pacientes como por hospitales y clínicas privadas. Contará con las fechas disponibles para pedir cita, así como con la especialidad de cada médico.
-Esta base de datos se desarrolló en SQLite, ya que se trata de una base pequeña. Cuenta con una tabla de médicos que incluye los siguientes campos: ID, nombre, apellidos, email, especialidad y numero_de_colegiado.
-En SQLite no fue necesario crear un usuario, puesto que la base de datos está almacenada de forma segura en mi ordenador. Por ello elegí SQLite para crearla: por su facilidad, versatilidad y sencillez de gestión.
-Esta aplicación fue pensada para facilitar la vida de los usuarios, conectando a médicos con pacientes, brindándoles mayor comodidad a la hora de pedir cita y fomentando una relación más segura entre ambos.
-Desde ya agradezco su atención y espero que esta aplicación les sea de ayuda y les facilite la vida; en breve traeré más novedades sobre el proyecto.
